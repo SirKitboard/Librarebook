@@ -2,6 +2,8 @@ package com.notdecaf.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
+
 /**
  * Created by Adi on 3/27/2016.
  */
@@ -23,6 +25,17 @@ public class Author {
     public Author(String fname, String lname){
         this.firstName = fname;
         this.lastName = lname;
+    }
+
+    @ManyToMany(mappedBy = "authors")
+    private Set<Item> items;
+
+    public Set<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(Set<Item> items) {
+        this.items = items;
     }
 
     public Author() {
