@@ -52,6 +52,9 @@ public class User {
     @JoinTable(name="users_favorites", joinColumns={@JoinColumn(name="userID", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name="bookID", referencedColumnName = "id")})
     private Set<Item> favorites;
 
+    @OneToMany
+    private Set<UserItemRating> ratings;
+
     public User(String firstName, String lastName, Date dob, String email, String gender, String password) throws PasswordStorage.CannotPerformOperationException {
         this.firstName = firstName;
         this.lastName = lastName;

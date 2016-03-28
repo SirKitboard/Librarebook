@@ -42,22 +42,6 @@ public abstract class Item {
     @ManyToOne
     private Publisher publisher;
 
-    public Set<Author> getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(Set<Author> authors) {
-        this.authors = authors;
-    }
-
-    public Publisher getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(Publisher publisher) {
-        this.publisher = publisher;
-    }
-
     private String description;
 
     @NotNull
@@ -74,6 +58,24 @@ public abstract class Item {
 
     private String coverImageUrl;
 
+    @OneToMany
+    private Set<UserItemRating> ratings;
+
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
+    }
+
+    public Publisher getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
+    }
 
     public String getCoverImageUrl() {
         return coverImageUrl;

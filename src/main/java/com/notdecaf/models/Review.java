@@ -1,5 +1,8 @@
 package com.notdecaf.models;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -20,13 +23,9 @@ public class Review {
     @NotNull
     private int flags;
 
-//    @NotNull
-//    @OneToOne(mappedBy = "reviews")
-//    private UserItemRating itemRating;
-
-//    @OneToOne
-//    @JoinColumn(name = "RATING_ID")
-//    private UserReviewRating reviewRating;
+    @NotNull
+    @OneToOne(mappedBy = "review")
+    private UserItemRating itemRating;
 
     public Review() {
 
@@ -57,19 +56,11 @@ public class Review {
         this.flags = flags;
     }
 
-//    public UserItemRating getItemRating() {
-//        return itemRating;
-//    }
-//
-//    public void setItemRating(UserItemRating itemRating) {
-//        this.itemRating = itemRating;
-//    }
+    public UserItemRating getItemRating() {
+        return itemRating;
+    }
 
-//    public UserReviewRating getReviewRating() {
-//        return reviewRating;
-//    }
-//
-//    public void setReviewRating(UserReviewRating reviewRating) {
-//        this.reviewRating = reviewRating;
-//    }
+    public void setItemRating(UserItemRating itemRating) {
+        this.itemRating = itemRating;
+    }
 }
