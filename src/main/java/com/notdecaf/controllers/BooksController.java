@@ -43,8 +43,8 @@ public class BooksController implements BaseController<Book> {
     public ResponseEntity<Book[]> all(HttpSession session) {
         Iterable<Book> books = bookDao.findAll();
         List<Book> bookList = new ArrayList<Book>();
-        for (Book author : books) {
-            bookList.add(author);
+        for (Book book : books) {
+            bookList.add(book);
         }
         return ResponseEntity.ok(bookList.toArray(new Book[0]));
     }
