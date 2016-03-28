@@ -44,6 +44,9 @@ public class PublisherController implements BaseController<Publisher>{
     @RequestMapping(value = "/api/publishers/{id}", method = RequestMethod.GET)
     public ResponseEntity<Publisher> get(HttpSession session, @PathVariable long id) {
         Publisher publisher = publisherDao.findOne(id);
+        if(publisher == null) {
+            return new ResponseEntity<Publisher>(HttpStatus.NOT_FOUND);
+        }
         return ResponseEntity.ok(publisher);
     }
 
@@ -69,6 +72,9 @@ public class PublisherController implements BaseController<Publisher>{
     @RequestMapping(value = "/api/publishers/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Publisher> update(HttpServletRequest request, @PathVariable long id) {
         Publisher publisher = publisherDao.findOne(id);
+        if(publisher == null) {
+            return new ResponseEntity<Publisher>(HttpStatus.NOT_FOUND);
+        }
         if(request.getParameter("name") != null) {
             publisher.setName(request.getParameter("name"));
         }
