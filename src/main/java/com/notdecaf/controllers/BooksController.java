@@ -4,6 +4,7 @@ import com.notdecaf.daos.AuthorDao;
 import com.notdecaf.daos.BookDao;
 import com.notdecaf.daos.GenreDao;
 import com.notdecaf.daos.PublisherDao;
+import com.notdecaf.helpers.BookFactory;
 import com.notdecaf.helpers.ItemStatus;
 import com.notdecaf.helpers.Language;
 import com.notdecaf.models.Author;
@@ -31,9 +32,6 @@ public class BooksController implements BaseController<Book> {
     private AuthorDao authorDao;
 
     @Autowired
-    private BookDao bookDao;
-
-    @Autowired
     private PublisherDao publisherDao;
 
     @Autowired
@@ -41,7 +39,7 @@ public class BooksController implements BaseController<Book> {
 
     @RequestMapping(value = "/api/items/books", method = RequestMethod.GET)
     public ResponseEntity<Book[]> all(HttpSession session) {
-        Iterable<Book> books = bookDao.findAll();
+        Iterable<Book> books = BookFactory.findAll();
         List<Book> bookList = new ArrayList<Book>();
         for (Book book : books) {
             bookList.add(book);
@@ -51,7 +49,7 @@ public class BooksController implements BaseController<Book> {
 
     @RequestMapping(value = "/api/items/books/{id}", method = RequestMethod.GET)
     public ResponseEntity<Book> get(HttpSession session, @PathVariable long id) {
-        Book book = bookDao.findOne(id);
+        Book book = BookFactory.getBookFromCache(id);
         if(book == null) {
             return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
         }
@@ -114,7 +112,7 @@ public class BooksController implements BaseController<Book> {
                 ItemStatus.Available,
                 Integer.parseInt(request.getParameter("numPages")));
 
-        bookDao.save(book);
+        BookFactory.save(book);
         return ResponseEntity.ok(book);
     }
 
