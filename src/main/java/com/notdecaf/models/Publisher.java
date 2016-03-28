@@ -29,7 +29,7 @@ public class Publisher {
     private String name;
 
     @OneToOne
-    @JoinColumn(name="owner_id")
+    @JoinColumn(name="address")
     private Address address;
 
     @NotNull
