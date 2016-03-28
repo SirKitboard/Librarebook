@@ -3,6 +3,7 @@ package com.notdecaf.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
+import java.util.StringJoiner;
 
 /**
  * Created by Adi on 3/27/2016.
@@ -22,9 +23,17 @@ public class Author {
 
     private String profileImage;
 
+    private String biography;
+
     public Author(String fname, String lname){
         this.firstName = fname;
         this.lastName = lname;
+    }
+
+    public Author(String fname, String lname, String biography){
+        this.firstName = fname;
+        this.lastName = lname;
+        this.biography = biography;
     }
 
     @ManyToMany(mappedBy = "authors")
@@ -36,6 +45,14 @@ public class Author {
 
     public void setItems(Set<Item> items) {
         this.items = items;
+    }
+
+    public String getBiography() {
+        return biography;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
     }
 
     public Author() {
