@@ -69,6 +69,10 @@ public class User {
         return false;
     }
 
+    @OneToOne(cascade=CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private UserPreferences preferences;
+
     public long getId() {
         return id;
     }
@@ -151,5 +155,17 @@ public class User {
 
      public void setCoverImage(String coverImage) {
         this.coverImage = coverImage;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public UserPreferences getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(UserPreferences preferences) {
+        this.preferences = preferences;
     }
 }
