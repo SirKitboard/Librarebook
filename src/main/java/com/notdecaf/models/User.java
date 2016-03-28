@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Entity
 @Inheritance
-@DiscriminatorColumn(name = "USER_TYPE")
+@DiscriminatorColumn(name = "user_type")
 @DiscriminatorValue("user")
 @Table(name="users")
 
