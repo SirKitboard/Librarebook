@@ -1,5 +1,6 @@
 package com.notdecaf.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.notdecaf.helpers.ItemStatus;
 import com.notdecaf.helpers.Language;
 
@@ -25,11 +26,13 @@ public abstract class Item {
     @NotNull
     private String title;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @JsonBackReference
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name="items_genres", joinColumns={@JoinColumn(referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(referencedColumnName = "id")})
     private Set<Genre> genres;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @JsonBackReference
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name="items_authors", joinColumns={@JoinColumn(referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(referencedColumnName = "id")})
     private Set<Author> authors;
 
@@ -141,4 +144,17 @@ public abstract class Item {
         // Calculate total licenses based on user checkout mapping
         return this.totalLicenses;
     }
+
+    public Item(String title, Set<Genre> genres, Set<Author> authors, Publisher publisher, String description, int yearPublished, int totalLicenses, Language language, ItemStatus status) {
+        this.title = title;
+        this.genres = genres;
+        this.authors = authors;
+        this.publisher = publisher;
+        this.description = description;
+        this.yearPublished = yearPublished;
+        this.totalLicenses = totalLicenses;
+        this.language = language;
+        this.status = status;
+    }
+
 }
