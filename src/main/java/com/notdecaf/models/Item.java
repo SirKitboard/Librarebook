@@ -36,6 +36,9 @@ public abstract class Item {
     @JoinTable(name="items_authors", joinColumns={@JoinColumn(referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(referencedColumnName = "id")})
     private Set<Author> authors;
 
+    @ManyToMany(mappedBy = "favorites")
+    private Set<User> favoritedBy;
+
     @ManyToOne
     private Publisher publisher;
 

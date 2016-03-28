@@ -1,10 +1,12 @@
 package com.notdecaf.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.notdecaf.helpers.PasswordStorage;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Inheritance
@@ -44,6 +46,11 @@ public class User {
     private String profileImage;
 
     private String coverImage;
+
+    @JsonBackReference
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name="users_favorites", joinColumns={@JoinColumn(name="userID", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name="bookID", referencedColumnName = "id")})
+    private Set<Item> favorites;
 
     public User(String firstName, String lastName, Date dob, String email, String gender, String password) throws PasswordStorage.CannotPerformOperationException {
         this.firstName = firstName;
