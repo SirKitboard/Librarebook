@@ -17,7 +17,7 @@ public class UserReviewRating {
     private long Id;
 
     @NotNull
-    private double rating;
+    private int rating;
 
     @JsonBackReference
     @ManyToOne
@@ -32,7 +32,7 @@ public class UserReviewRating {
     public UserReviewRating() {
     }
 
-    public UserReviewRating(double rating, Review review, User user) {
+    public UserReviewRating(int rating, Review review, User user) {
         this.rating = rating;
         this.review = review;
         this.user = user;
@@ -42,11 +42,11 @@ public class UserReviewRating {
         return Id;
     }
 
-    public double getRating() {
+    public int getRating() {
         return rating;
     }
 
-    public void setRating(double rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 
