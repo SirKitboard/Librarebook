@@ -175,4 +175,16 @@ public class User {
     public void setPreferences(UserPreferences preferences) {
         this.preferences = preferences;
     }
+
+    public Set<Item> getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(Set<Item> favorites) {
+        this.favorites = favorites;
+    }
+
+    public void addToFavorites(Item item) {
+        favorites.add(item);
+    }
 }
