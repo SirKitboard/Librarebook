@@ -55,6 +55,9 @@ public class User {
     @OneToMany
     private Set<UserItemRating> ratings;
 
+    @OneToMany(mappedBy = "user")
+    private Set<UserReviewRating> reviewRatings;
+
     public User(String firstName, String lastName, Date dob, String email, String gender, String password) throws PasswordStorage.CannotPerformOperationException {
         this.firstName = firstName;
         this.lastName = lastName;

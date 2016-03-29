@@ -5,6 +5,7 @@ import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 /**
  * Created by purav on 3/28/16.
@@ -26,6 +27,9 @@ public class Review {
     @NotNull
     @OneToOne(mappedBy = "review")
     private UserItemRating itemRating;
+
+    @OneToMany(mappedBy = "review")
+    private Set<UserReviewRating> reviewRatings;
 
     public Review() {
 

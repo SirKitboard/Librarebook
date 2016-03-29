@@ -2,6 +2,7 @@ package com.notdecaf.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 /**
  * Created by purav on 3/28/16.
