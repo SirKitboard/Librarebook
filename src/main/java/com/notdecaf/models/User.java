@@ -12,7 +12,7 @@ import java.util.Set;
 @Inheritance
 @DiscriminatorColumn(name = "user_type")
 @DiscriminatorValue("user")
-@Table(name="users")
+@Table(name = "users")
 
 public class User {
     @Id
@@ -20,7 +20,7 @@ public class User {
     private long id;
 
     @NotNull
-    private byte [] hashedPassword;
+    private byte[] hashedPassword;
 
     @NotNull
     private String firstName;
@@ -35,7 +35,7 @@ public class User {
     private String email;
 
     @OneToOne
-    @JoinColumn(name="address")
+    @JoinColumn(name = "address")
     private Address address;
 
     private String phoneNumber;
@@ -49,7 +49,7 @@ public class User {
 
     @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name="users_favorites", joinColumns={@JoinColumn(name="userID", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name="bookID", referencedColumnName = "id")})
+    @JoinTable(name = "users_favorites", joinColumns = {@JoinColumn(name = "userID", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "bookID", referencedColumnName = "id")})
     private Set<Item> favorites;
 
     @OneToMany
@@ -57,6 +57,13 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private Set<UserReviewRating> reviewRatings;
+
+    @OneToMany(mappedBy = "user")
+    private  Set<UserReviewFlag> reviewFlags;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private UserPreferences preferences;
 
     public User(String firstName, String lastName, Date dob, String email, String gender, String password) throws PasswordStorage.CannotPerformOperationException {
         this.firstName = firstName;
@@ -82,10 +89,6 @@ public class User {
         return false;
     }
 
-    @OneToOne(cascade=CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private UserPreferences preferences;
-
     public long getId() {
         return id;
     }
@@ -94,84 +97,72 @@ public class User {
         return firstName;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public Date getDob() {
-        return dob;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public String getProfileImage() {
-        return profileImage;
-    }
-
-    public String getCoverImage() {
-        return coverImage;
-    }
-
-    public void setPassword(String password){
-        try {
-            this.hashedPassword = PasswordStorage.createHash(password).getBytes();
-        } catch (PasswordStorage.CannotPerformOperationException e) {
-
-        }
-    }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    public Date getDob() {
+        return dob;
+    }
+
     public void setDob(Date dob) {
         this.dob = dob;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
     public void setAddress(Address address) {
         this.address = address;
     }
 
-    public void phoneNumber(String phoneNumber) {
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getGender() {
+        return gender;
     }
 
     public void setGender(String gender) {
         this.gender = gender;
     }
 
+    public String getProfileImage() {
+        return profileImage;
+    }
+
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
 
-     public void setCoverImage(String coverImage) {
-        this.coverImage = coverImage;
+    public String getCoverImage() {
+        return coverImage;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setCoverImage(String coverImage) {
+        this.coverImage = coverImage;
     }
 
     public UserPreferences getPreferences() {
@@ -180,6 +171,18 @@ public class User {
 
     public void setPreferences(UserPreferences preferences) {
         this.preferences = preferences;
+    }
+
+    public void setPassword(String password) {
+        try {
+            this.hashedPassword = PasswordStorage.createHash(password).getBytes();
+        } catch (PasswordStorage.CannotPerformOperationException e) {
+
+        }
+    }
+
+    public void phoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public Set<Item> getFavorites() {
