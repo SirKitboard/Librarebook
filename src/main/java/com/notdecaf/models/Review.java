@@ -31,6 +31,9 @@ public class Review {
     @OneToMany(mappedBy = "review")
     private Set<UserReviewRating> reviewRatings;
 
+    @OneToMany(mappedBy = "review")
+    private Set<UserReviewFlag> reviewFlags;
+
     public Review() {
 
     }
