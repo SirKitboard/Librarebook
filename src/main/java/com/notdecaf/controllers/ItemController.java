@@ -36,10 +36,55 @@ public class ItemController {
         }
         Item item = itemDao.findOne(id);
         user.addToFavorites(item);
-//        Set<Item> favorites = user.getFavorites();
-//        favorites.add(item);
-//        user.setFavorites(favorites);
         userDao.save(user);
         return ResponseEntity.ok(null);
+    }
+
+    @RequestMapping(value = "/api/items/{id}/return", method = RequestMethod.POST)
+    public ResponseEntity returnBook(HttpServletRequest request, @PathVariable long id) {
+        //TODO: Implement Method
+        return null;
+    }
+
+    @RequestMapping(value = "/api/items/{id}/reserve", method = RequestMethod.POST)
+    public ResponseEntity reserve(HttpServletRequest request, @PathVariable long id) {
+        //TODO: Implement Method
+        return null;
+    }
+
+    @RequestMapping(value = "/api/items/{id}/flag", method = RequestMethod.POST)
+    public ResponseEntity flag(HttpServletRequest request, @PathVariable long id) {
+        //TODO: Implement Method
+        return null;
+    }
+
+    @RequestMapping(value = "/api/items/{id}/wishlist", method = RequestMethod.POST)
+    public ResponseEntity toggleWishlist(HttpServletRequest request, @PathVariable long id) {
+        //TODO: Implement Method
+        return null;
+    }
+
+    @RequestMapping(value = "/api/items/{id}/favorite", method = RequestMethod.POST)
+    public ResponseEntity toggleFavorite(HttpServletRequest request, @PathVariable long id) {
+        //TODO: Implement Method
+        return null;
+    }
+
+    @RequestMapping(value = "/api/items/recent", method = RequestMethod.GET)
+    public ResponseEntity recent(HttpServletRequest request) {
+        //TODO: Implement Method
+        return null;
+    }
+
+    @RequestMapping(value = "/api/items/{id}/notinterested", method = RequestMethod.POST)
+    public ResponseEntity notInterested(HttpServletRequest request, @PathVariable long id) {
+        //TODO: Implement Method
+        return null;
+    }
+
+    @RequestMapping(value = "/api/items/{id}/series", method = RequestMethod.POST)
+    public ResponseEntity addToSeries(HttpServletRequest request, @PathVariable long id) {
+        //TODO: Implement Method
+        return null;
     }
 }

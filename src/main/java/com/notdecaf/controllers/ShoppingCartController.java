@@ -30,5 +30,15 @@ public class ShoppingCartController {
 
  
 
+    @RequestMapping(value = "/api/shoppingcart/borrow", method = RequestMethod.POST)
+    public ResponseEntity borrow(HttpServletRequest request) {
+        //TODO: Implement Method
+        return null;
+    }
 
+    @RequestMapping(value = "/api/shoppingcart/purchase", method = RequestMethod.POST)
+    public ResponseEntity purchase(HttpServletRequest request) {
+        //TODO: Implement Method
+        return null;
+    }
 }

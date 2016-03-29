@@ -127,4 +127,11 @@ public class BooksController implements BaseController<Book> {
         // TODO: Implement delete
         return null;
     }
+
+    @RequestMapping(value = "/api/items/books/recent", method = RequestMethod.GET)
+    public ResponseEntity recent(HttpServletRequest request, @PathVariable long id) {
+        //TODO: Implement Method
+        return null;
+    }
+
 }
