@@ -4,7 +4,10 @@ import com.notdecaf.daos.AddressDao;
 import com.notdecaf.daos.UserDao;
 import com.notdecaf.helpers.PasswordStorage;
 import com.notdecaf.models.Address;
+import com.notdecaf.daos.ReviewDao;
+import com.notdecaf.models.Review;
 import com.notdecaf.models.User;
+import com.notdecaf.models.UserPreferences;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +34,9 @@ public class UserController implements BaseController<User> {
 
     @Autowired
     private AddressDao addressDao;
+
+    @Autowired
+    private ReviewDao reviewDao;
 
     @RequestMapping(value = "/api/users", method = RequestMethod.GET)
     public ResponseEntity<User[]> all(HttpSession session) {
@@ -95,6 +101,36 @@ public class UserController implements BaseController<User> {
     @Override
     public ResponseEntity delete(HttpServletRequest request, long id) {
         // TODO: Handle delete
+        return null;
+    }
+
+    @RequestMapping(value = "/api/users/{id}/reviews", method = RequestMethod.GET)
+    public ResponseEntity<Review []> getReviews(HttpServletRequest request, @PathVariable long id) {
+        return null;
+    }
+
+    @RequestMapping(value = "/api/admindashboard/users/{id}", method = RequestMethod.POST)
+    public ResponseEntity banUser(HttpServletRequest request, @PathVariable long id) {
+        return null;
+    }
+
+    @RequestMapping(value = "/api/users/{id}/settings")
+    public ResponseEntity setActiveStatus(HttpServletRequest request, @PathVariable long id) {
+        return null;
+    }
+
+    @RequestMapping(value = "/api/users/{id}/wishlist", method = RequestMethod.GET)
+    public ResponseEntity getWishList(HttpServletRequest request, @PathVariable long id) {
+        return null;
+    }
+
+    @RequestMapping(value = "/api/users/{id}/settings", method = RequestMethod.GET)
+    public ResponseEntity<UserPreferences> getPreferences(HttpServletRequest request, @PathVariable long id) {
+        return null;
+    }
+
+    @RequestMapping(value = "/api/users/{id}/settings", method = RequestMethod.PUT)
+    public ResponseEntity updatePreferences(HttpServletRequest request, @PathVariable long id) {
         return null;
     }
 }
