@@ -1,5 +1,7 @@
 package com.notdecaf.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -17,10 +19,12 @@ public class UserReviewRating {
     @NotNull
     private double rating;
 
+    @JsonBackReference
     @ManyToOne
     @JoinTable(name="review_ratings", joinColumns = {@JoinColumn(name = "reviewID", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "ratingID", referencedColumnName = "id")})
     private Review review;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

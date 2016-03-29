@@ -1,4 +1,6 @@
 package com.notdecaf.models;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -16,6 +18,7 @@ public class Series {
     @NotNull
     private String name;
 
+    @JsonBackReference
     @OneToMany
     @JoinColumn(name = "series")
     private Set<Item> items;

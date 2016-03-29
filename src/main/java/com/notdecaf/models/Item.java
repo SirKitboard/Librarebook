@@ -58,9 +58,11 @@ public abstract class Item {
 
     private String coverImageUrl;
 
+    @JsonBackReference
     @OneToMany
     private Set<UserItemRating> ratings;
 
+    @JsonBackReference
     @ManyToOne
     private Series series;
 
@@ -151,6 +153,22 @@ public abstract class Item {
     public int getAvailableLicenses() {
         // Calculate total licenses based on user checkout mapping
         return this.totalLicenses;
+    }
+
+    public Set<UserItemRating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(Set<UserItemRating> ratings) {
+        this.ratings = ratings;
+    }
+
+    public Series getSeries() {
+        return series;
+    }
+
+    public void setSeries(Series series) {
+        this.series = series;
     }
 
     public Item(String title, Set<Genre> genres, Set<Author> authors, Publisher publisher, String description, int yearPublished, int totalLicenses, Language language, ItemStatus status) {

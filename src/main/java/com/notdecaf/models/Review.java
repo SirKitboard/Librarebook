@@ -1,5 +1,6 @@
 package com.notdecaf.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -28,11 +29,9 @@ public class Review {
     @OneToOne(mappedBy = "review")
     private UserItemRating itemRating;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "review")
     private Set<UserReviewRating> reviewRatings;
-
-    @OneToMany(mappedBy = "review")
-    private Set<UserReviewFlag> reviewFlags;
 
     public Review() {
 

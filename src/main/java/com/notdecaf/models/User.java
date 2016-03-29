@@ -70,11 +70,9 @@ public class User {
     @OneToMany
     private Set<UserItemRating> ratings;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "user")
     private Set<UserReviewRating> reviewRatings;
-
-    @OneToMany(mappedBy = "user")
-    private  Set<UserReviewFlag> reviewFlags;
 
     @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
