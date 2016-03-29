@@ -245,12 +245,4 @@ public class User {
     public void setReviewRatings(Set<UserReviewRating> reviewRatings) {
         this.reviewRatings = reviewRatings;
     }
-
-    public Set<UserReviewFlag> getReviewFlags() {
-        return reviewFlags;
-    }
-
-    public void setReviewFlags(Set<UserReviewFlag> reviewFlags) {
-        this.reviewFlags = reviewFlags;
-    }
 }
