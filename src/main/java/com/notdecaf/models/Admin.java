@@ -12,8 +12,8 @@ import java.util.Date;
 @Entity
 @DiscriminatorValue("admin")
 public class Admin extends Moderator {
-    public Admin(String firstName, String lastName, Date dob, String email, String gender, String password) throws PasswordStorage.CannotPerformOperationException {
-        super(firstName, lastName, dob, email, gender, password);
+    public Admin(String firstName, String lastName, Date dob, String email, String gender, String password, Address address) throws PasswordStorage.CannotPerformOperationException {
+        super(firstName, lastName, dob, email, gender, password, address);
     }
 
     public Admin() {

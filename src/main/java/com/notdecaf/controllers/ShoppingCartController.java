@@ -27,8 +27,19 @@ public class ShoppingCartController {
     @Autowired
     private UserDao userDao;
 
+    @RequestMapping(value = "/api/shoppingcart/{id}/add", method = RequestMethod.GET)
+    public ResponseEntity add(HttpServletRequest req, @PathVariable long id) {
+        User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        Item item = itemDao.findOne(id);
+        user.addToCart(item);
+        userDao.save(user);
+        return ResponseEntity.ok(null);
+    }
 
- 
+
 
     @RequestMapping(value = "/api/shoppingcart/borrow", method = RequestMethod.POST)
     public ResponseEntity borrow(HttpServletRequest request) {

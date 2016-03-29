@@ -1,7 +1,9 @@
 package com.notdecaf.controllers;
 
+import com.notdecaf.daos.AddressDao;
 import com.notdecaf.daos.UserDao;
 import com.notdecaf.helpers.PasswordStorage;
+import com.notdecaf.models.Address;
 import com.notdecaf.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,9 @@ public class UserController implements BaseController<User> {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private AddressDao addressDao;
 
     @RequestMapping(value = "/api/users", method = RequestMethod.GET)
     public ResponseEntity<User[]> all(HttpSession session) {
@@ -55,14 +60,24 @@ public class UserController implements BaseController<User> {
                     || !requestMap.containsKey("dob")
                     || !requestMap.containsKey("email")
                     || !requestMap.containsKey("gender")
-                    || !requestMap.containsKey("password"))
+                    || !requestMap.containsKey("password")
+                    || !requestMap.containsKey("addressLine1")
+                    || !requestMap.containsKey("zipcode")
+                    || !requestMap.containsKey("city")
+                    || !requestMap.containsKey("state")
+                    || !requestMap.containsKey("country"))
                 return ResponseEntity.badRequest().body(null);
+
+            Address address = new Address(request.getParameter("addressLine1"), request.getParameter("city"), request.getParameter("state"), Integer.parseInt(request.getParameter("zipcode")), request.getParameter("country"));
+
             User user = new User(request.getParameter("firstName"),
                     request.getParameter("lastName"),
                     new Date(request.getParameter("dob")),
                     request.getParameter("email"),
                     request.getParameter("gender"),
-                    request.getParameter("password"));
+                    request.getParameter("password"),
+                    address);
+            addressDao.save(address);
             userDao.save(user);
             return ResponseEntity.ok(user);
         } catch (PasswordStorage.CannotPerformOperationException e) {

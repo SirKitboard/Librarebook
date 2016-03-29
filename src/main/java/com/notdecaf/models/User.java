@@ -81,18 +81,21 @@ public class User {
     @ManyToMany(mappedBy = "flaggedBy")
     private Set<Item> flags;
 
-    public User(String firstName, String lastName, Date dob, String email, String gender, String password) throws PasswordStorage.CannotPerformOperationException {
+    public User(String firstName, String lastName, Date dob, String email, String gender, String password, Address address) throws PasswordStorage.CannotPerformOperationException {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dob = dob;
         this.email = email;
         this.gender = gender;
         this.hashedPassword = PasswordStorage.createHash(password).getBytes();
+        this.address = address;
     }
 
     public User() {
 
     }
+
+
 
     public boolean verifyCredentials(String password) {
         try {
