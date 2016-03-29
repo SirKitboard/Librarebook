@@ -1,5 +1,6 @@
 package com.notdecaf.models;
 
+import com.notdecaf.helpers.EmailPreference;
 import com.notdecaf.helpers.UserStatus;
 
 import javax.persistence.*;
@@ -16,6 +17,9 @@ public class UserPreferences {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
+    @Enumerated(EnumType.STRING)
+    private EmailPreference emailPreference;
+
     public UserStatus getStatus() {
         return status;
     }
@@ -26,6 +30,14 @@ public class UserPreferences {
 
     public long getUserID() {
         return userID;
+    }
+
+    public EmailPreference getEmailPreference() {
+        return emailPreference;
+    }
+
+    public void setEmailPreference(EmailPreference emailPreference) {
+        this.emailPreference = emailPreference;
     }
 
     public UserPreferences() {
