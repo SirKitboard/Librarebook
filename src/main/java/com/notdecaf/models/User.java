@@ -57,6 +57,15 @@ public class User {
     @JoinTable(name = "user_shoppingcartitem", joinColumns = {@JoinColumn(name= "userID", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn (name ="itemID", referencedColumnName = "id")})
     private Set <Item> shoppingCart;
 
+    @JsonBackReference
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_wishlist", joinColumns = {@JoinColumn(name= "userID", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn (name ="itemID", referencedColumnName = "id")})
+    private Set <Item> wishlist;
+
+    @JsonBackReference
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_notinterested", joinColumns = {@JoinColumn(name= "userID", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn (name ="itemID", referencedColumnName = "id")})
+    private Set <Item> notIntersted;
 
     @OneToMany
     private Set<UserItemRating> ratings;
@@ -197,5 +206,53 @@ public class User {
 
     public void addToFavorites(Item item) {
         favorites.add(item);
+    }
+
+    public Set<Item> getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(Set<Item> shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+
+    public Set<Item> getWishlist() {
+        return wishlist;
+    }
+
+    public void setWishlist(Set<Item> wishlist) {
+        this.wishlist = wishlist;
+    }
+
+    public Set<Item> getNotIntersted() {
+        return notIntersted;
+    }
+
+    public void setNotIntersted(Set<Item> notIntersted) {
+        this.notIntersted = notIntersted;
+    }
+
+    public Set<UserItemRating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(Set<UserItemRating> ratings) {
+        this.ratings = ratings;
+    }
+
+    public Set<UserReviewRating> getReviewRatings() {
+        return reviewRatings;
+    }
+
+    public void setReviewRatings(Set<UserReviewRating> reviewRatings) {
+        this.reviewRatings = reviewRatings;
+    }
+
+    public Set<UserReviewFlag> getReviewFlags() {
+        return reviewFlags;
+    }
+
+    public void setReviewFlags(Set<UserReviewFlag> reviewFlags) {
+        this.reviewFlags = reviewFlags;
     }
 }
