@@ -3,7 +3,7 @@ package com.notdecaf.controllers;
 import com.notdecaf.daos.ReviewDao;
 import com.notdecaf.daos.UserItemRatingDao;
 import com.notdecaf.models.Review;
-import com.notdecaf.daos.UserRevewRatingDao;
+import com.notdecaf.daos.UserReviewRatingDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +21,7 @@ public class ReviewController implements BaseController<Review>{
     private ReviewDao reviewDao;
 
     @Autowired
-    private UserRevewRatingDao revewRatingDao;
+    private UserReviewRatingDao revewRatingDao;
 
     @Autowired
     private UserItemRatingDao itemRatingDao;

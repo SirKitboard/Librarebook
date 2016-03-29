@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 /**
  * Created by purav on 3/28/16.
  */
-public interface UserRevewRatingDao extends CrudRepository<UserReviewRating, Long>{
+public interface UserReviewRatingDao extends CrudRepository<UserReviewRating, Long>{
 }
