@@ -42,6 +42,11 @@ public abstract class Item {
     @ManyToOne
     private Publisher publisher;
 
+    @JsonBackReference
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name="items_flags", joinColumns = {@JoinColumn(name="itemID", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "userID", referencedColumnName = "id")})
+    private Set<User> flaggedBy;
+
     private String description;
 
     @NotNull
@@ -155,20 +160,35 @@ public abstract class Item {
         return this.totalLicenses;
     }
 
-    public Set<UserItemRating> getRatings() {
-        return ratings;
-    }
-
-    public void setRatings(Set<UserItemRating> ratings) {
-        this.ratings = ratings;
-    }
-
     public Series getSeries() {
         return series;
     }
 
     public void setSeries(Series series) {
         this.series = series;
+    }
+    public Set<User> getFavoritedBy() {
+        return favoritedBy;
+    }
+
+    public void setFavoritedBy(Set<User> favoritedBy) {
+        this.favoritedBy = favoritedBy;
+    }
+
+    public Set<User> getFlaggedBy() {
+        return flaggedBy;
+    }
+
+    public void setFlaggedBy(Set<User> flaggedBy) {
+        this.flaggedBy = flaggedBy;
+    }
+
+    public Set<UserItemRating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(Set<UserItemRating> ratings) {
+        this.ratings = ratings;
     }
 
     public Item(String title, Set<Genre> genres, Set<Author> authors, Publisher publisher, String description, int yearPublished, int totalLicenses, Language language, ItemStatus status) {

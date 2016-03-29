@@ -78,6 +78,9 @@ public class User {
     @PrimaryKeyJoinColumn
     private UserPreferences preferences;
 
+    @ManyToMany(mappedBy = "flaggedBy")
+    private Set<Item> flags;
+
     public User(String firstName, String lastName, Date dob, String email, String gender, String password) throws PasswordStorage.CannotPerformOperationException {
         this.firstName = firstName;
         this.lastName = lastName;
