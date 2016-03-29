@@ -248,4 +248,7 @@ public class User {
     public void setReviewRatings(Set<UserReviewRating> reviewRatings) {
         this.reviewRatings = reviewRatings;
     }
+
+    public void addToCart(Item item){shoppingCart.add(item);}
+
 }
