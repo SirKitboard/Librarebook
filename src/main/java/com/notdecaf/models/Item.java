@@ -61,6 +61,9 @@ public abstract class Item {
     @OneToMany
     private Set<UserItemRating> ratings;
 
+    @ManyToOne
+    private Series series;
+
     public Set<Author> getAuthors() {
         return authors;
     }
