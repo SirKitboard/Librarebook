@@ -181,10 +181,6 @@ public class User {
         }
     }
 
-    public void phoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     public Set<Item> getFavorites() {
         return favorites;
     }
