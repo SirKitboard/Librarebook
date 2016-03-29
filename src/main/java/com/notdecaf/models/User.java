@@ -6,6 +6,7 @@ import com.notdecaf.helpers.PasswordStorage;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Set;
 
 @Entity
@@ -253,5 +254,9 @@ public class User {
     }
 
     public void addToCart(Item item){shoppingCart.add(item);}
+
+    public void handleUpdate(HashMap<String, String> params) {
+        //TODO: Handle update
+    }
 
 }
