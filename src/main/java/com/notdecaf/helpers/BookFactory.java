@@ -4,6 +4,8 @@ import com.notdecaf.daos.BookDao;
 import com.notdecaf.models.Book;
 import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +13,16 @@ import java.util.List;
 /**
  * Created by adi on 28/3/16.
  */
+@Controller
 public class BookFactory {
     private static List<Book> lruBookCache = new ArrayList<Book>();
 
-    @Autowired
     private static BookDao bookDao;
+
+    @Autowired
+    public void setBookDao(BookDao bookDao) {
+        BookFactory.bookDao = bookDao;
+    }
 
     public static Book getBookFromCache(long id) {
         int index = -1;
