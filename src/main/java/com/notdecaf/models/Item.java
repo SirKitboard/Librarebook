@@ -17,7 +17,7 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name="item_type")
 @Table(name = "items")
-public abstract class Item {
+public abstract class Item extends IDModel{
     public Item() {
     }
 
