@@ -2,6 +2,8 @@ package com.notdecaf.controllers;
 
 import com.notdecaf.daos.ItemDao;
 import com.notdecaf.daos.UserDao;
+import com.notdecaf.helpers.ItemFactory;
+import com.notdecaf.helpers.SetHelper;
 import com.notdecaf.models.Item;
 import com.notdecaf.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.util.HashMap;
 import java.util.Set;
 
 /**
@@ -53,9 +56,27 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/api/items/{id}/flag", method = RequestMethod.POST)
-    public ResponseEntity flag(HttpServletRequest request, @PathVariable long id) {
-        //TODO: Implement Method
-        return null;
+    public ResponseEntity toggleFlag(HttpServletRequest req, @PathVariable long id) {
+        User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        Item item = ItemFactory.getItemFromCache(id);
+        if(item == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        Set<User> flags = item.getFlaggedBy();
+        HashMap<String, String> returnMap = new HashMap<>();
+        if(SetHelper.search(flags, user)) {
+            flags = SetHelper.remove(flags, user);
+            returnMap.put("flagged", "false");
+        } else {
+            flags.add(user);
+            returnMap.put("flagged", "true");
+        }
+        item.setFlaggedBy(flags);
+        itemDao.save(item);
+        return ResponseEntity.ok(returnMap);
     }
 
     @RequestMapping(value = "/api/items/{id}/wishlist", method = RequestMethod.POST)
