@@ -15,7 +15,7 @@ import java.util.Set;
 @DiscriminatorValue("user")
 @Table(name = "users")
 
-public class User {
+public class User extends IDModel{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -66,7 +66,7 @@ public class User {
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "user_notinterested", joinColumns = {@JoinColumn(name= "userID", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn (name ="itemID", referencedColumnName = "id")})
-    private Set <Item> notIntersted;
+    private Set <Item> notInterested;
 
     @OneToMany
     private Set<UserItemRating> ratings;
@@ -229,12 +229,12 @@ public class User {
         this.wishlist = wishlist;
     }
 
-    public Set<Item> getNotIntersted() {
-        return notIntersted;
+    public Set<Item> getNotInterested() {
+        return notInterested;
     }
 
-    public void setNotIntersted(Set<Item> notIntersted) {
-        this.notIntersted = notIntersted;
+    public void setNotInterested(Set<Item> notInterested) {
+        this.notInterested = notInterested;
     }
 
     public Set<UserItemRating> getRatings() {
@@ -258,5 +258,26 @@ public class User {
     public void handleUpdate(HashMap<String, String> params) {
         //TODO: Handle update
     }
+
+    public boolean equals(User user) {
+        if(user.getId() == this.getId()) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        try {
+            User user = (User) object;
+            if(user.getId() == this.getId()) {
+                return true;
+            }
+        } catch(Exception e) {
+            // Do nothing
+        }
+        return false;
+    }
+
 
 }
