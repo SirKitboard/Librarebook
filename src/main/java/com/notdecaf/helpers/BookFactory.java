@@ -4,6 +4,7 @@ import com.notdecaf.daos.BookDao;
 import com.notdecaf.models.Book;
 import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,6 +51,10 @@ public class BookFactory {
 
     public static Iterable<Book> findAll(){
         return bookDao.findAll();
+    }
+
+    public static List<Book> findRecentBooks() {
+        return bookDao.findTop10ByOrderByDateAddedDesc();
     }
 
     public static void save(Book book) {
