@@ -66,13 +66,13 @@ public class ItemController {
             return ResponseEntity.badRequest().body(null);
         }
         Set<User> flags = item.getFlaggedBy();
-        HashMap<String, String> returnMap = new HashMap<>();
+        HashMap<String, Boolean> returnMap = new HashMap<>();
         if(SetHelper.search(flags, user)) {
             flags = SetHelper.remove(flags, user);
-            returnMap.put("flagged", "false");
+            returnMap.put("flagged", false);
         } else {
             flags.add(user);
-            returnMap.put("flagged", "true");
+            returnMap.put("flagged", true);
         }
         item.setFlaggedBy(flags);
         itemDao.save(item);
@@ -80,9 +80,27 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/api/items/{id}/wishlist", method = RequestMethod.POST)
-    public ResponseEntity toggleWishlist(HttpServletRequest request, @PathVariable long id) {
-        //TODO: Implement Method
-        return null;
+    public ResponseEntity toggleWishlist(HttpServletRequest req, @PathVariable long id) {
+        User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        Item item = ItemFactory.getItemFromCache(id);
+        if(item == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        Set<Item> wishlist = user.getWishlist();
+        HashMap<String, Boolean> returnMap = new HashMap<>();
+        if(SetHelper.search(wishlist, item)) {
+            wishlist = SetHelper.remove(wishlist, item);
+            returnMap.put("wishlisted", false);
+        } else {
+            wishlist.add(item);
+            returnMap.put("wishlisted", true);
+        }
+        user.setWishlist(wishlist);
+        userDao.save(user);
+        return ResponseEntity.ok(returnMap);
     }
 
     @RequestMapping(value = "/api/items/{id}/favorite", method = RequestMethod.POST)
