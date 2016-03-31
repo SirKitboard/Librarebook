@@ -28,7 +28,7 @@ import java.util.*;
  * Created by Adi on 3/28/2016.
  */
 @RestController
-public class BooksController implements BaseController<Book> {
+public class BookController implements BaseController<Book> {
     @Autowired
     private AuthorDao authorDao;
 
