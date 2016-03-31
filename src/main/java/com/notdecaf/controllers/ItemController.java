@@ -135,9 +135,27 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/api/items/{id}/notinterested", method = RequestMethod.POST)
-    public ResponseEntity notInterested(HttpServletRequest request, @PathVariable long id) {
-        //TODO: Implement Method
-        return null;
+    public ResponseEntity notInterested(HttpServletRequest req, @PathVariable long id) {
+        User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        Item item = ItemFactory.getItemFromCache(id);
+        if(item == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        Set<Item> books = user.getWishlist();
+        HashMap<String, Boolean> returnMap = new HashMap<>();
+        if(SetHelper.search(books, item)) {
+            books = SetHelper.remove(books, item);
+            returnMap.put("notinterested", false);
+        } else {
+            books.add(item);
+            returnMap.put("notinterested", true);
+        }
+        user.setNotInterested(books);
+        userDao.save(user);
+        return ResponseEntity.ok(returnMap);
     }
 
     @RequestMapping(value = "/api/items/{id}/series", method = RequestMethod.POST)
