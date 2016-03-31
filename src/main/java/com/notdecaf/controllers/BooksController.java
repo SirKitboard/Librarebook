@@ -12,6 +12,7 @@ import com.notdecaf.models.Book;
 import com.notdecaf.models.Genre;
 import com.notdecaf.models.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -129,9 +130,10 @@ public class BooksController implements BaseController<Book> {
     }
 
     @RequestMapping(value = "/api/items/books/recent", method = RequestMethod.GET)
-    public ResponseEntity recent(HttpServletRequest request, @PathVariable long id) {
-        //TODO: Implement Method
-        return null;
+    public ResponseEntity recent(HttpServletRequest request) {
+        List<Book> books = BookFactory.findRecentBooks();
+        return ResponseEntity.ok(books);
+//        return null;
     }
 
 }
