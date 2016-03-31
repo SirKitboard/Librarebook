@@ -161,10 +161,4 @@ public class ItemController {
         userDao.save(user);
         return ResponseEntity.ok(returnMap);
     }
-
-    @RequestMapping(value = "/api/items/{id}/series", method = RequestMethod.POST)
-    public ResponseEntity addToSeries(HttpServletRequest request, @PathVariable long id) {
-        //TODO: Implement Method
-        return null;
-    }
 }
