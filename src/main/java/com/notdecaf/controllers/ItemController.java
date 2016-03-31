@@ -104,9 +104,27 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/api/items/{id}/favorite", method = RequestMethod.POST)
-    public ResponseEntity toggleFavorite(HttpServletRequest request, @PathVariable long id) {
-        //TODO: Implement Method
-        return null;
+    public ResponseEntity toggleFavorite(HttpServletRequest req, @PathVariable long id) {
+        User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        Item item = ItemFactory.getItemFromCache(id);
+        if(item == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        Set<Item> favorites = user.getWishlist();
+        HashMap<String, Boolean> returnMap = new HashMap<>();
+        if(SetHelper.search(favorites, item)) {
+            favorites = SetHelper.remove(favorites, item);
+            returnMap.put("favorited", false);
+        } else {
+            favorites.add(item);
+            returnMap.put("favorited", true);
+        }
+        user.setWishlist(favorites);
+        userDao.save(user);
+        return ResponseEntity.ok(returnMap);
     }
 
     @RequestMapping(value = "/api/items/recent", method = RequestMethod.GET)
