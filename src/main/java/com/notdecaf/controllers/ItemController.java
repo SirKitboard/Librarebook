@@ -122,6 +122,10 @@ public class ItemController {
         } else {
             favorites.add(item);
             returnMap.put("favorited", true);
+            Set<Item> booksNotInterested = user.getNotInterested();
+            if(SetHelper.search(booksNotInterested, item)) {
+                booksNotInterested = SetHelper.remove(booksNotInterested, item);
+            }
         }
         user.setWishlist(favorites);
         userDao.save(user);
