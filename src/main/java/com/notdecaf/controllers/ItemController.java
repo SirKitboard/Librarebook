@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -129,8 +130,8 @@ public class ItemController {
 
     @RequestMapping(value = "/api/items/recent", method = RequestMethod.GET)
     public ResponseEntity recent(HttpServletRequest request) {
-        //TODO: Implement Method
-        return null;
+        List<Item> items = ItemFactory.findRecentItems();
+        return ResponseEntity.ok(items);
     }
 
     @RequestMapping(value = "/api/items/{id}/notinterested", method = RequestMethod.POST)
