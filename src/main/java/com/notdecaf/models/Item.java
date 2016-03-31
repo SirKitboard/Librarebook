@@ -3,9 +3,11 @@ package com.notdecaf.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.notdecaf.helpers.ItemStatus;
 import com.notdecaf.helpers.Language;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -62,6 +64,9 @@ public abstract class Item {
     private ItemStatus status;
 
     private String coverImageUrl;
+
+    @CreatedDate
+    private Date dateAdded;
 
     @JsonBackReference
     @OneToMany
@@ -189,6 +194,14 @@ public abstract class Item {
 
     public void setRatings(Set<UserItemRating> ratings) {
         this.ratings = ratings;
+    }
+
+    public Date getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(Date dateAdded) {
+        this.dateAdded = dateAdded;
     }
 
     public Item(String title, Set<Genre> genres, Set<Author> authors, Publisher publisher, String description, int yearPublished, int totalLicenses, Language language, ItemStatus status) {
