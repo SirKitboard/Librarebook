@@ -1,0 +1,26 @@
+<html>
+<head>
+    <!-- <link rel="stylesheet" href="css/homepage.css" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="js/bower_components/materialize/dist/css/materialize.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/searchresults.css"/>
+</head>
+<body>
+    <div id='navigation' class="searchNav"></div>
+    <div id='content' class="padNav">
+    </div>
+    <div id="dark-cover"></div>
+    <div id='cart' class="z-depth-2"></div>
+
+    <script src="js/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+    <script src="js/bower_components/requirejs/require.js"></script>
+    <script type="text/javascript">
+        require(['js/config'], function () {
+          require(['init_navbar', 'init_searchresults']);
+        });
+	</script>
+
+</body>
+</html>
