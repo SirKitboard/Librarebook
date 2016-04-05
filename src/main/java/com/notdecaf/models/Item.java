@@ -72,8 +72,8 @@ public abstract class Item extends IDModel{
     @OneToMany
     private Set<UserItemRating> ratings;
 
-    @JsonBackReference
     @ManyToOne
+    @JoinColumn(name = "series")
     private Series series;
 
     public Set<Author> getAuthors() {
