@@ -1,0 +1,30 @@
+{
+  "name": "js",
+  "homepage": "https://github.com/SirKitboard/CSE308ProjectPlanning",
+  "description": "",
+  "main": "",
+  "moduleType": ["amd"],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "backbone": "^1.2.3",
+    "eventEmitter": "^4.3.0",
+    "flux": "^2.1.1",
+    "jsx-requirejs-plugin": "^0.6.2",
+    "jquery": "latest",
+    "react": "^0.14.7",
+    "requirejs": "latest",
+    "materialize": "latest",
+    "velocity": "latest",
+    "hammerjs": "latest",
+    "jquery-hammerjs": "latest"
+  }
+}

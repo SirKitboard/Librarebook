@@ -1,0 +1,32 @@
+.book {
+	background-color: white;
+	margin:10px 15px;
+	max-width: 250px;
+	position: relative;
+	text-align:left;
+
+	.cover {
+		width: 100%;
+		height: auto;
+	}
+
+	.title {
+		position: absolute;
+		font-size: 20px;
+		top: 210px;
+		color: white;
+		text-shadow: 1px 1px 6px #000000;
+	}
+	.details {
+		padding: 7px;
+		p {
+			margin-top: 5px;
+			margin-bottom: 5px;
+		}
+		.actions {
+			margin-top: 5px;
+			padding: 5px 0;
+			border-top: 1px rgba(0,0,0,0.2) solid;
+		}
+	}
+}

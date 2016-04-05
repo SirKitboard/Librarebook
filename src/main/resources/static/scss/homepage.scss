@@ -1,0 +1,60 @@
+@import "navbar.scss";
+@import "bookCarousel.scss";
+@import "book.scss";
+
+#content {
+	height:2000px;
+}
+
+.homepage-section {
+	height: 100vh;
+	width: 100vw;
+	margin:0;
+	padding:0;
+	position: relative;
+	.section-heading {
+		padding-top: 72px;
+		padding-left: 10px;
+		margin:0;
+		color:white;
+		text-shadow: 1px 1px 6px #000000;
+	}
+	&#section-login {
+		background: url('http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-332800.jpg');
+		background-size: cover;
+	}
+	&#section-popular {
+		background: url('http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-321572.jpg');
+		background-size: cover;
+	}
+	&#section-new {
+		background: url('http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-246627.jpg');
+		background-size: cover;
+	}
+	&#section-recommended	 {
+		background: url('http://placehold.it/1920x1080');
+		background-size: cover;
+	}
+	.books {
+		position: absolute;
+		bottom: 30px;
+		background-color: white;
+		left:50%;
+		transform: translate(-50%);
+		width: 940px;
+		@media screen and (max-width: 600px) {
+	        width: 95;
+	    }
+		@media screen and (max-width: 992px) {
+	        width: 90%;
+	    }
+	}
+
+	.login-buttons {
+		// display:inline;
+		position:absolute;
+		bottom: 60px;
+		width: 100%;
+		max-width: none;
+	}
+}

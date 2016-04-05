@@ -1,0 +1,129 @@
+//
+// Icon Font: eduenterprise
+//
+
+@font-face {
+  font-family: "eduenterprise";
+  src: font-url("eduenterprise_83df0f589ca4e01b4f64a0fe019c87a9.eot");
+  src: font-url("eduenterprise_83df0f589ca4e01b4f64a0fe019c87a9.eot?#iefix") format("embedded-opentype"),
+       font-url("eduenterprise_83df0f589ca4e01b4f64a0fe019c87a9.woff") format("woff"),
+       font-url("eduenterprise_83df0f589ca4e01b4f64a0fe019c87a9.ttf") format("truetype"),
+       font-url("eduenterprise_83df0f589ca4e01b4f64a0fe019c87a9.svg#eduenterprise") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "eduenterprise";
+    src: font-url("eduenterprise_83df0f589ca4e01b4f64a0fe019c87a9.svg#eduenterprise") format("svg");
+  }
+}
+
+[data-icon]:before { content: attr(data-icon); }
+
+[data-icon]:before,
+.icons8-0-percents:before,
+.icons8-100-percents:before,
+.icons8-activity-feed:before,
+.icons8-add-file:before,
+.icons8-add-file-2:before,
+.icons8-add-folder-filled:before,
+.icons8-add-list:before,
+.icons8-appointment-reminders:before,
+.icons8-cancel:before,
+.icons8-checkmark:before,
+.icons8-clock:before,
+.icons8-collapse-arrow:before,
+.icons8-comments:before,
+.icons8-create-new:before,
+.icons8-cut-filled:before,
+.icons8-delete:before,
+.icons8-delete-filled:before,
+.icons8-edit-property:before,
+.icons8-error:before,
+.icons8-expand-arrow:before,
+.icons8-expired:before,
+.icons8-folder:before,
+.icons8-good-quality-filled:before,
+.icons8-help:before,
+.icons8-idea:before,
+.icons8-info:before,
+.icons8-like:before,
+.icons8-like-filled:before,
+.icons8-lock:before,
+.icons8-menu:before,
+.icons8-menu-2:before,
+.icons8-minus-math:before,
+.icons8-multiply:before,
+.icons8-next:before,
+.icons8-no-reminders:before,
+.icons8-paste-filled:before,
+.icons8-pencil:before,
+.icons8-plus-math:before,
+.icons8-previous:before,
+.icons8-report-card:before,
+.icons8-search:before,
+.icons8-search-property:before,
+.icons8-settings:before,
+.icons8-tag:before,
+.icons8-user-group:before {
+  display: inline-block;
+  font-family: "eduenterprise";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+
+.icons8-0-percents:before { content: "\f100"; }
+.icons8-100-percents:before { content: "\f101"; }
+.icons8-activity-feed:before { content: "\f102"; }
+.icons8-add-file:before { content: "\f103"; }
+.icons8-add-file-2:before { content: "\f104"; }
+.icons8-add-folder-filled:before { content: "\f105"; }
+.icons8-add-list:before { content: "\f106"; }
+.icons8-appointment-reminders:before { content: "\f107"; }
+.icons8-cancel:before { content: "\f108"; }
+.icons8-checkmark:before { content: "\f109"; }
+.icons8-clock:before { content: "\f10a"; }
+.icons8-collapse-arrow:before { content: "\f10b"; }
+.icons8-comments:before { content: "\f10c"; }
+.icons8-create-new:before { content: "\f10d"; }
+.icons8-cut-filled:before { content: "\f10e"; }
+.icons8-delete:before { content: "\f10f"; }
+.icons8-delete-filled:before { content: "\f110"; }
+.icons8-edit-property:before { content: "\f111"; }
+.icons8-error:before { content: "\f112"; }
+.icons8-expand-arrow:before { content: "\f113"; }
+.icons8-expired:before { content: "\f114"; }
+.icons8-folder:before { content: "\f115"; }
+.icons8-good-quality-filled:before { content: "\f116"; }
+.icons8-help:before { content: "\f117"; }
+.icons8-idea:before { content: "\f118"; }
+.icons8-info:before { content: "\f119"; }
+.icons8-like:before { content: "\f11a"; }
+.icons8-like-filled:before { content: "\f11b"; }
+.icons8-lock:before { content: "\f11c"; }
+.icons8-menu:before { content: "\f11d"; }
+.icons8-menu-2:before { content: "\f11e"; }
+.icons8-minus-math:before { content: "\f11f"; }
+.icons8-multiply:before { content: "\f120"; }
+.icons8-next:before { content: "\f121"; }
+.icons8-no-reminders:before { content: "\f122"; }
+.icons8-paste-filled:before { content: "\f123"; }
+.icons8-pencil:before { content: "\f124"; }
+.icons8-plus-math:before { content: "\f125"; }
+.icons8-previous:before { content: "\f126"; }
+.icons8-report-card:before { content: "\f127"; }
+.icons8-search:before { content: "\f128"; }
+.icons8-search-property:before { content: "\f129"; }
+.icons8-settings:before { content: "\f12a"; }
+.icons8-tag:before { content: "\f12b"; }
+.icons8-user-group:before { content: "\f12c"; }
