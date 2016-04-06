@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/css/homepage.css" />
     <script th:inline="javascript">
         /*[+
-        window.currentUser = [[${user}]];
+        window.currentUser = JSON.parse([[${user}]]);
         +]*/
         console.log(window.currentUser);
     </script>

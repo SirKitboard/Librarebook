@@ -1,5 +1,7 @@
 package com.notdecaf.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.notdecaf.models.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,15 +15,19 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class ViewController {
 
-    public User getLoggedInUser(HttpServletRequest req) {
+    public String getLoggedInUser(HttpServletRequest req) {
         User user = (User) req.getSession().getAttribute("user");
 
-        //Dont question it
-        if(user != null) {
-            user = user.clone();
+        String userJSON = null;
+        if (user != null) {
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                userJSON = mapper.writeValueAsString(user);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         }
-        
-        return user;
+        return userJSON;
     }
 
     @RequestMapping(value="/")
