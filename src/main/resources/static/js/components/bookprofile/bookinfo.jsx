@@ -4,8 +4,19 @@ define([
 ], function(_, React) {
     return React.createClass({
         getInitialState: function(){
+            var liked = false;
+            var self = this;
+            $.ajax({
+                url: "/api/items/"+window.bookID+"/getfavorite",
+                method: "POST",
+                success: function (response) {
+                    self.setState({
+                        liked: response.favorited
+                    })
+                }
+            });
             return {
-                liked: false
+                'liked': liked
             }
         },
         toggleLike : function() {
@@ -21,7 +32,22 @@ define([
                 }
             })
         },
+        checkout: function() {
+
+        },
         render: function() {
+            var authors = this.props.book.authors;
+            var authorText = "";
+            if (authors) {
+                for (i=0; i<authors.length; i++) {
+                    if (i + 1 < authors.length) {
+                        authorText += authors[i].firstName + " " + authors[i].lastName + ", ";
+                    } else {
+                        authorText += authors[i].firstName + " " + authors[i].lastName;
+                    }
+                }
+            }
+
             var available = this.props.book.availableLicenses;
             if (available > 0) {
                 var card =
@@ -50,7 +76,7 @@ define([
             return (
                 <div id="bookInfo">
                     <h2> {this.props.book.title} </h2>
-                    <h5>by {this.props.book.author}</h5>
+                    <h5>by {authorText}</h5>
                     {this.state.liked ? <span style={likeStyle} onClick={this.toggleLike} className="icons8-like-filled"/> : <span style={likeStyle} onClick={this.toggleLike} className="icons8-like"/> }
                     {card}
                     <p>ISBN: {this.props.book.isbn}</p>
@@ -72,6 +98,7 @@ define([
                         <p className="left-align">Rating</p><p className="right-align"></p>
                     </span>
                     <button className= {"btn-large right " + disabled} id="addToCart">Add to cart</button>
+                    <button className= {"btn-large right " + disabled} id="addToCart" onClick={this.checkout()}>Checkout</button>
                 </div>
             )
         }

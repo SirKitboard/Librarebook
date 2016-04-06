@@ -165,4 +165,24 @@ public class ItemController {
     public ResponseEntity createGenre(HttpServletRequest req) {
         return null;
     }
+
+    @RequestMapping(value = "/api/items/{id}/getfavorite", method = RequestMethod.POST)
+    public ResponseEntity getFavorite(HttpServletRequest req, @PathVariable long id) {
+        User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        Item item = ItemFactory.getItemFromCache(id);
+        if(item == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        HashMap<String, Boolean> returnMap = new HashMap<>();
+        Set<Item> favorites = user.getFavorites();
+        if (SetHelper.search(favorites, item)) {
+            returnMap.put("favorited", true);
+        } else {
+            returnMap.put("favorited", false);
+        }
+        return ResponseEntity.ok(returnMap);
+    }
 }
