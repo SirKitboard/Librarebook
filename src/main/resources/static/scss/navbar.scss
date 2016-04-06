@@ -19,7 +19,7 @@ $tloa-yellow: #FFB74D;
 }
 
 .nav-wrapper-outer {
-     z-index: 10000000;
+     z-index: 1005;
     position:fixed;
     top:0px;
     left:0px;
@@ -97,7 +97,7 @@ $tloa-yellow: #FFB74D;
 }
 
 #cart {
-    z-index: 10;
+    z-index: 1006;
     background: white;
     position: fixed;
     top:0;
@@ -130,7 +130,7 @@ $tloa-yellow: #FFB74D;
 
 #dark-cover {
     display: none;
-    z-index: 10;
+    z-index: 1006;
     position: fixed;
     top:0;
     left:0;

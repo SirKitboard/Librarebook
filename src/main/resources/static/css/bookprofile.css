@@ -11,6 +11,7 @@ html, body {
   position: static; }
 
 .nav-wrapper-outer {
+  z-index: 1005;
   position: fixed;
   top: 0px;
   left: 0px;
@@ -59,7 +60,7 @@ html, body {
     height: 100%; }
 
 #cart {
-  z-index: 10;
+  z-index: 1006;
   background: white;
   position: fixed;
   top: 0;
@@ -85,7 +86,7 @@ html, body {
 
 #dark-cover {
   display: none;
-  z-index: 10;
+  z-index: 1006;
   position: fixed;
   top: 0;
   left: 0;
