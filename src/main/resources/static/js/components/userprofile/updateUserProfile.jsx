@@ -1,16 +1,48 @@
-
 define([
-    '../../bower_components/underscore/underscore',
-    'react'
-], function(_, React) {
+    'underscore',
+    'react',
+    'react-dom'
+], function(_, React, ReactDOM) {
     return React.createClass({
         componentDidMount: function() {
-            $('ul.tabs').tabs();
         },
+        handleUpdate: function() {
+            var self = this;
+            var firstName = ReactDOM.findDOMNode(this.refs.first_name).value;
+            var lastName = ReactDOM.findDOMNode(this.refs.last_name).value;
+            var email = ReactDOM.findDOMNode(this.refs.email).value;
+            var phone = ReactDOM.findDOMNode(this.refs.phone).value;
+            if(phone && phone != "") {
+                if (!phone.match(/\+[0-9]{1,3}\([0-9]{3}\)[0-9]{3}-[0-9]{4}/g)) {
+                    $("#phone").addClass("invalid");
+                    return;
+                }
+            }
 
+            $.ajax({
+                url:"/api/users/"+window.currentUser.id,
+                method: "PUT",
+                data: {
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    phoneNumber: phone
+                },
+                success : function(response) {
+                    window.currentUser.firstName = firstName
+                    window.currentUser.lastName = lastName
+                    window.currentUser.email = email
+                    window.currentUser.phoneNumber = phone
+                    self.props.onCloseEditModal();
+                }
+            })
+        },
+        onPhoneChange: function() {
+            $("#phone").removeClass("invalid");
+        },
         render: function() {
             return (
-                <div className="edit-user">
+                <div id="modalEditUser" className="modal edit-user">
                     <div className="modal-content">
                         <div className="row">
                             <h4>Update profile</h4>
@@ -38,8 +70,8 @@ define([
                         </div>
                         <div className="row">
                             <div className="input-field col s12">
-                                <input ref="phone" id="phone" type="tel" className="validate" defaultValue={window.currentUser.phone}/>
-                                <label className="active" htmlFor="phone">Phone</label>
+                                <input ref="phone" id="phone" type="tel" className="validate" defaultValue={window.currentUser.phoneNumber} onChange={this.onPhoneChange}/>
+                                <label data-error="Invalid format, please use +x(xxx)xxx-xxxx" className="active" htmlFor="phone">Phone</label>
                             </div>
                         </div>
                         <button onClick={this.handleUpdate} className="btn waves-effect waves-light button-right"
@@ -47,9 +79,7 @@ define([
                             <span>Submit</span>
                             <i className="material-icons right">send</i>
                         </button>
-
                     </div>
-
                 </div>
             )
         }

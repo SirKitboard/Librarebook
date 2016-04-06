@@ -31,7 +31,9 @@ define([
             if(this.state.loggedIn) {
                 ReactDOM.render(shoppingCart, document.getElementById('cart'))
             }
-            $(".modal-trigger").leanModal();
+            setTimeout(function() {
+                $(".modal-trigger").leanModal();
+            }, 300);
             $(document).ready(function(){
               $('ul.tabs').tabs();
             });

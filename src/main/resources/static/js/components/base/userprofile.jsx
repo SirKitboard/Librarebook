@@ -15,64 +15,52 @@ define([
             books = [book, book, book, book, book, book]
             return {
                 books: books
-
             }
         },
         componentDidMount : function() {
             var self = this;
-            $.ajax({
-                url:"/api/users/"+window.userID,
-                method:"GET",
-                success : function(response) {
-                    self.setState({
-                        'user' : response
-                    });
-                }
-            })
         },
-
+        editingComplete : function() {
+            $("#modalEditUser").closeModal();
+            this.forceUpdate();
+        },
         render: function() {
-        var profileInfo = "";
-        var imageURL = "http://placehold.it/200x200"
+            var profileInfo = "";
+            var imageURL = "http://placehold.it/200x200"
 
-        profileInfo = (
-                    <div className="profile-and-stats row">
-                        <div className="col s12 m6 row profile">
+            profileInfo = (
+                <div className="profile-and-stats row">
+                    <div className="col s12 m6 row profile">
 
-                            <div className="col s8 greeting">
-                            <h3>firstName lastName</h3>
-                            <img className="activator" src = {imageURL}/>
-                                <div className="button-rating">
-                                    <span className="amber-text text-lighten-2 rating">
-                                         <i className="material-icons">star</i>
-                                    </span>
+                        <div className="col s8 greeting">
+                        <h3>{window.currentUser.firstName} {window.currentUser.lastName}</h3>
+                        <img className="activator" src = {imageURL}/>
+                            <div className="button-rating">
+                                <span className="amber-text text-lighten-2 rating">
+                                     <i className="material-icons">star</i>
+                                </span>
 
-                                    <div>
+                                <div>
 
-                                        <!-- Add button here?
-
-                                        <div className="col l8">
-                                            <UpdateUserProfile id="updateUserProfile"/>
-                                        </div>
-
-                                        -->
+                                    <a href="#modalEditUser" className="modal-trigger waves-effect waves-light btn">Update Profile</a>
+                                    <br/>
                                     <a className="waves-effect waves-light btn">Search Preferences</a>
-                                    </div>
-
                                 </div>
+
                             </div>
                         </div>
-                        <div className="col s12 m6 right-align">
-                            <h5>Stats</h5>
-                            You Borrowed <span className="bold green-text"></span><br/>
-                            You Reviewed <span className="bold green-text"></span><br/>
-                            You Currently Checked Out <span className="bold green-text"></span><br/>
-
-                        </div>
                     </div>
-                )
+                    <div className="col s12 m6 right-align">
+                        <h5>Stats</h5>
+                        You Borrowed <span className="bold green-text"></span><br/>
+                        You Reviewed <span className="bold green-text"></span><br/>
+                        You Currently Checked Out <span className="bold green-text"></span><br/>
 
-        return (
+                    </div>
+                </div>
+            );
+
+            return (
                 <div className="container" style={{width:'90%', maxWidth:'none'}}>
                     <div className="profile-card z-depth-1">
                         {profileInfo}
@@ -91,12 +79,16 @@ define([
                           <div className="collapsible-header"><i className="material-icons">library_books</i>Books you are currently enjoying</div>
                           <div className="collapsible-body"><BookCarousel books={this.state.books}/></div>
                         </li>
+                         <li>
+                             <div className="collapsible-header"><i className="material-icons">library_books</i>Books you've favorited</div>
+                             <div className="collapsible-body"><BookCarousel books={this.state.books}/></div>
+                         </li>
                     </ul>
                     <div className="fixed-action-btn">
-                       <a className="btn-floating btn-large red modal-trigger" href="#confirmationModal">
-                         <i className="large material-icons">not_interested</i>
-                       </a>
-                     </div>
+                        <a className="btn-floating btn-large red modal-trigger" href="#confirmationModal">
+                            <i className="large material-icons">not_interested</i>
+                        </a>
+                    </div>
                      <div id="confirmationModal" className="modal">
                          <div className="modal-content container">
                             <div className="col s12">
@@ -116,6 +108,7 @@ define([
                              </div>
                          </div>
                      </div>
+                    <UpdateUserProfile onCloseEditModal={this.editingComplete} user={window.currentUser}/>
                 </div>
             );
         }

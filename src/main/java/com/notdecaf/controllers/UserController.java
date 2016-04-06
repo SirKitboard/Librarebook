@@ -140,6 +140,9 @@ public class UserController implements BaseController<User> {
                 user.setAddress(address);
             }
             userDao.save(user);
+            if(((User)request.getSession().getAttribute("user")).getId() == user.getId()) {
+                request.getSession().setAttribute("user", user);
+            }
         }
         return ResponseEntity.ok(user);
     }
