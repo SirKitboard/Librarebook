@@ -36,6 +36,19 @@ define([
                                     <span className="amber-text text-lighten-2 rating">
                                          <i className="material-icons">star</i>
                                     </span>
+
+                                    <a className="waves-effect waves-light btn modal-trigger" href="#updateSettingsModal">Settings</a>
+                                    <div id="updateSettingsModal" className="modal">
+                                        <div className="modal-content">
+                                            <h4>Modal Header</h4>
+                                            <p>A bunch of text</p>
+                                        </div>
+                                        <div className="modal-footer">
+                                            <a href="#!" className=" modal-action modal-close waves-effect waves-green btn-flat">Update</a>
+                                        </div>
+                                    </div>
+
+
                                 </div>
                             </div>
                         </div>
