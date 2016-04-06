@@ -200,6 +200,10 @@ html, body {
 #addToCart {
   margin-top: 80px; }
 
+#instantCheckout {
+  margin-top: 80px;
+  margin-right: 10px; }
+
 #bookAvailable {
   margin-top: 50px;
   margin-bottom: 50px;

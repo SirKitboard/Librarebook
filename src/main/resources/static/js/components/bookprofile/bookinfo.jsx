@@ -6,7 +6,10 @@ define([
         getInitialState: function(){
             var liked = false;
             var self = this;
-            var loggedIn = false
+            var loggedIn = false;
+            if (window.currentUser) {
+                loggedIn = true;
+            }
             $.ajax({
                 url: "/api/items/"+window.bookID+"/getfavorite",
                 method: "POST",
@@ -35,8 +38,9 @@ define([
             })
         },
 
-        checkout: function() {},
-
+        checkout: function() {
+            
+        },
         editModal : function() {
             var book = this.props.book;
             this.setState({ showModal : true});
@@ -87,7 +91,7 @@ define([
                 <div id="bookInfo">
                     <h2> {this.props.book.title} </h2>
 
-                    <h5>by {this.props.book.author}</h5>
+                    <h5>by {authorText}</h5>
                     <div className="row">
                         {this.state.liked ? <span style={likeStyle} onClick={this.toggleLike} className="icons8-like-filled"/> : <span style={likeStyle} onClick={this.toggleLike} className="icons8-like"/> }
                         {card}
@@ -112,7 +116,7 @@ define([
                         <p className="left-align">Rating</p><p className="right-align"></p>
                     </span>
                     <button className= {"btn-large right " + disabled} id="addToCart">Add to cart</button>
-                    <button className= {"btn-large right " + disabled} id="addToCart" onClick={this.checkout()}>Checkout</button>
+                    <button className= {"btn-large right " + disabled} id="instantCheckout" onClick={this.checkout()}>Checkout</button>
                 </div>
             )
         }
