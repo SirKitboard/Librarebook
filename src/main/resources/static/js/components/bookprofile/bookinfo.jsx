@@ -6,6 +6,7 @@ define([
         getInitialState: function(){
             var liked = false;
             var self = this;
+            var loggedIn = false
             $.ajax({
                 url: "/api/items/"+window.bookID+"/getfavorite",
                 method: "POST",
@@ -15,8 +16,14 @@ define([
                     })
                 }
             });
+
+            if(window.currentUser)
+            {
+                loggedIn = true;
+            }
             return {
-                'liked': liked
+                'liked': liked,
+                'loggedIn' : loggedIn
             }
         },
         toggleLike : function() {
@@ -32,8 +39,12 @@ define([
                 }
             })
         },
-        checkout: function() {
 
+        checkout: function() {},
+
+        editModal : function() {
+            var book = this.props.book;
+            this.setState({ showModal : true});
         },
         render: function() {
             var authors = this.props.book.authors;
@@ -51,21 +62,21 @@ define([
             var available = this.props.book.availableLicenses;
             if (available > 0) {
                 var card =
-                (<div className="card green" id="bookAvailable">
-                    <div className="card-content white-text">
-                      <p className="center-align">Available</p>
-                    </div>
-                </div>)
+                    (<div className="card green" id="bookAvailable">
+                        <div className="card-content white-text">
+                            <p className="center-align">Available</p>
+                        </div>
+                    </div>)
                 var disabled = ""
             } else {
-                  var card =
-                  (<div className="card red z-depth-1" id="bookAvailable">
-                      <div className="card-content white-text">
-                        <p className="center-align">Unavailable</p>
-                      </div>
-                  </div>)
+                var card =
+                    (<div className="card red z-depth-1" id="bookAvailable">
+                        <div className="card-content white-text">
+                            <p className="center-align">Unavailable</p>
+                        </div>
+                    </div>)
 
-                  var disabled = "disabled"
+                var disabled = "disabled"
             }
 
             var likeStyle = {
@@ -73,12 +84,20 @@ define([
                 fontSize : '30px'
             }
 
+            var editStyle = {
+                fontSize : '30px',
+            }
+
             return (
                 <div id="bookInfo">
                     <h2> {this.props.book.title} </h2>
-                    <h5>by {authorText}</h5>
-                    {this.state.liked ? <span style={likeStyle} onClick={this.toggleLike} className="icons8-like-filled"/> : <span style={likeStyle} onClick={this.toggleLike} className="icons8-like"/> }
-                    {card}
+
+                    <h5>by {this.props.book.author}</h5>
+                    <div className="row">
+                        {this.state.liked ? <span style={likeStyle} onClick={this.toggleLike} className="icons8-like-filled"/> : <span style={likeStyle} onClick={this.toggleLike} className="icons8-like"/> }
+                        {card}
+                        {this.state.loggedIn ? <span style={editStyle} className="icons8-edit-property" onClick={this.editModal}/> : <span></span>}
+                    </div>
                     <p>ISBN: {this.props.book.isbn}</p>
                     <hr />
                     <p>Description</p>

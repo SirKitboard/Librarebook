@@ -134,12 +134,12 @@ define([
                                   <label htmlFor="genre_sci-fi">Science Fiction</label>
                                 </p>
                                 <p>
-                                  <input type="checkbox" id="genre_sci-fi"/>
-                                  <label htmlFor="genre_sci-fi">Mystery</label>
+                                  <input type="checkbox" id="genre_mystery"/>
+                                  <label htmlFor="genre_mystery">Mystery</label>
                                 </p>
                                 <p>
-                                  <input type="checkbox" id="genre_sci-fi"/>
-                                  <label htmlFor="genre_sci-fi">Romance</label>
+                                  <input type="checkbox" id="genre_romance"/>
+                                  <label htmlFor="genre_romance">Romance</label>
                                 </p>
 
                             </div>

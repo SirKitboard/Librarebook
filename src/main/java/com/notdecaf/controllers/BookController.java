@@ -1,7 +1,6 @@
 package com.notdecaf.controllers;
 
 import com.notdecaf.daos.AuthorDao;
-import com.notdecaf.daos.BookDao;
 import com.notdecaf.daos.GenreDao;
 import com.notdecaf.daos.PublisherDao;
 import com.notdecaf.helpers.BookFactory;
@@ -12,7 +11,6 @@ import com.notdecaf.models.Book;
 import com.notdecaf.models.Genre;
 import com.notdecaf.models.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -117,10 +115,80 @@ public class BookController implements BaseController<Book> {
         return ResponseEntity.ok(book);
     }
 
-    @RequestMapping(value = "/api/items/books/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/items/books/{id}/update", method = RequestMethod.POST)
     public ResponseEntity<Book> update(HttpServletRequest request, @PathVariable long id) {
-        // TODO: Implement Update
-        return null;
+        Book book = BookFactory.getBookFromCache(id);
+        if (book == null){
+            return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
+        }
+        if (request.getParameter("title") != null){
+            book.setTitle(request.getParameter("title"));
+        }
+        if (request.getParameter("genres") != null){
+            Set<Genre> genres = new HashSet<Genre>();
+            try {
+                Map<String, String[]> requestMap = request.getParameterMap();
+                String[] genreIDs = requestMap.get("genres");
+                for (String idstr : genreIDs) {
+                    long genreID = Long.parseLong(idstr);
+                    Genre genre = genreDao.findOne(genreID);
+                    if (genre == null) {
+                        throw new NumberFormatException();
+                    }
+                    genres.add(genre);
+                }
+            } catch (NumberFormatException e){
+                return ResponseEntity.badRequest().body(null);
+            }
+        }
+        if (request.getParameter("authors") != null){
+            Set<Author> authors = new HashSet<Author>();
+            try {
+                Map<String, String[]> requestMap = request.getParameterMap();
+                String[] authorIDs = requestMap.get("authors");
+                for (String idstr : authorIDs) {
+                    long authorID = Long.parseLong(idstr);
+                    Author author = authorDao.findOne(authorID);
+                    if (author == null) {
+                        throw new NumberFormatException();
+                    }
+                    authors.add(author);
+                }
+            } catch (NumberFormatException e){
+                return ResponseEntity.badRequest().body(null);
+            }
+        }
+        if (request.getParameter("publisher") != null){
+            try{
+                long publisherID = Long.parseLong(request.getParameter("publisher"));
+                Publisher publisher = publisherDao.findOne(publisherID);
+                if (publisher == null){
+                    throw new NumberFormatException();
+                }
+            } catch(NumberFormatException e){
+                return ResponseEntity.badRequest().body(null);
+            }
+        }
+        if (request.getParameter("description") != null){
+            book.setDescription(request.getParameter("description"));
+        }
+        if (request.getParameter("yearPublished") != null){
+            book.setYearPublished(Integer.parseInt(request.getParameter("yearPublished")));
+        }
+        if (request.getParameter("totalLicenses") != null){
+            book.setTotalLicenses(Integer.parseInt(request.getParameter("totalLicenses")));
+        }
+        if (request.getParameter("language") != null){
+            book.setLanguage(Language.valueOf(request.getParameter("language")));
+        }
+        if (request.getParameter("status") != null){
+            book.setStatus(ItemStatus.valueOf(request.getParameter("status")));
+        }
+        if (request.getParameter("numPages") != null){
+            book.setNumPages(Integer.parseInt(request.getParameter("numPages")));
+        }
+        BookFactory.save(book);
+        return ResponseEntity.ok(book);
     }
 
     @RequestMapping(value = "/api/items/books/{id}", method = RequestMethod.DELETE)
