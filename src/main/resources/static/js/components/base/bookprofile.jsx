@@ -3,9 +3,8 @@ define([
     'react',
     'jsx!components/bookprofile/bookinfo',
     'jsx!components/bookprofile/bookextras',
-    'jsx!components/bookprofile/bookrecommend',
     'jsx!components/template/editbookmodal'
-], function(_,React, BookInfoComponent, BookExtrasComponent, BookRecommendComponent, BookEditModal) {
+], function(_,React, BookInfoComponent, BookExtrasComponent, BookEditModal) {
     return React.createClass({
         getInitialState: function() {
             var loggedIn = false;
@@ -57,9 +56,6 @@ define([
                         <div className="col l8">
                             <BookExtrasComponent id="bookExtras"/>
                         </div>
-                    </div>
-                    <div className="row" id="bookProfileBottom">
-                        <BookRecommendComponent />
                     </div>
                     <BookEditModal book={this.state.book}/>
                 </div>

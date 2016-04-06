@@ -10,7 +10,7 @@ define([
              var book = {
                 title: null,
                 description: null,
-                author: null
+                authors : []
             }
             books = [book, book, book, book, book, book]
             return {
@@ -19,6 +19,7 @@ define([
         },
         componentDidMount : function() {
             var self = this;
+            $('.collapsible').collapsible({});
         },
         editingComplete : function() {
             $("#modalEditUser").closeModal();
@@ -81,7 +82,7 @@ define([
                         </li>
                          <li>
                              <div className="collapsible-header"><i className="material-icons">library_books</i>Books you've favorited</div>
-                             <div className="collapsible-body"><BookCarousel books={this.state.books}/></div>
+                             <div className="collapsible-body"><BookCarousel books={window.currentUser.favorites}/></div>
                          </li>
                     </ul>
                     <div className="fixed-action-btn">
