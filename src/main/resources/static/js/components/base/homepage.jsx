@@ -13,7 +13,7 @@ define([
             var book = {
                 title: null,
                 description: null,
-                author: null
+                authors: []
             }
             books = [book, book, book, book]
             return {
