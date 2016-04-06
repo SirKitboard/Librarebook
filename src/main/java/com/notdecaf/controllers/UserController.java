@@ -93,9 +93,8 @@ public class UserController implements BaseController<User> {
     }
 
     @Override
-    @RequestMapping(value = "/api/users/{id}/update", method=RequestMethod.POST)
+    @RequestMapping(value = "/api/users/{id}", method=RequestMethod.PUT)
     public ResponseEntity<User> update(HttpServletRequest request, @PathVariable long id) {
-        // TODO: Handle update
         User user = userDao.findOne(id);
         Address address = addressDao.findOne(user.getAddress().getId());
         Map<String, String[]> requestMap = request.getParameterMap();
@@ -146,7 +145,7 @@ public class UserController implements BaseController<User> {
     }
 
     @Override
-    @RequestMapping(value = "/api/users/{id}/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/users/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<User> delete(HttpServletRequest request, @PathVariable long id) {
         // TODO: Handle delete
         userDao.delete(id);

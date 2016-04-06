@@ -115,7 +115,7 @@ public class BookController implements BaseController<Book> {
         return ResponseEntity.ok(book);
     }
 
-    @RequestMapping(value = "/api/items/books/{id}/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/items/books/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Book> update(HttpServletRequest request, @PathVariable long id) {
         Book book = BookFactory.getBookFromCache(id);
         if (book == null){
