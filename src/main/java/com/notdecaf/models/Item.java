@@ -1,6 +1,8 @@
 package com.notdecaf.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.notdecaf.helpers.ItemStatus;
 import com.notdecaf.helpers.Language;
 import org.springframework.data.annotation.CreatedDate;
@@ -28,16 +30,15 @@ public abstract class Item extends IDModel{
     @NotNull
     private String title;
 
-    @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name="items_genres", joinColumns={@JoinColumn(referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(referencedColumnName = "id")})
     private Set<Genre> genres;
 
-    @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name="items_authors", joinColumns={@JoinColumn(referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(referencedColumnName = "id")})
     private Set<Author> authors;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "favorites")
     private Set<User> favoritedBy;
 

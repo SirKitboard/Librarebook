@@ -1,5 +1,7 @@
 package com.notdecaf.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -20,6 +22,7 @@ public class Genre {
     @NotNull
     private String name;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "genres")
     private Set<Item> items;
 

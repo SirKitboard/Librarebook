@@ -1,5 +1,8 @@
 package com.notdecaf.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -36,6 +39,7 @@ public class Author {
         this.biography = biography;
     }
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "authors")
     private Set<Item> items;
 
