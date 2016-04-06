@@ -15,7 +15,7 @@ import java.util.Set;
 @DiscriminatorValue("user")
 @Table(name = "users")
 
-public class User extends IDModel{
+public class User extends IDModel implements Cloneable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -89,6 +89,15 @@ public class User extends IDModel{
         this.email = email;
         this.gender = gender;
         this.hashedPassword = PasswordStorage.createHash(password).getBytes();
+        this.address = address;
+    }
+
+    public User(String firstName, String lastName, Date dob, String email, String gender, Address address) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dob = dob;
+        this.email = email;
+        this.gender = gender;
         this.address = address;
     }
 
@@ -279,5 +288,9 @@ public class User extends IDModel{
         return false;
     }
 
-
+    @Override
+    public User clone(){
+        User user = new User(this.getFirstName(), this.getLastName(), this.getDob(), this.getEmail(), this.getGender(), this.getAddress());
+        return user;
+    }
 }
