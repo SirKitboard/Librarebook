@@ -21,6 +21,14 @@ define([
             });
             $(".modal-trigger").leanModal();
         },
+
+        openUserEditor : function() {
+            $("#modalUpdate").openModal();
+        },
+        closeUserEditor : function() {
+            $("#modalUpdate").closeModal();
+        },
+
         render: function() {
         var profileInfo = "";
         var imageURL = "http://placehold.it/200x200"
@@ -37,17 +45,11 @@ define([
                                          <i className="material-icons">star</i>
                                     </span>
 
-                                    <a className="waves-effect waves-light btn modal-trigger" href="#updateSettingsModal">Settings</a>
-                                    <div id="updateSettingsModal" className="modal">
-                                        <div className="modal-content">
-                                            <h4>Modal Header</h4>
-                                            <p>A bunch of text</p>
-                                        </div>
-                                        <div className="modal-footer">
-                                            <a href="#!" className=" modal-action modal-close waves-effect waves-green btn-flat">Update</a>
-                                        </div>
+                                    <div>
+                                    <a className="modal-trigger waves-effect waves-light btn" onClick={this.openUserEditor}>Update Profile</a>
+                                    <br/>
+                                    <a className="waves-effect waves-light btn">Search Preferences</a>
                                     </div>
-
 
                                 </div>
                             </div>
