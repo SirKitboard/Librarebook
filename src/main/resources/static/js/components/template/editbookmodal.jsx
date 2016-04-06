@@ -7,17 +7,14 @@ define([
     return React.createClass({
         getInitialState: function() {
             return {
-                "book": {
-                    "title": "",
-                    "author": "",
-                    "isbn": 12345678910,
-                    "available": true,
-                    "year": 1994,
-                    "publisher": "John Doe"
-                }
+                "book": this.props.book
             }
         },
-
+        componentWillReceiveProps: function(nextProps) {
+            this.setState({
+                book: nextProps.book
+            })
+        },
         componentDidMount: function() {
             var self = this;
             $.ajax({
@@ -58,7 +55,7 @@ define([
                                         <input ref="title" id="title" type="text" className="validate"/>
                                         <label htmlFor="title">Title</label>
                                     </div>
-                                    <div class="input-field col s12">
+                                    <div className="input-field col s12">
                                         <select multiple ref="genres" id="genres">
                                             <option value="" disabled selected>Choose your option</option>
                                             <option value="genre_fiction">Fiction</option>
@@ -88,14 +85,14 @@ define([
                                 </div>
                                 <div className="row">
                                     <div className="input-field col s12">
-                                    <textarea ref="description" id="description" type="text" class="materialize-textarea"
+                                    <textarea ref="description" id="description" type="text" className="materialize-textarea"
                                               className="validate"/>
                                         <label htmlFor="description">Description</label>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="input-field col s12 m6">
-                                        <input ref="yearPublished" type="number" id="yearPushed" class="validate"/>
+                                        <input ref="yearPublished" type="number" id="yearPushed" className="validate"/>
                                         <label htmlFor="yearPublished">yearPublished</label>
                                     </div>
                                 </div>
@@ -122,7 +119,7 @@ define([
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <button onClick={this.saveChanges()} className="btn waves-effect waves-light" id='editChanges' type="submit" name="action">Edit
+                                    <button onClick={this.saveChanges} className="btn waves-effect waves-light" id='editChanges' type="submit" name="action">Edit
                                         <i className="material-icons right">send</i>
                                     </button>
                                     <button className="btn waves-effect waves-light modal-action modal-close">Close

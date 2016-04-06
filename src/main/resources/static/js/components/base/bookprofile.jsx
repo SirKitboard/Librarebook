@@ -3,10 +3,16 @@ define([
     'react',
     'jsx!components/bookprofile/bookinfo',
     'jsx!components/bookprofile/bookextras',
-    'jsx!components/bookprofile/bookrecommend'
-], function(_,React, BookInfoComponent, BookExtrasComponent, BookRecommendComponent) {
+    'jsx!components/bookprofile/bookrecommend',
+    'jsx!components/template/editbookmodal'
+], function(_,React, BookInfoComponent, BookExtrasComponent, BookRecommendComponent, BookEditModal) {
     return React.createClass({
         getInitialState: function() {
+            var loggedIn = false;
+            if(window.currentUser)
+            {
+                loggedIn = true;
+            }
             return {
                 "book": {
                     "title": "",
@@ -15,7 +21,16 @@ define([
                     "available": true,
                     "year": 1994,
                     "publisher": "John Doe"
-                }
+                },
+                loggedIn: loggedIn,
+                editing : false
+            }
+        },
+        toggleEditModal : function() {
+            if(this.state.editing) {
+                $("#modalEditBook").closeModal();
+            } else {
+                $("#modalEditBook").openModal();
             }
         },
         componentDidMount: function () {
@@ -24,20 +39,20 @@ define([
                 url:"/api/items/books/"+window.bookID,
                 method:"GET",
                 success : function(response) {
-                    // debugger;
                     self.setState({
                         'book' : response
                     });
-                    // debugger;
                 }
             })
+
+            $(".modal-trigger").leanModal();
         },
         render: function() {
             return (
                 <div id="profileContent">
                     <div className="row" id="bookProfileTop">
                         <div className="col l4">
-                            <BookInfoComponent book={this.state.book}/>
+                            <BookInfoComponent book={this.state.book} onEditClick={this.toggleEditModal} loggedIn={this.state.loggedIn}/>
                         </div>
                         <div className="col l8">
                             <BookExtrasComponent id="bookExtras"/>
@@ -46,6 +61,7 @@ define([
                     <div className="row" id="bookProfileBottom">
                         <BookRecommendComponent />
                     </div>
+                    <BookEditModal book={this.state.book}/>
                 </div>
             )
         }

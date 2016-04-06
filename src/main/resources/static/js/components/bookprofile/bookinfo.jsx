@@ -16,11 +16,6 @@ define([
                     })
                 }
             });
-
-            if(window.currentUser)
-            {
-                loggedIn = true;
-            }
             return {
                 'liked': liked,
                 'loggedIn' : loggedIn
@@ -96,7 +91,7 @@ define([
                     <div className="row">
                         {this.state.liked ? <span style={likeStyle} onClick={this.toggleLike} className="icons8-like-filled"/> : <span style={likeStyle} onClick={this.toggleLike} className="icons8-like"/> }
                         {card}
-                        {this.state.loggedIn ? <span style={editStyle} className="icons8-edit-property" onClick={this.editModal}/> : <span></span>}
+                        {this.props.loggedIn ? <a href="#modalEditBook" style={editStyle} className="modal-trigger icons8-edit-property" onClick={this.props.onEditClicked}/> : ""}
                     </div>
                     <p>ISBN: {this.props.book.isbn}</p>
                     <hr />
