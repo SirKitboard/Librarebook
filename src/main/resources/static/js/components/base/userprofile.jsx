@@ -1,10 +1,12 @@
 define([
     'underscore',
     'react',
-    'jsx!components/widgets/bookCarousel'
-], function(_, React,BookCarousel) {
+    'jsx!components/widgets/bookCarousel',
+    'jsx!components/userprofile/updateUserProfile'
+], function(_, React,BookCarousel,UpdateUserProfile) {
     return React.createClass({
         getInitialState : function() {
+
              var book = {
                 title: null,
                 description: null,
@@ -13,20 +15,20 @@ define([
             books = [book, book, book, book, book, book]
             return {
                 books: books
+
             }
         },
         componentDidMount : function() {
-            $('.collapsible').collapsible({
-              accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-            });
-            $(".modal-trigger").leanModal();
-        },
-
-        openUserEditor : function() {
-            $("#modalUpdate").openModal();
-        },
-        closeUserEditor : function() {
-            $("#modalUpdate").closeModal();
+            var self = this;
+            $.ajax({
+                url:"/api/users/"+window.userID,
+                method:"GET",
+                success : function(response) {
+                    self.setState({
+                        'user' : response
+                    });
+                }
+            })
         },
 
         render: function() {
@@ -46,8 +48,14 @@ define([
                                     </span>
 
                                     <div>
-                                    <a className="modal-trigger waves-effect waves-light btn" onClick={this.openUserEditor}>Update Profile</a>
-                                    <br/>
+
+                                        <!-- Add button here?
+
+                                        <div className="col l8">
+                                            <UpdateUserProfile id="updateUserProfile"/>
+                                        </div>
+
+                                        -->
                                     <a className="waves-effect waves-light btn">Search Preferences</a>
                                     </div>
 
