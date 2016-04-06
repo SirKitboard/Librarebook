@@ -8,15 +8,15 @@ define([
         getInitialState: function(){
             // debugger;
             var loggedIn = false
-            if(window.location.hash == '#loggedIn') {
-                loggedIn = true
+            if(window.currentUser) {
+                loggedIn = true;
             }
             var book = {
                 title: null,
                 description: null,
                 author: null
             }
-            books = [book, book, book, book]
+            books = [book, book, book, book];
             return {
                 'loggedIn': loggedIn,
                 'books': books,
@@ -36,16 +36,6 @@ define([
               $('ul.tabs').tabs();
             });
         },
-        toggleLogin : function() {
-            if(this.state.loggedIn) {
-                window.location.hash = "";
-                window.location.reload();
-            }
-            else {
-                window.location.hash = "loggedIn";
-                window.location.reload();
-            }
-        },
         showDetails : function() {
             this.setState({
                 showSearchDetails : true
@@ -56,6 +46,25 @@ define([
                 showSearchDetails : false
             });
             // $("#searchDetails").css('display', 'none')
+        },
+        login: function(e) {
+            var email = $(this.refs.emailLogin).val();
+            var password = $(this.refs.passwordLogin).val();
+            // debugger;
+            $.ajax({
+                url:"/api/login",
+                method: "POST",
+                data: {
+                    email: email,
+                    password: password
+                },
+                success: function(response) {
+                    window.location.reload();
+                },
+                error: function (xhr, status, response) {
+                    console.log('fail');
+                }
+            })
         },
         toggleCart : function() {
             if(this.state.cartOpen) {
@@ -157,13 +166,13 @@ define([
                 var navItems = (<ul id="dropdown1" className="dropdown-content">
                       <li><a href="userprofile.html">Profile</a></li>
                       <li><a href="#!">Account Settings</a></li>
-                      <li><a onClick={this.toggleLogin} href="#!">Logout</a></li>
+                      <li><a href="#modalLogin" className="modal-trigger">Logout</a></li>
                     </ul>)
                 var mobileItems = (
                     <ul className="side-nav" id="mobile-demo">
                         <li><a href="#!">Profile</a></li>
                         <li><a href="#!">Account Settings</a></li>
-                        <li><a onClick={this.toggleLogin}>Logout</a></li>
+                        <li><a href="#modalLogin" className="modal-trigger">Logout</a></li>
                     </ul>
                 )
             } else {
@@ -207,15 +216,15 @@ define([
                                     <h2 className="flow-text">Login</h2>
                                     <div className="row">
                                         <div className="input-field col s12">
-                                            <input id="username" type="text" className="validate"/>
-                                            <label htmlFor="username">User Name</label>
+                                            <input ref="emailLogin" id="email" type="text" className="validate"/>
+                                            <label htmlFor="email">Email</label>
                                         </div>
                                         <div className="input-field col s12">
-                                            <input id="password" type="password" className="validate" data-error="Invalid username or password"/>
+                                            <input ref="passwordLogin" id="password" type="password" className="validate" data-error="Invalid username or password"/>
                                             <label htmlFor="password">Password</label>
                                         </div>
                                         <div className="col s12 buttons">
-                                            <button onClick={this.toggleLogin} className="btn waves-effect waves-light" id='login' type="submit" name="action">Submit
+                                            <button onClick={this.login} className="btn waves-effect waves-light" id='login' type="submit" name="action">Submit
                                               <i className="material-icons right">send</i>
                                             </button>
                                             <button className="btn waves-effect waves-light modal-action modal-close">Close
@@ -269,7 +278,7 @@ define([
                                     </div>
                                     <div className="row">
                                         <div className="input-field col s12 m6">
-                                            <input ref="password" type="password" id="password" ref="password"/>
+                                            <input ref="password" type="password" id="password"/>
                                             <label htmlFor="password">Password</label>
                                         </div>
                                         <div className="input-field col s12 m6">
