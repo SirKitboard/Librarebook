@@ -93,15 +93,64 @@ public class UserController implements BaseController<User> {
     }
 
     @Override
-    public ResponseEntity<User> update(HttpServletRequest request, long id) {
+    @RequestMapping(value = "/api/users/{id}/update", method=RequestMethod.POST)
+    public ResponseEntity<User> update(HttpServletRequest request, @PathVariable long id) {
         // TODO: Handle update
-        return null;
+        User user = userDao.findOne(id);
+        Address address = addressDao.findOne(user.getAddress().getId());
+        Map<String, String[]> requestMap = request.getParameterMap();
+        boolean addressChanged = false;
+        if (!requestMap.isEmpty()) {
+            if (requestMap.containsKey("firstName")) {
+                user.setFirstName(request.getParameter("firstName"));
+            }
+            if (requestMap.containsKey("lastName")) {
+                user.setLastName(request.getParameter("lastName"));
+            }
+            if (requestMap.containsKey("email")) {
+                user.setEmail(request.getParameter("email"));
+            }
+            if (requestMap.containsKey("phoneNumber")) {
+                user.setPhoneNumber(request.getParameter("phoneNumber"));
+            }
+            if (requestMap.containsKey("gender")) {
+                user.setGender(request.getParameter("gender"));
+            }
+            if (requestMap.containsKey("dob")) {
+                Date newDate = new Date(request.getParameter("dob"));
+                user.setDob(newDate);
+            }
+            if (requestMap.containsKey("addressLine1")) {
+                address.setLine1(request.getParameter("addressLine1"));
+                addressChanged = true;
+            }
+            if (requestMap.containsKey("city")) {
+                address.setLine1(request.getParameter("city"));
+                addressChanged = true;
+            }
+            if (requestMap.containsKey("state")) {
+                address.setLine1(request.getParameter("addressLine1"));
+                addressChanged = true;
+            }
+            if (requestMap.containsKey("addressLine1")) {
+                address.setLine1(request.getParameter("addressLine1"));
+                addressChanged = true;
+            }
+            if (addressChanged) {
+                addressDao.save(address);
+                user.setAddress(address);
+            }
+            userDao.save(user);
+        }
+        return ResponseEntity.ok(user);
     }
 
     @Override
-    public ResponseEntity delete(HttpServletRequest request, long id) {
+    @RequestMapping(value = "/api/users/{id}/delete", method = RequestMethod.POST)
+    public ResponseEntity<User> delete(HttpServletRequest request, @PathVariable long id) {
         // TODO: Handle delete
-        return null;
+        userDao.delete(id);
+        return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "/api/users/{id}/reviews", method = RequestMethod.GET)

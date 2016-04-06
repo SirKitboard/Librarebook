@@ -161,4 +161,8 @@ public class ItemController {
         userDao.save(user);
         return ResponseEntity.ok(returnMap);
     }
+
+    public ResponseEntity createGenre(HttpServletRequest req) {
+        return null;
+    }
 }
