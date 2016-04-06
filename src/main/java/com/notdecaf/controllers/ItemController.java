@@ -114,7 +114,7 @@ public class ItemController {
         if(item == null) {
             return ResponseEntity.badRequest().body(null);
         }
-        Set<Item> favorites = user.getWishlist();
+        Set<Item> favorites = user.getFavorites();
         HashMap<String, Boolean> returnMap = new HashMap<>();
         if(SetHelper.search(favorites, item)) {
             favorites = SetHelper.remove(favorites, item);
@@ -127,7 +127,7 @@ public class ItemController {
                 booksNotInterested = SetHelper.remove(booksNotInterested, item);
             }
         }
-        user.setWishlist(favorites);
+        user.setFavorites(favorites);
         userDao.save(user);
         return ResponseEntity.ok(returnMap);
     }

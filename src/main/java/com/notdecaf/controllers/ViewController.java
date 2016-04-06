@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.notdecaf.models.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,8 +45,9 @@ public class ViewController {
         return "admindashboard";
     }
 
-    @RequestMapping(value="/bookprofile")
-    public String bookProfile(Model model, HttpServletRequest req) {
+    @RequestMapping(value="/bookprofile{id}")
+    public String bookProfile(Model model, @PathVariable long id, HttpServletRequest req) {
+        model.addAttribute("bookID", id);
         model.addAttribute("user", this.getLoggedInUser(req));
         return "bookprofile";
     }

@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" href="js/bower_components/materialize/dist/css/materialize.css" />
+    <link rel="stylesheet" href="/js/bower_components/materialize/dist/css/materialize.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
     <link rel="stylesheet" href="css/bookprofile.css" />
     <link rel="stylesheet" href="css/icons.css" />
     <script th:inline="javascript">
         /*[+
+         window.bookID = [[${bookID}]];
          window.currentUser = JSON.parse([[${user}]]);
          +]*/
     </script>
@@ -20,9 +21,9 @@
     <div id="dark-cover"></div>
     <div id='cart' class="z-depth-2"></div>
 
-    <script src="js/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/js/bower_components/jquery/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
-    <script src="js/bower_components/requirejs/require.js"></script>
+    <script src="/js/bower_components/requirejs/require.js"></script>
     <script type="text/javascript">
         require(['js/config'], function() {
             require(['init_navbar', 'init_bookprofile']);

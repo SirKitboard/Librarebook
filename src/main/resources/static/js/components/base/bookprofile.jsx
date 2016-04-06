@@ -9,8 +9,8 @@ define([
         getInitialState: function() {
             return {
                 "book": {
-                    "title": "Hello World",
-                    "author": "John Smith",
+                    "title": "",
+                    "author": "",
                     "isbn": 12345678910,
                     "available": true,
                     "year": 1994,
@@ -18,7 +18,20 @@ define([
                 }
             }
         },
-
+        componentDidMount: function () {
+            var self = this;
+            $.ajax({
+                url:"/api/items/books/"+window.bookID,
+                method:"GET",
+                success : function(response) {
+                    // debugger;
+                    self.setState({
+                        'book' : response
+                    });
+                    // debugger;
+                }
+            })
+        },
         render: function() {
             return (
                 <div id="profileContent">
