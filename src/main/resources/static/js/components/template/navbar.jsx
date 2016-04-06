@@ -66,6 +66,15 @@ define([
                 }
             })
         },
+        logout : function() {
+            $.ajax({
+                url:"/api/logout",
+                method: "POST",
+                success: function() {
+                    window.location.reload();
+                }
+            })
+        },
         toggleCart : function() {
             if(this.state.cartOpen) {
                 $("#cart").animate({
@@ -166,18 +175,18 @@ define([
                 var navItems = (<ul id="dropdown1" className="dropdown-content">
                       <li><a href="userprofile.html">Profile</a></li>
                       <li><a href="#!">Account Settings</a></li>
-                      <li><a href="#modalLogin" className="modal-trigger">Logout</a></li>
+                      <li><a onClick={this.logout} href="#">Logout</a></li>
                     </ul>)
                 var mobileItems = (
                     <ul className="side-nav" id="mobile-demo">
                         <li><a href="#!">Profile</a></li>
                         <li><a href="#!">Account Settings</a></li>
-                        <li><a href="#modalLogin" className="modal-trigger">Logout</a></li>
+                        <li><a onClick={this.logout} href="#">Logout</a></li>
                     </ul>
                 )
             } else {
                 var mobileItems = (<ul className="side-nav" id="mobile-demo">
-                        <li><a onClick={this.toggleLogin}>Login</a></li>
+                        <li><a href="#modalLogin" className="modal-trigger">Login</a></li>
                     </ul>
                 )
             }
