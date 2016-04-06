@@ -38,22 +38,27 @@ public class ViewController {
     }
 
     @RequestMapping(value="/admindashboard")
-    public String adminDashboard() {
+    public String adminDashboard(Model model, HttpServletRequest req) {
+        String user = this.getLoggedInUser(req);
+        model.addAttribute("user", this.getLoggedInUser(req));
         return "admindashboard";
     }
 
     @RequestMapping(value="/bookprofile")
-    public String bookProfile() {
+    public String bookProfile(Model model, HttpServletRequest req) {
+        model.addAttribute("user", this.getLoggedInUser(req));
         return "bookprofile";
     }
 
     @RequestMapping(value="/searchresults")
-    public String searchResults() {
+    public String searchResults(Model model, HttpServletRequest req) {
+        model.addAttribute("user", this.getLoggedInUser(req));
         return "searchresults";
     }
 
     @RequestMapping(value="/userprofile")
-    public String userProfile() {
+    public String userProfile(Model model, HttpServletRequest req) {
+        model.addAttribute("user", this.getLoggedInUser(req));
         return "userprofile";
     }
 }

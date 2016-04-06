@@ -15,7 +15,7 @@ define([
                 title: null,
                 description: null,
                 author: null
-            }
+            };
             books = [book, book, book, book];
             return {
                 'loggedIn': loggedIn,
