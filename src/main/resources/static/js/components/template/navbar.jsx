@@ -33,7 +33,7 @@ define([
             }
             $(".modal-trigger.login-modal").leanModal();
             $(document).ready(function(){
-              $('ul.tabs').tabs();
+              $('ul.tabs.login').tabs();
             });
         },
         showDetails : function() {
@@ -116,6 +116,11 @@ define([
                 view: 'home'
             })
         },
+        gotoAdminDashboard : function() {
+            this.props.setView({
+                view: 'adminDashboard'
+            });
+        },
         render: function() {
             var searchDetails = "";
             if(this.state.showSearchDetails) {
@@ -184,13 +189,13 @@ define([
             if(this.state.loggedIn) {
                 var navItems = (<ul id="dropdown1" className="dropdown-content">
                       <li><a onClick={this.gotoProfile} href="#">Profile</a></li>
-                      <li><a href="#!">Account Settings</a></li>
+                      <li><a onClick={this.gotoAdminDashboard} href="#!">Admin Dashboard</a></li>
                       <li><a onClick={this.logout} href="#">Logout</a></li>
                     </ul>)
                 var mobileItems = (
                     <ul className="side-nav" id="mobile-demo">
                         <li><a onClick={this.gotoProfile} href="#!">Profile</a></li>
-                        <li><a href="#!">Account Settings</a></li>
+                        <li><a onClick={this.gotoAdminDashboard} href="#!">Admin Dashboard</a></li>
                         <li><a onClick={this.logout} href="#">Logout</a></li>
                     </ul>
                 )
@@ -200,10 +205,16 @@ define([
                     </ul>
                 )
             }
+            var style = {};
+            if(this.props.showShadow == false) {
+                style = {
+                    'boxShadow': 'none'
+                }
+            }
             return(
                 <div className="nav-wrapper-outer">
                     {navItems}
-                    <nav>
+                    <nav style={style}>
                     <div className="white blue-grey-text text-darken-1 nav-wrapper">
                         <a href="#" onClick={this.gotoHome} className="left blue-grey-text text-darken-1 brand-logo hide-on-med-and-down">Logo</a>
                         <a href="#" data-activates="mobile-demo" className="blue-grey-text text-darken-1 button-collapse"><i className="material-icons">menu</i></a>
@@ -226,7 +237,7 @@ define([
                         <div className="modal-content container login">
                             <div className="row">
                                 <div className="col s12">
-                                    <ul className="tabs">
+                                    <ul className="tabs login">
                                         <li className="tab col s6"><a href="#loginTab">Login</a></li>
                                         <li className="tab col s6"><a href="#signupTab">Signup</a></li>
                                     </ul>

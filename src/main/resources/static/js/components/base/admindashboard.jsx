@@ -8,9 +8,19 @@ define([
 ], function(_,React, ReportsTab, BooksTab, UsersTab, PublishersTab) { //, BookInfoComponent, BookExtrasComponent, BookRecommendComponent) {
     return React.createClass({
         getInitialState: function() {
-            return {
-                selectedTab : 0
+            var tab = 0;
+            if(this.props.view.selectedTab) {
+                tab = this.props.view.selectedTab
             }
+            return {
+                selectedTab : tab
+            }
+        },
+        componentDidMount: function() {
+            $("#adminTabsIndicator").animate({
+                left: $("#adminTabs li.tab")[0].offsetWidth * this.state.selectedTab,
+                width: $("#adminTabs li.tab")[0].offsetWidth - 10
+            }, 300);
         },
         switchTab : function(e) {
             var target = e.target;
@@ -28,6 +38,10 @@ define([
                 left: position.left,
                 width: width - 5
             }, 300);
+            this.props.setView({
+                view : 'adminDashboard',
+                selectedTab : index
+            })
         },
         render: function() {
             var tab = null;
@@ -46,7 +60,7 @@ define([
                     break;
             }
             return (
-                <div id="adminPanel">
+                <div id="adminPanel" className="padNav">
                     <div className="white row z-depth-1">
                         <div className="col s12" id="adminTabs">
                           <ul className="tabs">

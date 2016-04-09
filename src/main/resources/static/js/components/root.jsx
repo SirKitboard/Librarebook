@@ -5,8 +5,9 @@ define([
     'jsx!components/base/homepage',
     'jsx!components/base/bookprofile',
     'jsx!components/base/searchresults',
-    'jsx!components/base/userprofile'
-], function(_,React, NavbarCompnent, HomepageComponent, BookprofileComponent, SearchResultsComponent, UserProfileComponent) {
+    'jsx!components/base/userprofile',
+    'jsx!components/base/admindashboard'
+], function(_,React, NavbarCompnent, HomepageComponent, BookprofileComponent, SearchResultsComponent, UserProfileComponent, AdminDashboardComponent) {
     return React.createClass({
         getInitialState: function () {
             var URLHash = window.location.hash.substring(1);
@@ -39,19 +40,23 @@ define([
         },
         render : function() {
             var componentRendered;
+            var showNavShadow = true;
             switch(this.state.view.view) {
                 case 'home':
-                    componentRendered = <HomepageComponent view={this.state.view}/>
+                    componentRendered = <HomepageComponent setView={this.setView} view={this.state.view}/>
                     break;
                 case 'profile':
-                    componentRendered = <UserProfileComponent view={this.state.view}/>
+                    componentRendered = <UserProfileComponent setView={this.setView} view={this.state.view}/>
+                case 'adminDashboard':
+                    showNavShadow = false;
+                    componentRendered = <AdminDashboardComponent setView={this.setView} view={this.state.view}/>
             }
             return (
                 <div>
                     <div>
                         {componentRendered}
                     </div>
-                    <div id='navigation'><NavbarCompnent setView={this.setView}/></div>
+                    <div id='navigation'><NavbarCompnent showShadow={showNavShadow} setView={this.setView}/></div>
                     <div id="dark-cover"></div>
                     <div id='cart' className="z-depth-2"></div>
                 </div>

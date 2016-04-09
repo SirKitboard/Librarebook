@@ -63,7 +63,7 @@ define([
             );
 
             return (
-                <div className="container" style={{width:'90%', maxWidth:'none'}}>
+                <div className="container" style={{width:'90%', maxWidth:'none', marginTop: '80px'}}>
                     <div className="profile-card z-depth-1">
                         {profileInfo}
                     </div>
