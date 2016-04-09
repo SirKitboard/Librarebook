@@ -38,7 +38,7 @@ define([
                 height: '2000px'
             };
             return(
-                <div style={{style}}>
+                <div id="homepageComponent" style={{style}}>
                     {loginSection}
                     {popularSection}
                     {newReleasesSection}
