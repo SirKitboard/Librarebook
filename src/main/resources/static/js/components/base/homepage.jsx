@@ -34,8 +34,11 @@ define([
             var newReleasesSection = <Section books={this.state.popular} title='New Releases' id="new"/>;
 
             // var
+            var style = {
+                height: '2000px'
+            };
             return(
-                <div>
+                <div style={{style}}>
                     {loginSection}
                     {popularSection}
                     {newReleasesSection}
