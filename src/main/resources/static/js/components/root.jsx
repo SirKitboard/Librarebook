@@ -25,6 +25,11 @@ define([
                 view : view
             }
         },
+        setView: function(newView) {
+            this.setState({
+                view: newView
+            })
+        },
         setHash : function() {
             window.location.hash = JSON.stringify(this.state.view);
             window.location.reload();
@@ -36,14 +41,17 @@ define([
             var componentRendered;
             switch(this.state.view.view) {
                 case 'home':
-                    componentRendered = <HomepageComponent />
+                    componentRendered = <HomepageComponent view={this.state.view}/>
+                    break;
+                case 'profile':
+                    componentRendered = <UserProfileComponent view={this.state.view}/>
             }
             return (
                 <div>
                     <div>
                         {componentRendered}
                     </div>
-                    <div id='navigation'><NavbarCompnent /></div>
+                    <div id='navigation'><NavbarCompnent setView={this.setView}/></div>
                     <div id="dark-cover"></div>
                     <div id='cart' className="z-depth-2"></div>
                 </div>

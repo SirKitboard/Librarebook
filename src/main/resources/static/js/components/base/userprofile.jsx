@@ -20,6 +20,7 @@ define([
         componentDidMount : function() {
             var self = this;
             $('.collapsible').collapsible({});
+            $('.modal-trigger.profile-modal').leanModal();
         },
         editingComplete : function() {
             $("#modalEditUser").closeModal();
@@ -43,7 +44,7 @@ define([
 
                                 <div>
 
-                                    <a href="#modalEditUser" className="modal-trigger waves-effect waves-light btn">Update Profile</a>
+                                    <a href="#modalEditUser" className="modal-trigger profile-modal waves-effect waves-light btn">Update Profile</a>
                                     <br/>
                                     <a className="waves-effect waves-light btn">Search Preferences</a>
                                 </div>
@@ -86,7 +87,7 @@ define([
                          </li>
                     </ul>
                     <div className="fixed-action-btn">
-                        <a className="btn-floating btn-large red modal-trigger" href="#confirmationModal">
+                        <a className="btn-floating btn-large red modal-trigger profile-modal" href="#confirmationModal">
                             <i className="large material-icons">not_interested</i>
                         </a>
                     </div>

@@ -31,9 +31,7 @@ define([
             if(this.state.loggedIn) {
                 ReactDOM.render(shoppingCart, document.getElementById('cart'))
             }
-            setTimeout(function() {
-                $(".modal-trigger").leanModal();
-            }, 300);
+            $(".modal-trigger.login-modal").leanModal();
             $(document).ready(function(){
               $('ul.tabs').tabs();
             });
@@ -108,6 +106,16 @@ define([
                 window.location.href = "searchresults.html";
             }
         },
+        gotoProfile : function() {
+            this.props.setView({
+                view: 'profile'
+            });
+        },
+        gotoHome : function() {
+            this.props.setView({
+                view: 'home'
+            })
+        },
         render: function() {
             var searchDetails = "";
             if(this.state.showSearchDetails) {
@@ -175,20 +183,20 @@ define([
             }
             if(this.state.loggedIn) {
                 var navItems = (<ul id="dropdown1" className="dropdown-content">
-                      <li><a href="userprofile.html">Profile</a></li>
+                      <li><a onClick={this.gotoProfile} href="#">Profile</a></li>
                       <li><a href="#!">Account Settings</a></li>
                       <li><a onClick={this.logout} href="#">Logout</a></li>
                     </ul>)
                 var mobileItems = (
                     <ul className="side-nav" id="mobile-demo">
-                        <li><a href="#!">Profile</a></li>
+                        <li><a onClick={this.gotoProfile} href="#!">Profile</a></li>
                         <li><a href="#!">Account Settings</a></li>
                         <li><a onClick={this.logout} href="#">Logout</a></li>
                     </ul>
                 )
             } else {
                 var mobileItems = (<ul className="side-nav" id="mobile-demo">
-                        <li><a href="#modalLogin" className="modal-trigger">Login</a></li>
+                        <li><a href="#modalLogin" className="modal-trigger login-modal">Login</a></li>
                     </ul>
                 )
             }
@@ -197,11 +205,11 @@ define([
                     {navItems}
                     <nav>
                     <div className="white blue-grey-text text-darken-1 nav-wrapper">
-                        <a href="#" className="left blue-grey-text text-darken-1 brand-logo hide-on-med-and-down">Logo</a>
+                        <a href="#" onClick={this.gotoHome} className="left blue-grey-text text-darken-1 brand-logo hide-on-med-and-down">Logo</a>
                         <a href="#" data-activates="mobile-demo" className="blue-grey-text text-darken-1 button-collapse"><i className="material-icons">menu</i></a>
                         {this.state.loggedIn ? <a style={{padding:'0 5px'}} className="right blue-grey-text text-darken-1 shopping-cart-icon" onClick={this.toggleCart}><i className="material-icons">shopping_cart</i></a> : null}
                         <ul id="nav-mobile" className="right hide-on-med-and-down">
-                            {!this.state.loggedIn ? <li><a  href="#modalLogin" className="blue-grey-text text-darken-1 modal-trigger">Login</a></li> : <li> <a className="blue-grey-text text-darken-1 dropdown-button" href="#!" data-activates="dropdown1"> Welcome Name<i className="material-icons right">arrow_drop_down</i></a></li>}
+                            {!this.state.loggedIn ? <li><a  href="#modalLogin" className="blue-grey-text text-darken-1 modal-trigger login-modal">Login</a></li> : <li> <a className="blue-grey-text text-darken-1 dropdown-button" href="#!" data-activates="dropdown1"> Welcome Name<i className="material-icons right">arrow_drop_down</i></a></li>}
                         </ul>
                         <form onFocus={this.showDetails} onBlur={this.hideDetails} className="nav-search">
                             <div className="input-field">
