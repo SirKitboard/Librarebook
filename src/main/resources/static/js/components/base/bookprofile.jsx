@@ -35,20 +35,18 @@ define([
         componentDidMount: function () {
             var self = this;
             $.ajax({
-                url:"/api/items/books/"+window.bookID,
+                url:"/api/items/books/"+this.props.view.bookID,
                 method:"GET",
                 success : function(response) {
                     self.setState({
                         'book' : response
                     });
                 }
-            })
-
-            $(".modal-trigger").leanModal();
+            });
         },
         render: function() {
             return (
-                <div id="profileContent">
+                <div className="padNav" id="profileContent">
                     <div className="row" id="bookProfileTop">
                         <div className="col l4">
                             <BookInfoComponent book={this.state.book} onEditClick={this.toggleEditModal} loggedIn={this.state.loggedIn}/>

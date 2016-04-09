@@ -50,6 +50,8 @@ define([
                 case 'adminDashboard':
                     showNavShadow = false;
                     componentRendered = <AdminDashboardComponent setView={this.setView} view={this.state.view}/>
+                case 'bookProfile':
+                    componentRendered = <BookprofileComponent setView={this.setView} view={this.state.view}/>
             }
             return (
                 <div>

@@ -95,7 +95,7 @@ define([
                     <div className="row">
                         {this.state.liked ? <span style={likeStyle} onClick={this.toggleLike} className="icons8-like-filled"/> : <span style={likeStyle} onClick={this.toggleLike} className="icons8-like"/> }
                         {card}
-                        {this.props.loggedIn ? <a href="#modalEditBook" style={editStyle} className="modal-trigger icons8-edit-property" onClick={this.props.onEditClicked}/> : ""}
+                        {this.props.loggedIn ? <a href="#modalEditBook" style={editStyle} className="modal-trigger modal-bookprofile icons8-edit-property" onClick={this.props.onEditClicked}/> : ""}
                     </div>
                     <p>ISBN: {this.props.book.isbn}</p>
                     <hr />
