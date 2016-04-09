@@ -7,12 +7,13 @@ define([
     return React.createClass({
         getInitialState : function() {
             var book = {
+                id: 1,
                 title: null,
                 description: null,
-                author: null
+                authors: []
             };
             books = []
-            for (i=0; i<10; i++) {
+            for (i=0; i<15; i++) {
                 books.push(book)
             }
             return {
@@ -20,29 +21,27 @@ define([
                 'results': books
             }
         },
-
         componentDidMount: function() {
             $('.dropdown-button').dropdown();
             $(window).scroll(function(e){
                 // console.log('hi');
               var $el = $('.fixedElement');
-              console.log($(this).scrollTop());
+              // console.log($(this).scrollTop());
               var isPositionFixed = ($el.css('position') == 'fixed');
               if ($(this).scrollTop() > 400 && !isPositionFixed){
                 $('.fixedElement').css({'position': 'fixed', 'top': '64px'});
-                console.log('fix!');
+                // console.log('fix!');
               }
               if ($(this).scrollTop() < 400 && isPositionFixed)
               {
                 $('.fixedElement').css({'position': 'absolute', 'top': '464px'});
-                console.log('unfix!');
+                // console.log('unfix!');
               }
             });
         },
-
         render: function() {
             return(
-                <div>
+                <div id="searchResultComponent" className="padNav">
                     <div className="row searchBanner valign-wrapper"></div>
                     <div style={{background:'white', top:'464px'}}className="row tab-row searchTabs z-depth-1 fixedElement">
                         <div className="col s12">
@@ -58,7 +57,7 @@ define([
                         </div>
                     </div>
                     <div style={{paddingTop:'52px'}}className="row searchResults">
-                        <SearchResults books={this.state.results}/>
+                        <SearchResults setView={this.props.setView} books={this.state.results}/>
                     </div>
                     <div className="row">
                         <div className="col s12">

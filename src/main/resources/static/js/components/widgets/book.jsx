@@ -6,6 +6,12 @@ define([
 		getInitialState : function() {
 			return null;
 		},
+		gotoBook : function() {
+			this.props.setView({
+				view: 'bookProfile',
+				bookID: this.props.book.id
+			});
+		},
 		render : function() {
 			console.log(this.props.book.authors);
 			return(
@@ -16,7 +22,7 @@ define([
 						<p className="author">{this.props.book.authors[0] ? this.props.book.authors[0].firstName + " " + this.props.book.authors[0].lastName : "Author"}</p>
 						<p className="author">{this.props.book.author ? this.props.book.author : "Rating"}</p>
 						<div className="actions">
-							<span className="action"><a href="bookprofile.html">View</a></span>
+							<span className="action"><a href="#" onClick={this.gotoBook}>View</a></span>
 						</div>
 					</div>
 				</div>

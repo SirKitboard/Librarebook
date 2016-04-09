@@ -47,11 +47,17 @@ define([
                     break;
                 case 'profile':
                     componentRendered = <UserProfileComponent setView={this.setView} view={this.state.view}/>
+                    break;
                 case 'adminDashboard':
                     showNavShadow = false;
                     componentRendered = <AdminDashboardComponent setView={this.setView} view={this.state.view}/>
+                    break;
                 case 'bookProfile':
                     componentRendered = <BookprofileComponent setView={this.setView} view={this.state.view}/>
+                    break;
+                case 'searchResults':
+                    componentRendered = <SearchResultsComponent setView={this.setView} view={this.state.view}/>
+
             }
             return (
                 <div>

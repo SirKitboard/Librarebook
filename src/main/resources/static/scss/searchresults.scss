@@ -1,29 +1,22 @@
-@import 'navbar.scss';
-@import 'book.scss';
-
-.searchNav {
-	.nav-wrapper-outer {
-		z-index: 10000000;
-	}
-}
-
-.searchBanner {
+#searchResultComponent {
+  .searchBanner {
     height: 400px;
     background: url('http://placehold.it/300x400');
     background-size: cover;
     margin: 0;
-}
+  }
 
-.searchResults {
+  .searchResults {
     text-align: center;
-}
+  }
 
-.searchTabs {
+  .searchTabs {
     i {
-        margin-top: 10px;
+      margin-top: 10px;
     }
-}
+  }
 
-#loadButton {
+  #loadButton {
     width: 100%;
+  }
 }

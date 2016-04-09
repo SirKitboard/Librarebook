@@ -103,7 +103,10 @@ define([
         },
         submitSearch : function(e) {
             if(e.keyCode == 13) {
-                window.location.href = "searchresults.html";
+                this.props.setView({
+                    view: 'searchResults',
+                    query: e.target.value
+                })
             }
         },
         gotoProfile : function() {
@@ -222,13 +225,13 @@ define([
                         <ul id="nav-mobile" className="right hide-on-med-and-down">
                             {!this.state.loggedIn ? <li><a  href="#modalLogin" className="blue-grey-text text-darken-1 modal-trigger login-modal">Login</a></li> : <li> <a className="blue-grey-text text-darken-1 dropdown-button" href="#!" data-activates="dropdown1"> Welcome Name<i className="material-icons right">arrow_drop_down</i></a></li>}
                         </ul>
-                        <form onFocus={this.showDetails} onBlur={this.hideDetails} className="nav-search">
+                        <div onFocus={this.showDetails} onBlur={this.hideDetails} className="nav-search">
                             <div className="input-field">
                                 <input id="search" type="search" placeholder="Search" onKeyDown={this.submitSearch} required/>
                                 <label htmlthtmlFor="search"><i className="grey-text material-icons">search</i></label>
                                 <i className="grey-text material-icons">close</i>
                             </div>
-                        </form>
+                        </div>
                         {mobileItems}
                     </div>
                     </nav>
