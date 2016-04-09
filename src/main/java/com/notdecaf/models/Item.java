@@ -77,6 +77,28 @@ public abstract class Item extends IDModel{
     @JoinColumn(name = "series")
     private Series series;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+    private Set<UserCheckedOutItem> checkedOutBy;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+    private Set<UserCheckoutHistory> checkoutHistory;
+
+    public Set<UserCheckedOutItem> getCheckedOutBy() {
+        return checkedOutBy;
+    }
+
+    public void setCheckedOutBy(Set<UserCheckedOutItem> checkedOutBy) {
+        this.checkedOutBy = checkedOutBy;
+    }
+
+    public Set<UserCheckoutHistory> getCheckoutHistory() {
+        return checkoutHistory;
+    }
+
+    public void setCheckoutHistory(Set<UserCheckoutHistory> checkoutHistory) {
+        this.checkoutHistory = checkoutHistory;
+    }
+
     public Set<Author> getAuthors() {
         return authors;
     }

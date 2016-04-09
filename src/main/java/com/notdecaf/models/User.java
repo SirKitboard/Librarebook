@@ -68,6 +68,12 @@ public class User extends IDModel implements Cloneable{
     @JoinTable(name = "user_notinterested", joinColumns = {@JoinColumn(name= "userID", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn (name ="itemID", referencedColumnName = "id")})
     private Set <Item> notInterested;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private Set<UserCheckedOutItem> currentlyCheckedOutItems;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private Set<UserCheckoutHistory> checkoutHistory;
+
     @OneToMany
     private Set<UserItemRating> ratings;
 
@@ -81,6 +87,32 @@ public class User extends IDModel implements Cloneable{
 
     @ManyToMany(mappedBy = "flaggedBy")
     private Set<Item> flags;
+
+    public Set<UserCheckedOutItem> getCurrentlyCheckedOutItems() {
+        return currentlyCheckedOutItems;
+    }
+
+    public void setCurrentlyCheckedOutItems(Set<UserCheckedOutItem> currentlyCheckedOutItems) {
+        this.currentlyCheckedOutItems = currentlyCheckedOutItems;
+    }
+
+    public Set<UserCheckoutHistory> getCheckoutHistory() {
+        return checkoutHistory;
+    }
+
+    public void setCheckoutHistory(Set<UserCheckoutHistory> checkoutHistory) {
+        this.checkoutHistory = checkoutHistory;
+    }
+
+    public Set<Item> getFlags() {
+        return flags;
+    }
+
+    public void setFlags(Set<Item> flags) {
+        this.flags = flags;
+    }
+
+
 
     public User(String firstName, String lastName, Date dob, String email, String gender, String password, Address address) throws PasswordStorage.CannotPerformOperationException {
         this.firstName = firstName;

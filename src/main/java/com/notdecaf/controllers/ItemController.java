@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,15 @@ public class ItemController {
 
     @Autowired
     private UserDao userDao;
+
+    @RequestMapping(value = "/api/items/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Item> get(HttpSession session, @PathVariable long id) {
+        Item item = ItemFactory.getItemFromCache(id);
+        if(item == null) {
+            return new ResponseEntity<Item>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(item);
+    }
 
     @RequestMapping(value = "/api/items/{id}/favorite", method = RequestMethod.GET)
     public ResponseEntity favorite(HttpServletRequest req, @PathVariable long id) {
