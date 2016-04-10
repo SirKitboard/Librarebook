@@ -13,6 +13,7 @@ define([
 			});
 		},
 		render : function() {
+			// debugger;
 			console.log(this.props.book.authors);
 			return(
 				<div className="z-depth-1 book">

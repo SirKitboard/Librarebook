@@ -13,7 +13,12 @@ define([
                 url:"/api/items/books/recent",
                 method: "GET",
                 success: function(response) {
-                    console.log(response);
+                    _.each(response, function (book) {
+                        AppDispatcher.dispatch({
+                            actionType: Constants.ADD_RECENT_BOOK,
+                            data: book
+                        })
+                    });
                 }
             })
         }

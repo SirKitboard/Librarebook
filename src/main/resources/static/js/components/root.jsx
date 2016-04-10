@@ -43,8 +43,7 @@ define([
                 books: new BooksStore()
             }
             this.stores.books.addChangeListener(this.onChangeBooks);
-            var booksAction = BooksActions;
-            booksAction.pullRecents();
+            BooksActions.pullRecents();
         },
         onChangeBooks: function() {
             this.forceUpdate();
@@ -57,7 +56,7 @@ define([
             var showNavShadow = true;
             switch(this.state.view.view) {
                 case 'home':
-                    componentRendered = <HomepageComponent setView={this.setView} view={this.state.view}/>
+                    componentRendered = <HomepageComponent stores={this.stores} setView={this.setView} view={this.state.view}/>
                     break;
                 case 'profile':
                     componentRendered = <UserProfileComponent setView={this.setView} view={this.state.view}/>
