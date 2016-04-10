@@ -6,8 +6,10 @@ define([
     'jsx!components/base/bookprofile',
     'jsx!components/base/searchresults',
     'jsx!components/base/userprofile',
-    'jsx!components/base/admindashboard'
-], function(_,React, NavbarCompnent, HomepageComponent, BookprofileComponent, SearchResultsComponent, UserProfileComponent, AdminDashboardComponent) {
+    'jsx!components/base/admindashboard',
+    'stores/books',
+    'actions/books'
+], function(_,React, NavbarCompnent, HomepageComponent, BookprofileComponent, SearchResultsComponent, UserProfileComponent, AdminDashboardComponent, BooksStore, BooksActions) {
     return React.createClass({
         getInitialState: function () {
             var URLHash = window.location.hash.substring(1);
@@ -34,6 +36,18 @@ define([
         setHash : function() {
             window.location.hash = JSON.stringify(this.state.view);
             window.location.reload();
+        },
+        componentWillMount: function() {
+            var self = this;
+            this.stores = {
+                books: new BooksStore()
+            }
+            this.stores.books.addChangeListener(this.onChangeBooks);
+            var booksAction = BooksActions;
+            booksAction.pullRecents();
+        },
+        onChangeBooks: function() {
+            this.forceUpdate();
         },
         componentDidMount : function() {
             window.addEventListener('unload',this.setHash);
