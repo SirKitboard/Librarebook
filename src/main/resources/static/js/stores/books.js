@@ -9,7 +9,7 @@ define([
 
     function Store(params) {
         StoreBase.call(this, params);
-
+        
         this.books = {};
         this.recents = {};
 
