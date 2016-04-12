@@ -3,44 +3,44 @@ define([
     'react',
     'jsx!components/bookprofile/bookinfo',
 
-], function(_,React, BookInfoComponent) {
+], function (_, React, BookInfoComponent) {
     return React.createClass({
-        getInitialState: function() {
+        getInitialState: function () {
             return {
                 "book": this.props.book
             }
         },
-        componentWillReceiveProps: function(nextProps) {
+        componentWillReceiveProps: function (nextProps) {
             this.setState({
                 book: nextProps.book
             })
         },
-        componentDidMount: function() {
+        componentDidMount: function () {
             var self = this;
             $.ajax({
-                url:"/api/items/books/"+window.bookID,
-                method:"GET",
-                success:function(response) {
+                url: "/api/items/books/" + window.bookID,
+                method: "GET",
+                success: function (response) {
                     self.setState({
-                        'book' : response
+                        'book': response
                     });
                 }
             })
         },
 
-        saveChanges: function(){
+        saveChanges: function () {
             $.ajax({
-                url: "/api/items/books/"+this.props.book.id+"/update",
+                url: "/api/items/books/" + this.props.book.id + "/update",
                 method: "PUT",
-                success: function(response) {
+                success: function (response) {
                     self.setState({
-                        isModalOpen : false
+                        isModalOpen: false
                     })
                 }
             })
         },
 
-        render: function() {
+        render: function () {
             return (
                 <div id="modalEditBook" className="modal">
                     <div className="modal-content container editBook">
@@ -56,79 +56,122 @@ define([
                                         <label htmlFor="title">Title</label>
                                     </div>
                                     <div className="input-field col s12">
-                                        <select multiple ref="genres" id="genres">
-                                            <option value="" disabled selected>Choose your option</option>
-                                            <option value="genre_fiction">Fiction</option>
-                                            <option value="genre_nonfiction">Non-Fiction</option>
-                                            <option value="genre_youngadult">Young Adult</option>
-                                            <option value="genre_biography">Biography</option>
-                                            <option value="genre_sci-fi">Sci-Fi</option>
-                                            <option value="genre_mystery">Mystery</option>
-                                            <option value="genre_romance">Romance</option>
-                                        </select>
+                                        <div className="col s12 m6 genre-filters input-field">
+                                            <p>
+                                                <input type="checkbox" id="genre_fiction"/>
+                                                <label htmlFor="genre_fiction">Fiction</label>
+                                            </p>
+                                            <p>
+                                                <input type="checkbox" id="genre_youngadult"/>
+                                                <label htmlFor="genre_youngadult">Young Adult</label>
+                                            </p>
+                                            <p>
+                                                <input type="checkbox" id="genre_mature"/>
+                                                <label htmlFor="genre_mature">Mature</label>
+                                            </p>
+                                            <p>
+                                                <input type="checkbox" id="genre_biography"/>
+                                                <label htmlFor="genre_biography">Biography</label>
+                                            </p>
+                                            <p>
+                                                <input type="checkbox" id="genre_sci-fi"/>
+                                                <label htmlFor="genre_sci-fi">Science Fiction</label>
+                                            </p>
+                                            <p>
+                                                <input type="checkbox" id="genre_mystery"/>
+                                                <label htmlFor="genre_mystery">Mystery</label>
+                                            </p>
+                                            <p>
+                                                <input type="checkbox" id="genre_romance"/>
+                                                <label htmlFor="genre_romance">Romance</label>
+                                            </p>
+                                        </div>
                                         <label htmlFor="genres">Genres</label>
                                     </div>
-                                    </div>
                                 </div>
+                            </div>
 
-                                <div className="row">
-                                    <div className="input-field col s12">
-                                        <input ref="author" id="author" type="text" className="validate"/>
-                                        <label htmlFor="author">Author</label>
-                                    </div>
+                            <div className="row">
+                                <div className="input-field col s12">
+                                    <input ref="author" id="author" type="text" className="validate"/>
+                                    <label htmlFor="author">Author</label>
                                 </div>
-                                <div className="row">
-                                    <div className="input-field col s12">
-                                        <input ref="publisher" id="publisher" type="text" className="validate"/>
-                                        <label htmlFor="publisher">Publisher</label>
-                                    </div>
+                            </div>
+                            <div className="row">
+                                <div className="input-field col s12">
+                                    <input ref="publisher" id="publisher" type="text" className="validate"/>
+                                    <label htmlFor="publisher">Publisher</label>
                                 </div>
-                                <div className="row">
-                                    <div className="input-field col s12">
-                                    <textarea ref="description" id="description" type="text" className="materialize-textarea"
-                                              className="validate"/>
-                                        <label htmlFor="description">Description</label>
-                                    </div>
+                            </div>
+                            <div className="row">
+                                <div className="input-field col s12">
+                                    <textarea ref="description" id="description" type="text"
+                                              className="materialize-textarea"/>
+                                    <label htmlFor="description">Description</label>
                                 </div>
-                                <div className="row">
-                                    <div className="input-field col s12 m6">
-                                        <input ref="yearPublished" type="number" id="yearPushed" className="validate"/>
-                                        <label htmlFor="yearPublished">yearPublished</label>
-                                    </div>
+                            </div>
+                            <div className="row">
+                                <div className="input-field col s12 m6">
+                                    <input ref="yearPublished" type="number" id="yearPushed" className="validate"/>
+                                    <label htmlFor="yearPublished">Year Published</label>
                                 </div>
-                                <div className="row">
-                                    <div className="input-field col s12">
-                                        <input ref="totalLicenses" id="totalLicenses" type="number" className="validate"/>
-                                        <label htmlFor="totalLicenses">totalLicenses</label>
-                                    </div>
+                            </div>
+                            <div className="row">
+                                <div className="input-field col s12">
+                                    <input ref="totalLicenses" id="totalLicenses" type="number" className="validate"/>
+                                    <label htmlFor="totalLicenses">Total Licenses</label>
                                 </div>
-                                <div className="row">
-                                    <div className="input-field col s12">
-                                        <input ref="language" id="language" type="text" className="validate"/>
-                                        <label htmlFor="language">Language</label>
+                            </div>
+                            <div className="row">
+                                <div className="input-field col s12">
+                                    <div className="col s12 m6 language-filters input-field">
+                                        <p>
+                                            <input type="checkbox" id="language_english"/>
+                                            <label htmlFor="language_english">English</label>
+                                        </p>
+                                        <p>
+                                            <input type="checkbox" id="language_french"/>
+                                            <label htmlFor="language_french">French</label>
+                                        </p>
+                                        <p>
+                                            <input type="checkbox" id="language_spanish"/>
+                                            <label htmlFor="language_spanish">Spanish</label>
+                                        </p>
                                     </div>
+                                    <label htmlFor="language">Language</label>
                                 </div>
-                                <div className="row">
-                                    <div className="input-field col s12 m6">
-                                        <input ref="itemStatus" id="itemStatus" type="text" className="validate"/>
-                                        <label htmlFor="itemStatus">Item Status</label>
+                            </div>
+                            <div className="row">
+                                <div className="input-field col s12 m6">
+                                    <div className="col s12 m6 itemStatus-filters input-field">
+                                        <p>
+                                            <input id="itemStatus_available" type="radio" name="itemStatus"/>
+                                            <label htmlFor="itemStatus_available">Available</label>
+                                        </p>
+                                        <p>
+                                            <input id="itemStatus_unavailable" type="radio" name="itemStatus"/>
+                                            <label htmlFor="itemStatus_unavailable">Unavailable</label>
+                                        </p>
+                                        <p>
+                                            <input id="itemStatus_unlisted" type="radio" name="itemStatus"/>
+                                            <label htmlFor="itemStatus_unlisted">Unlisted</label>
+                                        </p>
                                     </div>
-                                    <div className="input-field col s12 m6">
-                                        <input ref='numPages' id="numPages" type="number" className="validate"/>
-                                        <label htmlFor="zipCode">ZipCode</label>
-                                    </div>
+                                    <label htmlFor="itemStatus">Item Status</label>
                                 </div>
-                                <div className="row">
-                                    <button onClick={this.saveChanges} className="btn waves-effect waves-light" id='editChanges' type="submit" name="action">Edit
-                                        <i className="material-icons right">send</i>
-                                    </button>
-                                    <button className="btn waves-effect waves-light modal-action modal-close">Close
-                                        <i className="material-icons right">clear</i>
-                                    </button>
-                                </div>
+                            </div>
+                            <div className="row">
+                                <button onClick={this.saveChanges} className="btn waves-effect waves-light"
+                                        id='editChanges' type="submit" name="action">Edit
+                                    <i className="material-icons right">send</i>
+                                </button>
+                                <button className="btn waves-effect waves-light modal-action modal-close">Close
+                                    <i className="material-icons right">clear</i>
+                                </button>
                             </div>
                         </div>
                     </div>
+                </div>
             )
         }
     });

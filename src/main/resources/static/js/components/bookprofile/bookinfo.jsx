@@ -41,10 +41,6 @@ define([
         checkout: function() {
             
         },
-        editModal : function() {
-            var book = this.props.book;
-            this.setState({ showModal : true});
-        },
         render: function() {
             var authors = this.props.book.authors;
             var authorText = "";
@@ -85,6 +81,7 @@ define([
 
             var editStyle = {
                 fontSize : '30px',
+                margin : '5px'
             }
 
             return (
@@ -94,8 +91,8 @@ define([
                     <h5>by {authorText}</h5>
                     <div className="row">
                         {this.state.liked ? <span style={likeStyle} onClick={this.toggleLike} className="icons8-like-filled"/> : <span style={likeStyle} onClick={this.toggleLike} className="icons8-like"/> }
+                        {this.props.loggedIn ? <a href="#modalEditBook" style={editStyle} className="modal-trigger icons8-edit-property" onClick={this.props.onEditClicked}/> : ""}
                         {card}
-                        {this.props.loggedIn ? <a href="#modalEditBook" style={editStyle} className="modal-trigger modal-bookprofile icons8-edit-property" onClick={this.props.onEditClicked}/> : ""}
                     </div>
                     <p>ISBN: {this.props.book.isbn}</p>
                     <hr />
