@@ -8,7 +8,16 @@ define([
             var liked = false;
             var self = this;
             var loggedIn = false;
-            // debugger;
+            checkedOut = false;
+            if (window.currentUser) {
+                // debugger;
+                var id = window.currentUser.id;
+                var checkedOutBy = this.props.book.checkedOutBy;
+                var isCheckedOut = _.find(checkedOutBy, function(item) { return item.user == id; });
+                if (isCheckedOut) {
+                    checkedOut = true;
+                }
+            }
             //TODO: move to actions and move up to book profile
             $.ajax({
                 url: "/api/items/"+window.bookID+"/getfavorite",
@@ -21,6 +30,7 @@ define([
             });
             return {
                 'liked': liked,
+                'checkedOut': checkedOut
             }
         },
         toggleLike : function() {
@@ -64,7 +74,7 @@ define([
                         <div className="card-content white-text">
                             <p className="center-align">Available</p>
                         </div>
-                    </div>)
+                    </div>);
                 var disabled = ""
             } else {
                 var card =
@@ -72,7 +82,7 @@ define([
                         <div className="card-content white-text">
                             <p className="center-align">Unavailable</p>
                         </div>
-                    </div>)
+                    </div>);
 
                 var disabled = "disabled"
             }
@@ -80,11 +90,20 @@ define([
             var likeStyle = {
                 color: 'red',
                 fontSize : '30px'
-            }
+            };
 
             var editStyle = {
                 fontSize : '30px',
                 margin : '5px'
+            };
+
+            console.log(this.state.checkedOut);
+            if (this.state.checkedOut) {
+                var returnOrCheckOut =
+                    (<button className= "btn-large right" id="return" onClick={this.checkout}>Return</button>);
+            } else {
+                var returnOrCheckOut =
+                    (<button className= "btn-large right" id="instantCheckout" onClick={this.checkout}>Checkout</button>);
             }
 
             return (
@@ -116,7 +135,7 @@ define([
                         <p className="left-align">Rating</p><p className="right-align"></p>
                     </span>
                     <button className= {"btn-large right " + disabled} id="addToCart">Add to cart</button>
-                    <button className= {"btn-large right " + disabled} id="instantCheckout" onClick={this.checkout}>Checkout</button>
+                    { returnOrCheckOut }
                     <button className= {"btn-large right " + disabled} id="purchase" onClick={this.purchase}>Purchase</button>
                 </div>
             )
