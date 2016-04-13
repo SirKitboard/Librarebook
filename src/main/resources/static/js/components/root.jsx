@@ -38,6 +38,11 @@ define([
             window.location.reload();
         },
         componentWillMount: function() {
+            if (window.currentUser) {
+                var userFavorites = _.map(window.currentUser.favorites, function(book) {return book.id});
+                window.currentUser.favoriteItemIDs = userFavorites;
+                console.log(window.currentUser.favoriteItemIDs);
+            }
             var self = this;
             this.stores = {
                 books: new BooksStore()

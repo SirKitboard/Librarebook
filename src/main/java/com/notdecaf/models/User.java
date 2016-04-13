@@ -48,7 +48,6 @@ public class User extends IDModel implements Cloneable{
 
     private String coverImage;
 
-    @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "users_favorites", joinColumns = {@JoinColumn(name = "userID", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "bookID", referencedColumnName = "id")})
     private Set<Item> favorites;

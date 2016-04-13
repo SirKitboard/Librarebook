@@ -47,6 +47,22 @@ define([
                     })
                 }
             })
+        },
+
+        toggleFavorite: function(book) {
+            $.ajax({
+                url: "/api/items/"+book.id+"/favorite",
+                method: "POST",
+                success: function(response) {
+                    AppDispatcher.dispatch({
+                        actionType: Constants.FAVORITE,
+                        data: {
+                            status: response.favorited,
+                            bookID: book.id
+                        }
+                    })
+                }
+            })
         }
     };
 });

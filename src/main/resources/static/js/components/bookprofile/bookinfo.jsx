@@ -5,47 +5,27 @@ define([
 ], function(_, React, BookActions) {
     return React.createClass({
         getInitialState: function(){
-            var liked = false;
+            // var liked = this.props.book.favorited;
             var self = this;
             var loggedIn = false;
             checkedOut = false;
             if (window.currentUser) {
-                // debugger;
                 var id = window.currentUser.id;
                 var checkedOutBy = this.props.book.checkedOutBy;
                 var isCheckedOut = _.find(checkedOutBy, function(item) { return item.user == id; });
                 if (isCheckedOut) {
                     checkedOut = true;
                 }
+
             }
-            //TODO: move to actions and move up to book profile
-            $.ajax({
-                url: "/api/items/"+window.bookID+"/getfavorite",
-                method: "POST",
-                success: function (response) {
-                    self.setState({
-                        liked: response.favorited
-                    })
-                }
-            });
             return {
-                'liked': liked,
                 'checkedOut': checkedOut
             }
         },
-        toggleLike : function() {
+        toggleFavorite : function() {
             var self = this;
             var book = this.props.book;
-            //TODO: move to actions
-            $.ajax({
-                url: "/api/items/"+this.props.book.id+"/favorite",
-                method: "POST",
-                success: function(response) {
-                    self.setState({
-                        liked : response.favorited
-                    })
-                }
-            })
+            BookActions.toggleFavorite(this.props.book);
         },
 
         checkout: function() {
@@ -112,7 +92,7 @@ define([
 
                     <h5>by {authorText}</h5>
                     <div className="row">
-                        {this.state.liked ? <span style={likeStyle} onClick={this.toggleLike} className="icons8-like-filled"/> : <span style={likeStyle} onClick={this.toggleLike} className="icons8-like"/> }
+                        {this.props.book.favorited ? <span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like-filled"/> : <span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like"/> }
                         {this.props.loggedIn ? <a href="#modalEditBook" style={editStyle} className="modal-trigger icons8-edit-property" onClick={this.props.onEditClicked}/> : ""}
                         {card}
                     </div>

@@ -23,9 +23,15 @@ define([
                 case Constants.ADD_RECENT_BOOK:
                     this.addRecentBook(action.data);
                     this.event.emit("change");
+                    break;
                 case Constants.CHECKOUT:
                     this.checkoutBook(action.data);
                     this.event.emit("change");
+                    break;
+                case Constants.FAVORITE:
+                    this.toggleFavorite(action.data);
+                    this.event.emit("change");
+                    break;
             }
 
         }.bind(this));
@@ -34,6 +40,11 @@ define([
     }
 
     Store.prototype.addBook = function(book) {
+        if (window.currentUser) {
+            if (window.currentUser.favoriteItemIDs.indexOf(book.id) >= 0) {
+                book.favorited = true;
+            }
+        }
         this.books[book.id] = book;
     };
 
@@ -64,7 +75,11 @@ define([
         if (this.books[id]) {
             this.books[id].checkedOut = true;
         }
-    }
+    };
+    
+    Store.prototype.toggleFavorite = function(response) {
+        this.books[response.bookID].favorited = response.status;
+    };
 
     return Store;
 })
