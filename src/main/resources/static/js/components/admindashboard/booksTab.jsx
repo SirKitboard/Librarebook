@@ -56,8 +56,12 @@ define([
                          <div className="modal-content container">
                              <div className="row">
                                  <div className="input-field col s12">
-                                     <input ref="name" id="name" type="text" className="validate" length="20"/>
-                                     <label htmlFor="name">Name</label>
+                                     <input ref="title" id="title" type="text" className="validate" length="20"/>
+                                     <label htmlFor="title">Title</label>
+                                 </div>\
+                                 <div className="input-field col s12 m6">
+                                     <input ref="genre" id="genre" type="text" className="validate"/>
+                                     <label htmlFor="genre">Genre</label>
                                  </div>
                              </div>
                              <div className="row">
@@ -72,8 +76,32 @@ define([
                              </div>
                              <div className="row">
                                  <div className="input-field col s12">
-                                   <textarea id="description" ref="description" className="materialize-textarea"></textarea>
-                                   <label htmlFor="description">Description</label>
+                                     <textarea id="description" ref="description" className="materialize-textarea"></textarea>
+                                     <label htmlFor="description">Description</label>
+                                 </div>
+                             </div>
+                             <div className="row">
+                                 <div className="input-field col s12">
+                                     <textarea id="yearPublished" ref="yearPublished" className="materialize-textarea"></textarea>
+                                     <label htmlFor="yearPublished">Year Published</label>
+                                 </div>
+                             </div>
+                             <div className="row">
+                                 <div className="input-field col s12">
+                                     <textarea id="totalLicenses" ref="totalLicenses" className="materialize-textarea"></textarea>
+                                     <label htmlFor="totalLicenenses">Total Licenses </label>
+                                 </div>
+                             </div>
+                             <div className="row">
+                                 <div className="input-field col s12">
+                                     <textarea id="language" ref="language" className="materialize-textarea"></textarea>
+                                     <label htmlFor="language">Language</label>
+                                 </div>
+                             </div>
+                             <div className="row">
+                                 <div className="input-field col s12">
+                                     <textarea id="numPages" ref="numPages" className="materialize-textarea"></textarea>
+                                     <label htmlFor="numPages">Number Of Pages</label>
                                  </div>
                              </div>
                              <div className="row">
