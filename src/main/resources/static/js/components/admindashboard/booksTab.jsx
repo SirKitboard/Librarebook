@@ -19,6 +19,12 @@ define([
                 selectedBook: 0
             }
         },
+        addBook : function() {
+            var self = this;
+            var book = this.props.book;
+            BookActions.addBook(this.props.book);
+        },
+        
         componentDidMount: function() {
             $('.modal-trigger').leanModal();
         },
@@ -116,7 +122,7 @@ define([
                                  </div>
                              </div>
                              <div className="row">
-                             <button onClick={this.handleSubmit} className="btn waves-effect waves-light modal-close" id='login' type="submit" name="action">Submit
+                             <button onClick={this.addBook} className="btn waves-effect waves-light modal-close" id='login' type="submit" name="action">Submit
                                  <i className="material-icons right">send</i>
                              </button>
                              </div>

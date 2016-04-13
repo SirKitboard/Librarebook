@@ -49,6 +49,19 @@ define([
             })
         },
 
+        addBook: function(id) {
+            $.ajax({
+                url: "/api/items/books/",
+                method: "POST",
+                success: function(response) {
+                    AppDispatcher.dispatch({
+                        actionType: Constants.ADD_BOOK,
+                        data:response
+                    })
+                }
+            })
+        },
+
         toggleFavorite: function(book) {
             $.ajax({
                 url: "/api/items/"+book.id+"/favorite",
