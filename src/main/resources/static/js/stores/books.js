@@ -60,8 +60,10 @@ define([
         return this.books[id];
     };
 
-    Store.prototype.checkout = function(id) {
-        this.books[id].checkedOut = true;
+    Store.prototype.checkoutBook = function(id) {
+        if (this.books[id]) {
+            this.books[id].checkedOut = true;
+        }
     }
 
     return Store;

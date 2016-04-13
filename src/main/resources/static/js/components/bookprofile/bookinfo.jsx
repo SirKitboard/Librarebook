@@ -8,6 +8,7 @@ define([
             var liked = false;
             var self = this;
             var loggedIn = false;
+            // debugger;
             //TODO: move to actions and move up to book profile
             $.ajax({
                 url: "/api/items/"+window.bookID+"/getfavorite",

@@ -36,16 +36,16 @@ public class UserCheckoutHistory {
         return Id;
     }
 
-    public User getUser() {
-        return user;
+    public long getUser() {
+        return user.getId();
     }
 
     public void setUser(User user) {
         this.user = user;
     }
 
-    public Item getItem() {
-        return item;
+    public long getItem() {
+        return item.getId();
     }
 
     public void setItem(Item item) {

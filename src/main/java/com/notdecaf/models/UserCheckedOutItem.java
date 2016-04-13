@@ -25,6 +25,10 @@ public class UserCheckedOutItem {
     @NotNull
     private Date checkedOutOn;
 
+    public UserCheckedOutItem() {
+
+    }
+
     public UserCheckedOutItem(User user, Item item) {
         this.user = user;
         this.item = item;
@@ -35,17 +39,17 @@ public class UserCheckedOutItem {
         return Id;
     }
 
-    public User getUser() {
+    public long getUser() {
 
-        return user;
+        return user.getId();
     }
 
     public void setUser(User user) {
         this.user = user;
     }
 
-    public Item getItem() {
-        return item;
+    public long getItem() {
+        return item.getId();
     }
 
     public void setItem(Item item) {

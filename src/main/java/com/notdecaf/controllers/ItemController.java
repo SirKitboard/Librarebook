@@ -212,7 +212,7 @@ public class ItemController {
             return ResponseEntity.badRequest().body(null);
         }
         for (UserCheckedOutItem checkedOutItem: item.getCheckedOutBy()) {
-            if (checkedOutItem.getUser().getId() == user.getId()) {
+            if (checkedOutItem.getUser() == user.getId()) {
                 return ResponseEntity.badRequest().body(null);
             }
         }
