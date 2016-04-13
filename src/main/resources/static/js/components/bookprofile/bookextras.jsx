@@ -8,6 +8,11 @@ define([
         },
 
         render: function() {
+            var imageURL = "http://placehold.it/500x700";
+            if(this.props.book.coverImageUrl && this.props.book.coverImageUrl.length > 0) {
+                imageURL = this.props.book.coverImageUrl;
+            }
+
             return (
                 <div>
                     <div className="row tab-row">
@@ -18,7 +23,7 @@ define([
                           </ul>
                         </div>
                         <div id="imagesTab" className="col s12 valign-wrapper">
-                            <img src="http://placehold.it/500x700" className="valign"/>
+                            <img style={{width:'500px', height:'auto'}} src={imageURL} className="valign"/>
                         </div>
                         <div id="reviewsTab" className="col s12">Reviews</div>
                     </div>

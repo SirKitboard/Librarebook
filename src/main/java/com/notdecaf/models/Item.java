@@ -45,6 +45,16 @@ public abstract class Item extends IDModel{
     @ManyToOne
     private Publisher publisher;
 
+    private String isbn;
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
     @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name="items_flags", joinColumns = {@JoinColumn(name="itemID", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "userID", referencedColumnName = "id")})

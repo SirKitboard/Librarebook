@@ -76,6 +76,18 @@ define([
                     })
                 }
             })
+        },
+        purchase : function(bookID, isbn) {
+
+            $.ajax({
+                url:"/api/items/"+bookID+"/purchase",
+                method: "POST",
+                success: function(response) {
+                    // console.log(response);
+                    response = response.replace(/"/g,"");
+                    window.open("http://localhost:6544/gotoBook?accessToken="+response+"&isbn="+isbn);
+                }
+            })
         }
     };
 });

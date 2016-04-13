@@ -26,7 +26,7 @@ define([
 						_.map(_.keys(this.props.books), function(book) {
 							return (
 								<div style={{display:'inline-block'}}>
-									<Book book={self.props.books[book]}/>
+									<Book setView={self.props.setView} book={self.props.books[book]}/>
 								</div>
 							)
 						})

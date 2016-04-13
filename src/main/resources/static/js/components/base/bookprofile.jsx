@@ -62,7 +62,7 @@ define([
                             <BookInfoComponent book={this.state.book} onEditClick={this.toggleEditModal} loggedIn={this.state.loggedIn}/>
                         </div>
                         <div className="col l8">
-                            <BookExtrasComponent id="bookExtras"/>
+                            <BookExtrasComponent book={this.state.book} id="bookExtras"/>
                         </div>
                     </div>
                     <BookEditModal book={this.state.book}/>

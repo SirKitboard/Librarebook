@@ -150,6 +150,7 @@ html, body {
   text-align: left; }
   .book .cover {
     width: 100%;
+    max-width: 200px;
     height: auto; }
   .book .title {
     position: absolute;
@@ -209,9 +210,6 @@ html, body {
     bottom: 60px;
     width: 100%;
     max-width: none; }
-
-nav {
-  box-shadow: none; }
 
 #adminPanel #adminTabs {
   padding: 0; }
@@ -404,10 +402,13 @@ nav {
       position: absolute;
       right: 12px; }
   #profileContent #addToCart {
-    margin-top: 80px; }
+    margin-top: 10px; }
   #profileContent #instantCheckout {
-    margin-top: 80px;
+    margin-top: 10px;
     margin-right: 10px; }
+  #profileContent #purchase {
+    margin-top: 10px;
+    margin-right: 20px; }
   #profileContent #bookAvailable {
     margin-top: 50px;
     margin-bottom: 50px;

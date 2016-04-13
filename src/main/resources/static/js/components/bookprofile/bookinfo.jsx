@@ -18,6 +18,7 @@ define([
                 }
 
             }
+            console.log(this.props.book);
             return {
                 'checkedOut': checkedOut
             }
@@ -32,7 +33,7 @@ define([
             BookActions.checkout(this.props.book.id);
         },
         purchase: function() {
-
+            BookActions.purchase(this.props.book.id, this.props.book.isbn);
         },
         render: function() {
             var authors = this.props.book.authors;
@@ -80,10 +81,10 @@ define([
             console.log(this.state.checkedOut);
             if (this.state.checkedOut) {
                 var returnOrCheckOut =
-                    (<button className= "btn-large right" id="return" onClick={this.checkout}>Return</button>);
+                    (<div className= "btn-large right" id="return" onClick={this.checkout}>Return</div>);
             } else {
                 var returnOrCheckOut =
-                    (<button className= "btn-large right" id="instantCheckout" onClick={this.checkout}>Checkout</button>);
+                    (<div className= "btn-large right" id="instantCheckout" onClick={this.checkout}>Checkout</div>);
             }
 
             return (
@@ -114,9 +115,9 @@ define([
                     <span>
                         <p className="left-align">Rating</p><p className="right-align"></p>
                     </span>
-                    <button className= {"btn-large right " + disabled} id="addToCart">Add to cart</button>
+                    <div className= {"btn-large right " + disabled} id="addToCart">Add to cart</div>
                     { returnOrCheckOut }
-                    <button className= {"btn-large right " + disabled} id="purchase" onClick={this.purchase}>Purchase</button>
+                    <div className= {"btn-large right"} id="purchase" onClick={this.purchase}>Purchase</div>
                 </div>
             )
         }

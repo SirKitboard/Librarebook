@@ -8,6 +8,14 @@ import com.notdecaf.helpers.SetHelper;
 import com.notdecaf.models.Item;
 import com.notdecaf.models.User;
 import com.notdecaf.models.UserCheckedOutItem;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -220,4 +229,30 @@ public class ItemController {
         checkedOutItemDao.save(userCheckedOutItem);
         return ResponseEntity.ok(null);
     }
+
+    @RequestMapping(value = "/api/items/{id}/purchase", method = RequestMethod.POST)
+    public ResponseEntity purchase(HttpServletRequest req, @PathVariable long id) {
+        User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        try {
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost("http://localhost:6544/api/getToken");
+            //84e4fdf0
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            nameValuePairs.add(new BasicNameValuePair("clientID", "84e4fdf0"));
+            nameValuePairs.add(new BasicNameValuePair("userID", user.getId() + ""));
+            nameValuePairs.add(new BasicNameValuePair("first_name", user.getFirstName()));
+            nameValuePairs.add(new BasicNameValuePair("last_name", user.getLastName()));
+            nameValuePairs.add(new BasicNameValuePair("profilePic", user.getProfileImage()));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            HttpResponse response = httpclient.execute(httppost);
+            String jsonString = EntityUtils.toString(response.getEntity());
+            return ResponseEntity.ok(jsonString);
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+    }
+
 }
