@@ -3,7 +3,8 @@ define([
     'react',
     'jsx!components/bookprofile/bookinfo',
     'jsx!components/bookprofile/bookextras',
-    'jsx!components/template/editbookmodal'
+    'jsx!components/template/editbookmodal',
+    'stores/books'
 ], function(_,React, BookInfoComponent, BookExtrasComponent, BookEditModal) {
     return React.createClass({
         getInitialState: function() {
@@ -13,16 +14,10 @@ define([
                 loggedIn = true;
             }
             return {
-                "book": {
-                    "title": "",
-                    "author": "",
-                    "isbn": 12345678910,
-                    "available": true,
-                    "year": 1994,
-                    "publisher": "John Doe"
-                },
+                "book": null,
                 loggedIn: loggedIn,
-                editing : false
+                editing : false,
+                loading: true
             }
         },
         toggleEditModal : function() {
@@ -32,19 +27,34 @@ define([
                 $("#modalEditBook").openModal();
             }
         },
-        componentDidMount: function () {
-            var self = this;
-            $.ajax({
-                url:"/api/items/books/"+this.props.view.bookID,
-                method:"GET",
-                success : function(response) {
-                    self.setState({
-                        'book' : response
-                    });
+        componentWillMount: function () {
+            var book = this.props.stores.books.getBookOrPull(this.props.view.bookID);
+            if(book) {
+                this.setState({
+                    book: book,
+                    loading: false
+                })
+            } else {
+                this.setState({
+                    loading: true
+                })
+            }
+        },
+        componentWillUpdate: function (nextProps, nextState) {
+            if(this.state.book == null) {
+                var nextBook = nextProps.stores.books.getBook(this.props.view.bookID);
+                if(nextBook){
+                    nextState.book = nextBook;
+                    nextState.loading = false;
                 }
-            });
+            }
         },
         render: function() {
+            if (this.state.loading) {
+                return (
+                    <p>Loading</p>
+                )
+            }
             return (
                 <div className="padNav" id="profileContent">
                     <div className="row" id="bookProfileTop">

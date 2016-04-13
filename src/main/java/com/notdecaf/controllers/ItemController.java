@@ -1,11 +1,13 @@
 package com.notdecaf.controllers;
 
 import com.notdecaf.daos.ItemDao;
+import com.notdecaf.daos.UserCheckedOutItemDao;
 import com.notdecaf.daos.UserDao;
 import com.notdecaf.helpers.ItemFactory;
 import com.notdecaf.helpers.SetHelper;
 import com.notdecaf.models.Item;
 import com.notdecaf.models.User;
+import com.notdecaf.models.UserCheckedOutItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,9 @@ public class ItemController {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private UserCheckedOutItemDao checkedOutItemDao;
 
     @RequestMapping(value = "/api/items/{id}", method = RequestMethod.GET)
     public ResponseEntity<Item> get(HttpSession session, @PathVariable long id) {
@@ -194,5 +199,25 @@ public class ItemController {
             returnMap.put("favorited", false);
         }
         return ResponseEntity.ok(returnMap);
+    }
+
+    @RequestMapping(value = "/api/items/{id}/checkout", method = RequestMethod.POST)
+    public ResponseEntity checkout(HttpServletRequest req, @PathVariable long id) {
+        User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        Item item = ItemFactory.getItemFromCache(id);
+        if(item == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        for (UserCheckedOutItem checkedOutItem: item.getCheckedOutBy()) {
+            if (checkedOutItem.getUser().getId() == user.getId()) {
+                return ResponseEntity.badRequest().body(null);
+            }
+        }
+        UserCheckedOutItem userCheckedOutItem = new UserCheckedOutItem(user,item);
+        checkedOutItemDao.save(userCheckedOutItem);
+        return ResponseEntity.ok(null);
     }
 }

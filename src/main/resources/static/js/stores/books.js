@@ -19,8 +19,12 @@ define([
                 case Constants.ADD_BOOK:
                     this.addBook(action.data);
                     this.event.emit("change");
+                    break;
                 case Constants.ADD_RECENT_BOOK:
                     this.addRecentBook(action.data);
+                    this.event.emit("change");
+                case Constants.CHECKOUT:
+                    this.checkoutBook(action.data);
                     this.event.emit("change");
             }
 
@@ -42,6 +46,23 @@ define([
         // debugger;
         return this.recents;
     };
+
+    Store.prototype.getBookOrPull = function(id) {
+        if (this.books[id]) {
+            return this.books[id];
+        } else {
+            this.action.getBook(id);
+            return null;
+        }
+    };
+    
+    Store.prototype.getBook = function (id) {
+        return this.books[id];
+    };
+
+    Store.prototype.checkout = function(id) {
+        this.books[id].checkedOut = true;
+    }
 
     return Store;
 })

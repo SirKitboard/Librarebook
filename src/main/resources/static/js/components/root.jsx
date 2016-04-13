@@ -66,7 +66,7 @@ define([
                     componentRendered = <AdminDashboardComponent setView={this.setView} view={this.state.view}/>
                     break;
                 case 'bookProfile':
-                    componentRendered = <BookprofileComponent setView={this.setView} view={this.state.view}/>
+                    componentRendered = <BookprofileComponent stores={this.stores} setView={this.setView} view={this.state.view}/>
                     break;
                 case 'searchResults':
                     componentRendered = <SearchResultsComponent setView={this.setView} view={this.state.view}/>

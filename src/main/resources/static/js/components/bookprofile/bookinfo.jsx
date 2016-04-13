@@ -1,15 +1,14 @@
 define([
     'underscore',
-    'react'
-], function(_, React) {
+    'react',
+    'actions/books'
+], function(_, React, BookActions) {
     return React.createClass({
         getInitialState: function(){
             var liked = false;
             var self = this;
             var loggedIn = false;
-            if (window.currentUser) {
-                loggedIn = true;
-            }
+            //TODO: move to actions and move up to book profile
             $.ajax({
                 url: "/api/items/"+window.bookID+"/getfavorite",
                 method: "POST",
@@ -21,12 +20,12 @@ define([
             });
             return {
                 'liked': liked,
-                'loggedIn' : loggedIn
             }
         },
         toggleLike : function() {
             var self = this;
             var book = this.props.book;
+            //TODO: move to actions
             $.ajax({
                 url: "/api/items/"+this.props.book.id+"/favorite",
                 method: "POST",
@@ -39,7 +38,10 @@ define([
         },
 
         checkout: function() {
-            
+            BookActions.checkout(this.props.book.id);
+        },
+        purchase: function() {
+
         },
         render: function() {
             var authors = this.props.book.authors;
@@ -113,7 +115,8 @@ define([
                         <p className="left-align">Rating</p><p className="right-align"></p>
                     </span>
                     <button className= {"btn-large right " + disabled} id="addToCart">Add to cart</button>
-                    <button className= {"btn-large right " + disabled} id="instantCheckout" onClick={this.checkout()}>Checkout</button>
+                    <button className= {"btn-large right " + disabled} id="instantCheckout" onClick={this.checkout}>Checkout</button>
+                    <button className= {"btn-large right " + disabled} id="purchase" onClick={this.purchase}>Purchase</button>
                 </div>
             )
         }

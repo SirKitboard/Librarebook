@@ -21,6 +21,32 @@ define([
                     });
                 }
             })
+        },
+        
+        checkout: function(id) {
+            $.ajax({
+                url: "/api/items/"+id+"/checkout",
+                method: "POST",
+                success: function(response) {
+                    AppDispatcher.dispatch({
+                        actionType: Constants.CHECKOUT,
+                        data: id
+                    })
+                }
+            })
+        },
+        
+        getBook: function(id) {
+            $.ajax({
+                url: "/api/items/books/"+id,
+                method: "GET",
+                success: function(response) {
+                    AppDispatcher.dispatch({
+                        actionType: Constants.ADD_BOOK,
+                        data:response
+                    })
+                }
+            })
         }
     };
 });
