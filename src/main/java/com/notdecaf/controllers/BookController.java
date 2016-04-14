@@ -193,8 +193,8 @@ public class BookController implements BaseController<Book> {
 
     @RequestMapping(value = "/api/items/books/{id}", method = RequestMethod.DELETE)
     public ResponseEntity delete(HttpServletRequest request, @PathVariable long id) {
-        // TODO: Implement delete
-        return null;
+        BookFactory.delete(id);
+        return new ResponseEntity<Book>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "/api/items/books/recent", method = RequestMethod.GET)
