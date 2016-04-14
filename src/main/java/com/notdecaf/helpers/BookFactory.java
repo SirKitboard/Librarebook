@@ -2,11 +2,8 @@ package com.notdecaf.helpers;
 
 import com.notdecaf.daos.BookDao;
 import com.notdecaf.models.Book;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,5 +57,7 @@ public class BookFactory {
     public static void save(Book book) {
         bookDao.save(book);
     }
+
+    public static void delete(long id) {bookDao.delete(id);}
 //    private static linearSearchBook
 }
