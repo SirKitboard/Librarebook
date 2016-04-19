@@ -88,6 +88,34 @@ define([
                     window.open("http://localhost:6544/gotoBook?accessToken="+response+"&isbn="+isbn);
                 }
             })
+        },
+        update : function(bookID) {
+            $.ajax({
+                url: "/api/items/books/" + bookID,
+                method: "PUT",
+                success: function (response) {
+                    AppDispatcher.dispatch({
+                        actionType: Constants.UPDATE_BOOK,
+                        data: {
+                            data: response
+                        }
+                    })
+                }
+            })
+        },
+        delete : function(bookID) {
+            $.ajax({
+                url: "/api/items/books/" + bookID,
+                method: "DELETE",
+                success: function(response) {
+                    AppDispatcher.dispatch({
+                        actionType: Constants.DELETE_BOOK,
+                        data: {
+                            data: response
+                        }
+                    })
+                }
+            })
         }
     };
 });

@@ -81,5 +81,9 @@ define([
         this.books[response.bookID].favorited = response.status;
     };
 
+    Store.prototype.update = function(id) {
+        this.books[book.id] = book;
+    };
+
     return Store;
 })
