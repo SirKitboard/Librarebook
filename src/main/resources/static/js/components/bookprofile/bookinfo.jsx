@@ -16,9 +16,9 @@ define([
                 if (isCheckedOut) {
                     checkedOut = true;
                 }
-
             }
-            console.log(this.props.book);
+            $(".modal-trigger.edit-modal").leanModal();
+
             return {
                 'checkedOut': checkedOut
             }
@@ -28,12 +28,17 @@ define([
             var book = this.props.book;
             BookActions.toggleFavorite(this.props.book);
         },
-
         checkout: function() {
             BookActions.checkout(this.props.book.id);
         },
         purchase: function() {
             BookActions.purchase(this.props.book.id, this.props.book.isbn);
+        },
+        delete: function() {
+            BookActions.delete(this.props.book.id);
+        },
+        componentDidMount : function() {
+            $(".modal-trigger.editModalTrigger").leanModal();
         },
         render: function() {
             var authors = this.props.book.authors;
@@ -94,7 +99,7 @@ define([
                     <h5>by {authorText}</h5>
                     <div className="row">
                         {this.props.book.favorited ? <span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like-filled"/> : <span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like"/> }
-                        {this.props.loggedIn ? <a href="#modalEditBook" style={editStyle} className="modal-trigger icons8-edit-property" onClick={this.props.onEditClicked}/> : ""}
+                        {this.props.loggedIn ? <a href="#modalEditBook" style={editStyle} className="modal-trigger editModalTrigger icons8-edit-property"></a> : null}
                         {card}
                     </div>
                     <p>ISBN: {this.props.book.isbn}</p>

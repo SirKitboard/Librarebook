@@ -65,7 +65,11 @@ define([
                             <BookExtrasComponent book={this.state.book} id="bookExtras"/>
                         </div>
                     </div>
-                    <BookEditModal book={this.state.book}/>
+                    <div id="modalEditBook" className="modal">
+                        <div className="modal-content container editBook">
+                            <BookEditModal book={this.state.book}/>
+                        </div>
+                    </div>
                 </div>
             )
         }
