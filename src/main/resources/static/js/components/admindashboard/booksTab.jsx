@@ -2,8 +2,9 @@ define([
     'underscore',
     'react',
     'jsx!components/template/book',
-    'jsx!components/bookprofile/bookinfo'
-], function(_,React, Book, BookInfo) { //, BookInfoComponent, BookExtrasComponent, BookRecommendComponent) {
+    'jsx!components/bookprofile/bookinfo',
+    'actions/books'
+], function(_,React, Book, BookInfo, BookActions) { //, BookInfoComponent, BookExtrasComponent, BookRecommendComponent) {
     return React.createClass({
         getInitialState: function() {
             var book = {
@@ -20,9 +21,29 @@ define([
             }
         },
         addBook : function() {
-            var self = this;
-            var book = this.props.book;
-            BookActions.addBook(this.props.book);
+            var title = $("#title").val();
+            var description = $("#description").val();
+            var author = $("#author").val();
+            var genre = $("#genre").val();
+            var publisher = $("#publisher").val();
+            var yearPublished = $("#yearPublished").val();
+            var totalLicenses = $("#totalLicenses").val();
+            var language = $("#language").val();
+            var numPages = $("#numPages").val();
+
+            var data = {
+                title: title,
+                genres: genre,
+                authors: author,
+                publisher: publisher,
+                description: description,
+                yearPublished: yearPublished,
+                totalLicenses: totalLicenses,
+                language: language,
+                numPages: numPages
+            };
+
+            BookActions.addBook(data);
         },
         
         componentDidMount: function() {

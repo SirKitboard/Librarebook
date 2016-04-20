@@ -10,4 +10,5 @@ import javax.transaction.Transactional;
  */
 @Transactional
 public interface GenreDao extends CrudRepository<Genre, Long>{
+    public Genre findByName(String name);
 }

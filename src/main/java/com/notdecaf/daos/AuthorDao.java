@@ -10,4 +10,5 @@ import javax.transaction.Transactional;
  */
 @Transactional
 public interface AuthorDao extends CrudRepository<Author, Long> {
+    public Author findByFirstNameAndLastName(String firstName, String lastName);
 }

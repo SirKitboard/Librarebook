@@ -9,5 +9,5 @@ import java.util.List;
  * Created by Adi on 3/28/2016.
  */
 public interface PublisherDao extends CrudRepository<Publisher, Long>{
-//    List<Publisher> findByName(String name);
+    Publisher findByName(String name);
 }

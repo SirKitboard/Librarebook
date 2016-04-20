@@ -49,10 +49,11 @@ define([
             })
         },
 
-        addBook: function(id) {
+        addBook: function(data) {
             $.ajax({
                 url: "/api/items/books/",
                 method: "POST",
+                data: data,
                 success: function(response) {
                     AppDispatcher.dispatch({
                         actionType: Constants.ADD_BOOK,
