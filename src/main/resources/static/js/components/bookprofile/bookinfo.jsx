@@ -40,6 +40,12 @@ define([
         componentDidMount : function() {
             $(".modal-trigger.editModalTrigger").leanModal();
         },
+        componentWillUpdate: function(nextProps,nextState) {
+            nextBook = nextProps.book;
+            if (nextBook) {
+                nextState.checkedOut = nextBook.checkedOut
+            }
+        },
         render: function() {
             var authors = this.props.book.authors;
             var authorText = "";
