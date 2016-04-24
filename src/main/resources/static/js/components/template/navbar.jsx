@@ -92,7 +92,7 @@ define([
                 $("#cart").animate({
                     right:"0px"
                 }, 500)
-                $("#dark-cover").css('display','block')
+                $("#dark-cover").css('display','block');
                 $("#dark-cover").animate({
                     opacity: '0.7'
                 }, 500);
@@ -103,31 +103,22 @@ define([
         },
         submitSearch : function(e) {
             if(e.keyCode == 13) {
-                this.props.setView({
-                    view: 'searchResults',
-                    query: e.target.value
-                })
+                this.props.setView("view/searchResults/"+JSON.stringify({query:e.target.value}));
             }
         },
         gotoProfile : function() {
-            this.props.setView({
-                view: 'profile'
-            });
+            this.props.setView("view/profile");
         },
         gotoHome : function() {
-            this.props.setView({
-                view: 'home'
-            })
+            this.props.setView("view/home");
         },
         gotoAdminDashboard : function() {
-            this.props.setView({
-                view: 'adminDashboard'
-            });
+            this.props.setView("view/adminDashboard");
         },
         render: function() {
             var searchDetails = "";
             if(this.state.showSearchDetails) {
-                var searchDetails = (
+                searchDetails = (
                     <div id="searchDetails" className="searchDetails container">
                         <div className="row">
                             <div className="col s12 m6 genre-filters input-field">
@@ -165,23 +156,23 @@ define([
                                 <div className="row">
                                     <div className="input-field col s12">
                                         <input ref="Author" id="Author" type="text" className="validate"/>
-                                        <label htmlhtmlFor="Author">Author</label>
+                                        <label htmlFor="Author">Author</label>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="input-field col s12 m6">
                                         <input ref="fromyear" id="fromyear" type="text" className="validate"/>
-                                        <label htmlhtmlFor="fromyear">From Year</label>
+                                        <label htmlFor="fromyear">From Year</label>
                                     </div>
                                     <div className="input-field col s12 m6">
                                         <input ref="toyear" id="toyear" type="text" className="validate"/>
-                                        <label htmlhtmlFor="toyear">To Year</label>
+                                        <label htmlFor="toyear">To Year</label>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="input-field col s12">
                                         <input ref="rating" id="rating" type="number" min="0" max="5" className="validate"/>
-                                        <label htmlhtmlFor="rating">Rating</label>
+                                        <label tmlFor="rating">Rating</label>
                                     </div>
                                 </div>
                             </div>
@@ -191,15 +182,15 @@ define([
             }
             if(this.state.loggedIn) {
                 var navItems = (<ul id="dropdown1" className="dropdown-content">
-                      <li><a onClick={this.gotoProfile} href="#">Profile</a></li>
-                      <li><a onClick={this.gotoAdminDashboard} href="#!">Admin Dashboard</a></li>
-                      <li><a onClick={this.logout} href="#">Logout</a></li>
+                      <li><a onClick={this.gotoProfile}>Profile</a></li>
+                      <li><a onClick={this.gotoAdminDashboard}>Admin Dashboard</a></li>
+                      <li><a onClick={this.logout}>Logout</a></li>
                     </ul>)
                 var mobileItems = (
                     <ul className="side-nav" id="mobile-demo">
-                        <li><a onClick={this.gotoProfile} href="#!">Profile</a></li>
-                        <li><a onClick={this.gotoAdminDashboard} href="#!">Admin Dashboard</a></li>
-                        <li><a onClick={this.logout} href="#">Logout</a></li>
+                        <li><a onClick={this.gotoProfile}>Profile</a></li>
+                        <li><a onClick={this.gotoAdminDashboard}>Admin Dashboard</a></li>
+                        <li><a onClick={this.logout}>Logout</a></li>
                     </ul>
                 )
             } else {

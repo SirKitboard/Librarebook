@@ -105,7 +105,7 @@ define([
                     <h5>by {authorText}</h5>
                     <div className="row">
                         {this.props.book.favorited ? <span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like-filled"/> : <span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like"/> }
-                        {this.props.loggedIn ? <a href="#modalEditBook" style={editStyle} className="modal-trigger editModalTrigger icons8-edit-property"></a> : null}
+                        {this.props.loggedIn ? <a href="#modalEditBook" style={editStyle} className="modal-trigger editModalTrigger icons8-edit-property">&nbsp;</a> : null}
                         {card}
                     </div>
                     <p>ISBN: {this.props.book.isbn}</p>

@@ -100,7 +100,8 @@ html, body {
   z-index: 100; }
 
 .login {
-  text-align: center; }
+  text-align: center;
+  overflow-x: hidden; }
   .login h2 {
     font-family: "HammersmithOne", "Helvetica", sans-serif;
     font-size: 36px;

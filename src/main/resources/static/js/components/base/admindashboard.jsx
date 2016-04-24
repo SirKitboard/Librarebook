@@ -9,8 +9,8 @@ define([
     return React.createClass({
         getInitialState: function() {
             var tab = 0;
-            if(this.props.view.selectedTab) {
-                tab = this.props.view.selectedTab
+            if(this.props.view.split("/")[2]) {
+                tab = this.props.view.split("/")[2]
             }
             return {
                 selectedTab : tab
@@ -38,10 +38,7 @@ define([
                 left: position.left,
                 width: width - 5
             }, 300);
-            this.props.setView({
-                view : 'adminDashboard',
-                selectedTab : index
-            })
+            this.props.setView("view/adminDashboard/"+index)
         },
         render: function() {
             var tab = null;

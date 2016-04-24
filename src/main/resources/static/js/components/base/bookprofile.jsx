@@ -28,7 +28,8 @@ define([
             }
         },
         componentWillMount: function () {
-            var book = this.props.stores.books.getBookOrPull(this.props.view.bookID);
+            var bookID = this.props.view.split("/")[2];
+            var book = this.props.stores.books.getBookOrPull(bookID);
             if(book) {
                 this.setState({
                     book: book,
@@ -42,7 +43,8 @@ define([
         },
         componentWillUpdate: function (nextProps, nextState) {
             if(this.state.book == null) {
-                var nextBook = nextProps.stores.books.getBook(this.props.view.bookID);
+                var bookID = this.props.view.split("/")[2];
+                var nextBook = nextProps.stores.books.getBook(bookID);
                 if(nextBook){
                     nextState.book = nextBook;
                     nextState.loading = false;

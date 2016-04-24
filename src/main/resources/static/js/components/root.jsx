@@ -15,26 +15,24 @@ define([
             var URLHash = window.location.hash.substring(1);
             var view;
             if(URLHash == "") {
-                view = {
-                    view: 'home'
-                };
-                // window.location.hash = JSON.stringify(view);
+                view= 'view/home'
             }
             else {
-                view = JSON.parse(URLHash);
+                view = URLHash;
             }
-            window.location.hash = "";
             return {
-                view : view
+                view : view,
+                // stack: []
             }
         },
         setView: function(newView) {
+            window.location.hash = newView;
             this.setState({
                 view: newView
             })
         },
         setHash : function() {
-            window.location.hash = JSON.stringify(this.state.view);
+            window.location.hash = this.state.view;
             window.location.reload();
         },
         componentWillMount: function() {
@@ -43,10 +41,9 @@ define([
                 window.currentUser.favoriteItemIDs = userFavorites;
                 console.log(window.currentUser.favoriteItemIDs);
             }
-            var self = this;
             this.stores = {
                 books: new BooksStore()
-            }
+            };
             this.stores.books.addChangeListener(this.onChangeBooks);
             BooksActions.pullRecents();
         },
@@ -55,11 +52,21 @@ define([
         },
         componentDidMount : function() {
             window.addEventListener('unload',this.setHash);
+            var self = this;
+            window.onhashchange = function() {
+                var URLHash = window.location.hash.substring(1);
+                if(URLHash.split("/")[0] == "view" && self.state.view != URLHash) {
+                    self.setState({
+                        view: URLHash
+                    });
+                }
+            };
         },
         render : function() {
             var componentRendered;
             var showNavShadow = true;
-            switch(this.state.view.view) {
+            var view = this.state.view.split("/");
+            switch(view[1]) {
                 case 'home':
                     componentRendered = <HomepageComponent stores={this.stores} setView={this.setView} view={this.state.view}/>
                     break;
