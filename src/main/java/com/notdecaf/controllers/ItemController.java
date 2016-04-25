@@ -2,12 +2,14 @@ package com.notdecaf.controllers;
 
 import com.notdecaf.daos.ItemDao;
 import com.notdecaf.daos.UserCheckedOutItemDao;
+import com.notdecaf.daos.UserCheckoutHistoryDao;
 import com.notdecaf.daos.UserDao;
 import com.notdecaf.helpers.ItemFactory;
 import com.notdecaf.helpers.SetHelper;
 import com.notdecaf.models.Item;
 import com.notdecaf.models.User;
 import com.notdecaf.models.UserCheckedOutItem;
+import com.notdecaf.models.UserCheckoutHistory;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -47,6 +49,9 @@ public class ItemController {
     @Autowired
     private UserCheckedOutItemDao checkedOutItemDao;
 
+    @Autowired
+    private UserCheckoutHistoryDao checkoutHistoryDao;
+
     @RequestMapping(value = "/api/items/{id}", method = RequestMethod.GET)
     public ResponseEntity<Item> get(HttpSession session, @PathVariable long id) {
         Item item = ItemFactory.getItemFromCache(id);
@@ -66,12 +71,6 @@ public class ItemController {
         user.addToFavorites(item);
         userDao.save(user);
         return ResponseEntity.ok(null);
-    }
-
-    @RequestMapping(value = "/api/items/{id}/return", method = RequestMethod.POST)
-    public ResponseEntity returnBook(HttpServletRequest request, @PathVariable long id) {
-        //TODO: Implement Method
-        return null;
     }
 
     @RequestMapping(value = "/api/items/{id}/reserve", method = RequestMethod.POST)
@@ -220,14 +219,40 @@ public class ItemController {
         if(item == null) {
             return ResponseEntity.badRequest().body(null);
         }
-        for (UserCheckedOutItem checkedOutItem: item.getCheckedOutBy()) {
-            if (checkedOutItem.getUser() == user.getId()) {
-                return ResponseEntity.badRequest().body(null);
-            }
+        if (checkedOutItemDao.findByItemIdAndUserId(item.getId(),user.getId()) != null) {
+            return ResponseEntity.badRequest().body(null);
         }
         UserCheckedOutItem userCheckedOutItem = new UserCheckedOutItem(user,item);
+        user.getCurrentlyCheckedOutItems().add(userCheckedOutItem);
+        item.getCheckedOutBy().add(userCheckedOutItem);
+        userDao.save(user);
+        itemDao.save(item);
         checkedOutItemDao.save(userCheckedOutItem);
         return ResponseEntity.ok(null);
+    }
+
+    @RequestMapping(value = "/api/items/{id}/return", method = RequestMethod.POST)
+    public ResponseEntity returnItem(HttpServletRequest req, @PathVariable long id) {
+        User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        Item item = ItemFactory.getItemFromCache(id);
+        if(item == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        UserCheckedOutItem prevCheckedOutItem = checkedOutItemDao.findByItemIdAndUserId(item.getId(),user.getId());
+        if (prevCheckedOutItem == null) {
+            return ResponseEntity.badRequest().body(null);
+        } else {
+            UserCheckoutHistory userCheckoutHistory = new UserCheckoutHistory(user,item,prevCheckedOutItem.getCheckedOutOn());
+            user.getCheckoutHistory().add(userCheckoutHistory);
+            item.getCheckoutHistory().add(userCheckoutHistory);
+
+            checkedOutItemDao.delete(prevCheckedOutItem);
+            checkoutHistoryDao.save(userCheckoutHistory);
+            return ResponseEntity.ok(null);
+        }
     }
 
     @RequestMapping(value = "/api/items/{id}/purchase", method = RequestMethod.POST)

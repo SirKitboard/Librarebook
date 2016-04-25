@@ -8,20 +8,23 @@ define([
             // var liked = this.props.book.favorited;
             var self = this;
             var loggedIn = false;
-            checkedOut = false;
-            if (window.currentUser) {
-                var id = window.currentUser.id;
-                var checkedOutBy = this.props.book.checkedOutBy;
-                var isCheckedOut = _.find(checkedOutBy, function(item) { return item.user == id; });
-                if (isCheckedOut) {
-                    checkedOut = true;
-                }
-            }
+            checkedOut = this.isCheckedOut(this.props.book);
             $(".modal-trigger.edit-modal").leanModal();
 
             return {
                 'checkedOut': checkedOut
             }
+        },
+        isCheckedOut: function(book) {
+            if (window.currentUser) {
+                var id = window.currentUser.id;
+                var checkedOutBy = book.checkedOutBy;
+                var isCheckedOut = _.find(checkedOutBy, function(item) { return item.user == id; });
+                if (isCheckedOut) {
+                    return true;
+                }
+            }
+            return false;
         },
         toggleFavorite : function() {
             var self = this;
@@ -30,6 +33,9 @@ define([
         },
         checkout: function() {
             BookActions.checkout(this.props.book.id);
+        },
+        return: function() {
+            BookActions.return(this.props.book.id);
         },
         purchase: function() {
             BookActions.purchase(this.props.book.id, this.props.book.isbn);
@@ -41,9 +47,17 @@ define([
             $(".modal-trigger.editModalTrigger").leanModal();
         },
         componentWillUpdate: function(nextProps,nextState) {
-            nextBook = nextProps.book;
-            if (nextBook) {
-                nextState.checkedOut = nextBook.checkedOut
+            if (window.currentUser) {
+                nextBook = nextProps.book;
+                if (nextBook) {
+                    isCheckedOut = this.isCheckedOut(nextBook);
+                    debugger;
+                    if ("checkedOut" in nextBook) {
+                        nextState.checkedOut = nextBook.checkedOut;
+                    } else {
+                        nextState.checkedOut = this.isCheckedOut(nextBook);
+                    }
+                }
             }
         },
         render: function() {
@@ -89,10 +103,10 @@ define([
                 margin : '5px'
             };
 
-            console.log(this.state.checkedOut);
             if (this.state.checkedOut) {
                 var returnOrCheckOut =
-                    (<div className= "btn-large right" id="return" onClick={this.checkout}>Return</div>);
+                    (<div className= "btn-large right" id="return" onClick={this.return}>Return</div>);
+                console.log(returnOrCheckOut);
             } else {
                 var returnOrCheckOut =
                     (<div className= "btn-large right" id="instantCheckout" onClick={this.checkout}>Checkout</div>);

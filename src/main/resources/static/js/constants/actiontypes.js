@@ -7,7 +7,8 @@ define([
         CHECKOUT: 2,
         FAVORITE: 3,
         UPDATE_BOOK: 4,
-        DELETE_BOOK: 5
+        DELETE_BOOK: 5,
+        RETURN: 6
     }
 
     return Constants

@@ -35,7 +35,20 @@ define([
                 }
             })
         },
-        
+
+        return: function(id) {
+          $.ajax({
+              url: "/api/items/"+id+"/return",
+              method: "POST",
+              success: function(reponse) {
+                  AppDispatcher.dispatch({
+                      actionType: Constants.RETURN,
+                      data: id
+                  })
+              }
+          })
+        },
+
         getBook: function(id) {
             $.ajax({
                 url: "/api/items/books/"+id,

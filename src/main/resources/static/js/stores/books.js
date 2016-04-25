@@ -32,6 +32,10 @@ define([
                     this.toggleFavorite(action.data);
                     this.event.emit("change");
                     break;
+                case Constants.RETURN:
+                    this.return(action.data);
+                    this.event.emit("change");
+                    break;
             }
 
         }.bind(this));
@@ -76,7 +80,13 @@ define([
             this.books[id].checkedOut = true;
         }
     };
-    
+
+    Store.prototype.return = function(id) {
+        if (this.books[id]) {
+            this.books[id].checkedOut = false;
+        }
+    },
+
     Store.prototype.toggleFavorite = function(response) {
         this.books[response.bookID].favorited = response.status;
     };

@@ -26,10 +26,13 @@ public class UserCheckoutHistory {
     private Date checkedOutOn;
     private Date returnedOn;
 
-    public UserCheckoutHistory(User user, Item item) {
+    public UserCheckoutHistory() {}
+
+    public UserCheckoutHistory(User user, Item item, Date checkedOutOn) {
         this.user = user;
         this.item = item;
-        this.checkedOutOn = new Date();
+        this.checkedOutOn = checkedOutOn;
+        this.returnedOn = new Date();
     }
 
     public long getId() {
