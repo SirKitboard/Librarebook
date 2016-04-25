@@ -2,8 +2,9 @@ define([
     "underscore",
     "react",
     'jsx!components/template/shoppingcart',
-    'react-dom'
-], function(_, React, ShoppingCartComponent, ReactDOM) {
+    'react-dom',
+    'actions/user'
+], function(_, React, ShoppingCartComponent, ReactDOM, UserActions) {
     return React.createClass({
         getInitialState: function(){
             // debugger;
@@ -35,6 +36,10 @@ define([
             $(document).ready(function(){
               $('ul.tabs.login').tabs();
             });
+            $('.datepicker').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 60 // Creates a dropdown of 15 years to control year
+            });
         },
         showDetails : function() {
             this.setState({
@@ -48,32 +53,75 @@ define([
             // $("#searchDetails").css('display', 'none')
         },
         login: function(e) {
-            var email = $(this.refs.emailLogin).val();
-            var password = $(this.refs.passwordLogin).val();
-            // debugger;
-            $.ajax({
-                url:"/api/login",
-                method: "POST",
-                data: {
-                    email: email,
-                    password: password
-                },
-                success: function(response) {
-                    window.location.reload();
-                },
-                error: function (xhr, status, response) {
-                    console.log('fail');
-                }
-            })
+            UserActions.login(this.refs, this.loginError());
+        },
+        loginError:function() {
+            var self = this;
+            $(this.refs.passwordLogin).addClass("invalid");
+            setTimeout(function() {
+                $(self.refs.passwordLogin).removeClass("invalid");
+            }, 3000);
         },
         logout : function() {
-            $.ajax({
-                url:"/api/logout",
-                method: "POST",
-                success: function() {
-                    window.location.reload();
+            UserActions.logout();
+        },
+        signup: function() {
+            if(this.validateInput({
+                    target : null
+                })) {
+                UserActions.signup(this.refs);
+            }
+        },
+        validateInput: function(e) {
+            var target = e.target;
+            var error = false;
+            if(e.target == null || target.id == "password") {
+                var password = this.refs.password.value;
+                if(password.length == 0){
+                    $password = $(this.refs.password);
+                    if(!$password.hasClass("invalid")) {
+                        $password.addClass("invalid");
+                        error = true;
+                    }
+                } else {
+                    $password = $(this.refs.password);
+                    $password.removeClass("invalid");
+                    if(!$password.hasClass("valid")) {
+                        $password.addClass("valid")
+                    }
                 }
-            })
+            }
+            if(e.target == null || target.id == "password_r") {
+                var password = this.refs.password.value;
+                var password_r = this.refs.password_r.value;
+                if(password != password_r){
+                    $passwordRepeat = $(this.refs.password_r);
+                    if(!$passwordRepeat.hasClass("invalid")) {
+                        $passwordRepeat.addClass("invalid");
+                        error = true;
+                    }
+                } else {
+                    $passwordRepeat = $(this.refs.password_r);
+                    $passwordRepeat.removeClass("invalid");
+                }
+            }
+            if(e.target == null || target.id == "phone") {
+                var phone = this.refs.phone;
+                $phone = $(phone);
+                if(phone.value.match(/\+[0-9]{1,3}\([0-9]{3}\)-[0-9]{3}-[0-9]{4}/g)) {
+                    $phone.removeClass("invalid")
+                    if(!$phone.hasClass("valid")) {
+                        $phone.addClass("valid")
+                    }
+                } else {
+                    $phone.removeClass("valid");
+                    if(!$phone.hasClass("invalid")) {
+                        $phone.addClass("invalid")
+                    }
+                    error = true;
+                }
+            }
+            return !error;
         },
         toggleCart : function() {
             if(this.state.cartOpen) {
@@ -185,7 +233,7 @@ define([
                       <li><a onClick={this.gotoProfile}>Profile</a></li>
                       <li><a onClick={this.gotoAdminDashboard}>Admin Dashboard</a></li>
                       <li><a onClick={this.logout}>Logout</a></li>
-                    </ul>)
+                    </ul>);
                 var mobileItems = (
                     <ul className="side-nav" id="mobile-demo">
                         <li><a onClick={this.gotoProfile}>Profile</a></li>
@@ -240,12 +288,12 @@ define([
                                     <h2 className="flow-text">Login</h2>
                                     <div className="row">
                                         <div className="input-field col s12">
-                                            <input ref="emailLogin" id="email" type="text" className="validate"/>
+                                            <input ref="emailLogin" id="email" type="text"/>
                                             <label htmlFor="email">Email</label>
                                         </div>
                                         <div className="input-field col s12">
-                                            <input ref="passwordLogin" id="password" type="password" className="validate" data-error="Invalid username or password"/>
-                                            <label htmlFor="password">Password</label>
+                                            <input ref="passwordLogin" id="password" type="password"/>
+                                            <label htmlFor="password" data-error="Invalid username or password">Password</label>
                                         </div>
                                         <div className="col s12 buttons">
                                             <button onClick={this.login} className="btn waves-effect waves-light" id='login' type="submit" name="action">Submit
@@ -262,7 +310,7 @@ define([
                                 </div>
                                 <div id="signupTab" className="col s12 signup">
                                     <div className="row contact header">
-                                        <span>Contact Info </span>
+                                        <span>User Info </span>
                                         <i className="material-icons">info_outline</i>
                                     </div>
                                     <div className="row">
@@ -284,8 +332,18 @@ define([
                                     </div>
                                     <div className="row">
                                         <div className="input-field col s12">
-                                            <input ref="phone" id="phone" type="tel" className="validate"/>
-                                            <label htmlFor="phone">Phone</label>
+                                            <input onChange={this.validateInput} ref="phone" id="phone" type="tel" className="validate"/>
+                                            <label data-error="Number must match format +x(xxx)-xxx-xxxx" htmlFor="phone">Phone</label>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="input-field col s6">
+                                            <input ref="dob" id="dob" type="date" className="datepicker"/>
+                                            <label htmlFor="dob">Date Of Birth</label>
+                                        </div>
+                                        <div className="input-field col s6">
+                                            <input ref="gender" id="gender" type="text" className="validate"/>
+                                            <label htmlFor="gender">Gender</label>
                                         </div>
                                     </div>
 
@@ -293,21 +351,14 @@ define([
                                         <span>Account Info&nbsp;</span>
                                         <i className="material-icons">vpn_key</i>
                                     </div>
-
-                                    <div className="row">
-                                        <div className="input-field col s12">
-                                            <input ref="username" id="username" type="text" className="validate"/>
-                                            <label htmlFor="username">Username</label>
-                                        </div>
-                                    </div>
                                     <div className="row">
                                         <div className="input-field col s12 m6">
-                                            <input ref="password" type="password" id="password"/>
-                                            <label htmlFor="password">Password</label>
+                                            <input onChange={this.validateInput} ref="password" type="password" id="password"/>
+                                            <label data-error="Password cannot be null" htmlFor="password">Password</label>
                                         </div>
                                         <div className="input-field col s12 m6">
-                                            <input data-error="Passwords dont match" data-success='Passwords match!' ref="password_r" id="password_r" type="password"/>
-                                            <label htmlFor="password_r">Repeat Password</label>
+                                            <input onChange={this.validateInput} ref="password_r" id="password_r" type="password"/>
+                                            <label  data-error="Passwords dont match" data-success='Passwords match!'  htmlFor="password_r">Repeat Password</label>
                                         </div>
                                     </div>
 
@@ -322,32 +373,27 @@ define([
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <div className="input-field col s12">
+                                        <div className="input-field col s6">
                                             <input ref="city" id="city" type="text" className="validate"/>
                                             <label htmlFor="city">City</label>
                                         </div>
-                                    </div>
-                                    <div className="row">
                                         <div className="input-field col s12 m6">
                                             <input ref="state" id="state" type="text" className="validate"/>
                                             <label htmlFor="state">State</label>
                                         </div>
+                                    </div>
+                                    <div className="row">
                                         <div className="input-field col s12 m6">
-                                            <input ref='zipCode' id="zipcode" type="number" className="validate"/>
+                                            <input ref='zipCode' id="zipCode" type="number" min="0" max="999999" className="validate"/>
                                             <label htmlFor="zipCode">ZipCode</label>
                                         </div>
-                                    </div>
-                                    <div className="row">
-                                        <span className="payment header">Payment <i className="material-icons">payment</i> </span>
-                                    </div>
-                                    <div className="row">
-                                        <div className="input-field col s12">
-                                            <input ref="creditCardNumber" id="ccn" type="text" className="validate"/>
-                                            <label htmlFor="creditCardNumber">Credit Card Number</label>
+                                        <div className="input-field col s12 m6">
+                                            <input ref="country" id="country" type="text" className="validate"/>
+                                            <label htmlFor="country">Country</label>
                                         </div>
                                     </div>
-                                    <div className="row">
-                                        <button onClick={this.toggleLogin} className="btn waves-effect waves-light" id='login' type="submit" name="action">Signup
+                                    <div className="row col s12 buttons">
+                                        <button onClick={this.signup} className="btn waves-effect waves-light" id='login' type="submit" name="action">Signup
                                           <i className="material-icons right">send</i>
                                         </button>
                                         <button className="btn waves-effect waves-light modal-action modal-close">Close

@@ -12,7 +12,8 @@ require.config({
 	        "underscore": "bower_components/underscore/underscore",
 	        	  "text": "bower_components/requirejs-text/text",
 	        	"events": "bower_components/eventEmitter/EventEmitter",
-	           "snapsvg": "bower_components/snap.svg/dist/snap.svg"
+	           "snapsvg": "bower_components/snap.svg/dist/snap.svg",
+		    "dateformat": "bower_components/date.format/date.format"
  	},
  	jsx: {
 		fileExtension: ".jsx"

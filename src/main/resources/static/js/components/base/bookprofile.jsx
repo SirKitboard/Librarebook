@@ -20,13 +20,6 @@ define([
                 loading: true
             }
         },
-        toggleEditModal : function() {
-            if(this.state.editing) {
-                $("#modalEditBook").closeModal();
-            } else {
-                $("#modalEditBook").openModal();
-            }
-        },
         componentWillMount: function () {
             var bookID = this.props.view.split("/")[2];
             var book = this.props.stores.books.getBookOrPull(bookID);
@@ -61,7 +54,7 @@ define([
                 <div className="padNav" id="profileContent">
                     <div className="row" id="bookProfileTop">
                         <div className="col l4">
-                            <BookInfoComponent book={this.state.book} onEditClick={this.toggleEditModal} loggedIn={this.state.loggedIn}/>
+                            <BookInfoComponent book={this.state.book} loggedIn={this.state.loggedIn}/>
                         </div>
                         <div className="col l8">
                             <BookExtrasComponent book={this.state.book} id="bookExtras"/>

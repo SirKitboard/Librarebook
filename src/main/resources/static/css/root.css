@@ -100,13 +100,14 @@ html, body {
   z-index: 100; }
 
 .login {
-  text-align: center;
   overflow-x: hidden; }
   .login h2 {
+    text-align: center;
     font-family: "HammersmithOne", "Helvetica", sans-serif;
     font-size: 36px;
     margin-bottom: 0; }
   .login .buttons {
+    margin-top: 20px;
     display: flex;
     justify-content: space-around;
     margin-bottom: 10px; }
@@ -134,6 +135,10 @@ html, body {
       padding-left: 0; }
       .signup .row .input-field label {
         left: 0; }
+
+.input-field label::after {
+  width: 100%;
+  min-width: 180px; }
 
 .bookCarousel {
   width: 100%;

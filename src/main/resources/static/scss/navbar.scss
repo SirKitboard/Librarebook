@@ -146,16 +146,17 @@ $tloa-yellow: #FFB74D;
 }
 
 .login {
-  text-align: center;
   overflow-x: hidden;
 
   h2 {
+    text-align: center;
     font-family: "HammersmithOne", "Helvetica", sans-serif;
     font-size: 36px;
     margin-bottom: 0;
   }
 
   .buttons{
+    margin-top: 20px;
     display: flex;
     justify-content: space-around;
     margin-bottom: 10px;
@@ -206,4 +207,11 @@ $tloa-yellow: #FFB74D;
             }
         }
     }
+}
+
+.input-field {
+  label::after {
+    width: 100%;
+    min-width: 180px;
+  }
 }

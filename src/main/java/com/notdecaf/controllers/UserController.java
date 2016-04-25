@@ -74,6 +74,11 @@ public class UserController implements BaseController<User> {
                     || !requestMap.containsKey("country"))
                 return ResponseEntity.badRequest().body(null);
 
+            User found = userDao.findByEmail(request.getParameter("email"));
+            if(found != null) {
+                return ResponseEntity.badRequest().body(found);
+            }
+
             Address address = new Address(request.getParameter("addressLine1"), request.getParameter("city"), request.getParameter("state"), Integer.parseInt(request.getParameter("zipcode")), request.getParameter("country"));
 
             User user = new User(request.getParameter("firstName"),

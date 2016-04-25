@@ -25,6 +25,7 @@
     "materialize": "latest",
     "velocity": "latest",
     "hammerjs": "latest",
-    "jquery-hammerjs": "latest"
+    "jquery-hammerjs": "latest",
+    "date.format": "latest"
   }
 }
