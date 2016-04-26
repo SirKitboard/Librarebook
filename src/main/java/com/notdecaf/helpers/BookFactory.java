@@ -72,4 +72,12 @@ public class BookFactory {
         return bookList;
     }
 //    private static linearSearchBook
+
+    public static void update(Book book) {
+        for(int i=0; i<lruBookCache.size(); i++) {
+            if (lruBookCache.get(i).getId() == book.getId()) {
+                lruBookCache.set(i,book);
+            }
+        }
+    }
 }

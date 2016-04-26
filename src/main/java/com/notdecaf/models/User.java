@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -93,6 +94,21 @@ public class User extends IDModel implements Cloneable{
 
     public void setCurrentlyCheckedOutItems(Set<UserCheckedOutItem> currentlyCheckedOutItems) {
         this.currentlyCheckedOutItems = currentlyCheckedOutItems;
+    }
+
+    public void addCheckedOutItem(UserCheckedOutItem checkedOutItem) {
+        this.currentlyCheckedOutItems.add(checkedOutItem);
+    }
+
+    public void removeCheckedOutItem(UserCheckedOutItem checkedOutItem) {
+        Set<UserCheckedOutItem> newSet = new HashSet<>();
+        for(UserCheckedOutItem item : currentlyCheckedOutItems) {
+            if(item.getId() == checkedOutItem.getId()) {
+                continue;
+            }
+            newSet.add(item);
+        }
+        this.currentlyCheckedOutItems = newSet;
     }
 
     public Set<UserCheckoutHistory> getCheckoutHistory() {

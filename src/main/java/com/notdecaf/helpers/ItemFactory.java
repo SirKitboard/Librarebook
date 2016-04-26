@@ -61,5 +61,13 @@ public class ItemFactory {
         itemDao.save(item);
     }
 //    private static linearSearchItem
+
+    public static void update(Item item) {
+        for(int i=0; i<lruItemCache.size(); i++) {
+            if (lruItemCache.get(i).getId() == item.getId()) {
+                lruItemCache.set(i,item);
+            }
+        }
+    }
 }
 

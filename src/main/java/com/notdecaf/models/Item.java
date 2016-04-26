@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.notdecaf.helpers.ItemStatus;
 import com.notdecaf.helpers.Language;
+import com.notdecaf.helpers.SetHelper;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -18,6 +20,7 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name="item_type")
 @Table(name = "items")
+@Cacheable(false)
 public abstract class Item extends IDModel{
     public Item() {
     }
@@ -86,10 +89,10 @@ public abstract class Item extends IDModel{
     @JoinColumn(name = "series")
     private Series series;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "item")
     private Set<UserCheckedOutItem> checkedOutBy;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "item")
     private Set<UserCheckoutHistory> checkoutHistory;
 
     public Set<UserCheckedOutItem> getCheckedOutBy() {
@@ -98,6 +101,21 @@ public abstract class Item extends IDModel{
 
     public void setCheckedOutBy(Set<UserCheckedOutItem> checkedOutBy) {
         this.checkedOutBy = checkedOutBy;
+    }
+
+    public void addCheckedOutItem(UserCheckedOutItem checkedOutItem) {
+        this.checkedOutBy.add(checkedOutItem);
+    }
+
+    public void removeCheckedOutItem(UserCheckedOutItem checkedOutItem) {
+        Set<UserCheckedOutItem> newSet = new HashSet<>();
+        for(UserCheckedOutItem item : checkedOutBy) {
+            if(item.getId() == checkedOutItem.getId()) {
+                continue;
+            }
+            newSet.add(item);
+        }
+        this.checkedOutBy = newSet;
     }
 
     public Set<UserCheckoutHistory> getCheckoutHistory() {

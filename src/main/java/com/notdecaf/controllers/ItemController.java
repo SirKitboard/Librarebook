@@ -4,12 +4,10 @@ import com.notdecaf.daos.ItemDao;
 import com.notdecaf.daos.UserCheckedOutItemDao;
 import com.notdecaf.daos.UserCheckoutHistoryDao;
 import com.notdecaf.daos.UserDao;
+import com.notdecaf.helpers.BookFactory;
 import com.notdecaf.helpers.ItemFactory;
 import com.notdecaf.helpers.SetHelper;
-import com.notdecaf.models.Item;
-import com.notdecaf.models.User;
-import com.notdecaf.models.UserCheckedOutItem;
-import com.notdecaf.models.UserCheckoutHistory;
+import com.notdecaf.models.*;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -28,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -223,11 +220,17 @@ public class ItemController {
             return ResponseEntity.badRequest().body(null);
         }
         UserCheckedOutItem userCheckedOutItem = new UserCheckedOutItem(user,item);
-        user.getCurrentlyCheckedOutItems().add(userCheckedOutItem);
-        item.getCheckedOutBy().add(userCheckedOutItem);
+        checkedOutItemDao.save(userCheckedOutItem);
+
+        user.addCheckedOutItem(userCheckedOutItem);
+        item.addCheckedOutItem(userCheckedOutItem);
         userDao.save(user);
         itemDao.save(item);
-        checkedOutItemDao.save(userCheckedOutItem);
+
+        ItemFactory.update(item);
+        if (item instanceof Book) {
+            BookFactory.update((Book) item);
+        }
         return ResponseEntity.ok(null);
     }
 
@@ -248,9 +251,18 @@ public class ItemController {
             UserCheckoutHistory userCheckoutHistory = new UserCheckoutHistory(user,item,prevCheckedOutItem.getCheckedOutOn());
             user.getCheckoutHistory().add(userCheckoutHistory);
             item.getCheckoutHistory().add(userCheckoutHistory);
-
-            checkedOutItemDao.delete(prevCheckedOutItem);
             checkoutHistoryDao.save(userCheckoutHistory);
+
+            item.removeCheckedOutItem(prevCheckedOutItem);
+            user.removeCheckedOutItem(prevCheckedOutItem);
+            itemDao.save(item);
+            checkedOutItemDao.delete(prevCheckedOutItem);
+
+            ItemFactory.update(item);
+            if (item instanceof Book) {
+                BookFactory.update((Book) item);
+            }
+
             return ResponseEntity.ok(null);
         }
     }
