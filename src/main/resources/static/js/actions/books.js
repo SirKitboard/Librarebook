@@ -130,6 +130,22 @@ define([
                     })
                 }
             })
+        },
+        search: function(params, success) {
+            $.ajax({
+                method:"GET",
+                url:"/api/items/books",
+                data: params,
+                success: function(response) {
+                    _.each(response, function (book) {
+                        AppDispatcher.dispatch({
+                            actionType: Constants.ADD_BOOK,
+                            data: book
+                        })
+                    });
+                    success(response);
+                }
+            })
         }
     };
 });

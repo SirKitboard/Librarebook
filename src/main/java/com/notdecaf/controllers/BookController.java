@@ -54,18 +54,74 @@ public class BookController implements BaseController<Book> {
     @RequestMapping(value = "/api/items/books", method = RequestMethod.GET)
     public ResponseEntity<Book[]> search(HttpServletRequest req) {
         List<Book> bookList = new ArrayList<Book>();
-        if(req.getParameterMap().containsKey("string")) {
+        Map<String, String[]> requestMap = req.getParameterMap();
+        if(requestMap.containsKey("string")) {
             int page = 0;
             if(req.getParameter("page") != null) {
                 page = Integer.parseInt(req.getParameter("page"));
             }
 
             bookList = BookFactory.findByTitle(req.getParameter("string"), page);
+        } else {
+            Iterable<Book> books = BookFactory.findAll();
+            for (Book book : books) {
+                bookList.add(book);
+            }
+        }
+        boolean authorExists = requestMap.containsKey("author");
+        boolean publisherExists = requestMap.containsKey("publisher");
+        boolean isbnExists = requestMap.containsKey("isbn");
+        boolean ratingExists = requestMap.containsKey("rating");
+        boolean fromYearExists = requestMap.containsKey("fromYear");
+        boolean toYearExists = requestMap.containsKey("toYear");
+        List<Book> filteredList = new ArrayList<Book>();
+        for(Book book: bookList) {
+            if(authorExists) {
+                boolean found = false;
+                for(Author author: book.getAuthors()) {
+                    String name = author.getFirstName().toLowerCase()+ " " + author.getLastName().toLowerCase();
+                    if(name.contains(req.getParameter("author").toLowerCase())) {
+                        found = true;
+                    }
+                }
+                if(!found) {
+                    continue;
+                }
+            }
+            if(publisherExists) {
+                if(!book.getPublisher().getName().toLowerCase().contains(req.getParameter("publisher").toLowerCase())) {
+                    continue;
+                }
+            }
+            if(isbnExists) {
+                if(!book.getIsbn().toLowerCase().contains(req.getParameter("isbn").toLowerCase())) {
+                    continue;
+                }
+            }
+            int yearPublished = book.getYearPublished();
+            if(fromYearExists && toYearExists) {
+                int fromYear = Integer.parseInt(req.getParameter("fromYear"));
+                int toYear = Integer.parseInt(req.getParameter("toYear"));
+                if(yearPublished <= fromYear || yearPublished >= toYear) {
+                    continue;
+                }
+            } else if(fromYearExists) {
+                int fromYear = Integer.parseInt(req.getParameter("fromYear"));
+                if(yearPublished <= fromYear) {
+                    continue;
+                }
+            } else if(toYearExists) {
+                int toYear = Integer.parseInt(req.getParameter("toYear"));
+                if(yearPublished >= toYear) {
+                    continue;
+                }
+            }
+            filteredList.add(book);
         }
         if(bookList.size() == 0) {
             return new ResponseEntity<Book[]>(HttpStatus.NO_CONTENT);
         }
-        return ResponseEntity.ok(bookList.toArray(new Book[0]));
+        return ResponseEntity.ok(filteredList.toArray(new Book[0]));
     }
 
     @RequestMapping(value = "/api/items/books/{id}", method = RequestMethod.GET)

@@ -2,23 +2,41 @@ define([
     'underscore',
     'react',
     'jsx!components/template/navbar',
-    'jsx!components/searchprofile/results'
-], function(_, React, NavigationBar, SearchResults) {
+    'jsx!components/searchprofile/results',
+    'actions/books'
+], function(_, React, NavigationBar, SearchResults, BookActions) {
     return React.createClass({
         getInitialState : function() {
-            var book = {
-                id: 1,
-                title: null,
-                description: null,
-                authors: []
-            };
-            books = []
-            for (i=0; i<15; i++) {
-                books.push(book)
-            }
             return {
-                'something' : true,
-                'results': books
+                'results': null,
+                loading: true
+            }
+        },
+        fetchBooks: function(view) {
+            this.setState({
+                loading: true
+            });
+            var params = {}
+            view = view.split("query?").slice(-1)[0];
+            view = view.split("&");
+            _.each(view, function(param) {
+                param = param.split("=");
+                params[param[0]] = param[1];
+            })
+            // console.log(params);
+            BookActions.search(params, this.setBooks);
+        },
+        setBooks: function(books) {
+            this.setState({
+                results: books
+            })
+        },
+        componentWillMount: function() {
+            this.fetchBooks(this.props.view);
+        },
+        componentWillUpdate: function(nextProps, nextState) {
+            if(nextProps.view != this.props.view) {
+                this.fetchBooks(nextProps.view);
             }
         },
         componentDidMount: function() {

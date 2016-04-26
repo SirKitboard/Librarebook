@@ -166,8 +166,31 @@ define([
             return ret.join("&");
         },
         submitSearch : function(e) {
+            var params = {}
+            if(e.target.value.length != 0) {
+                params.string = e.target.value;
+            }
+            if(this.refs.authorFilter.value.length != 0){
+                params.author = this.refs.authorFilter.value;
+            }
+            if(this.refs.publisherFilter.value.length != 0){
+                params.publisher = this.refs.publisherFilter.value;
+            }
+            if(this.refs.rating.value.length != 0){
+                params.rating = this.refs.rating.value;
+            }
+            if(this.refs.fromyear.value.length != 0){
+                params.fromYear = this.refs.fromyear.value;
+            }
+            if(this.refs.toyear.value.length != 0){
+                params.toYear = this.refs.toyear.value;
+            }
+            if(this.refs.isbn.value.length != 0){
+                params.isbn = this.refs.isbn.value;
+            }
+
             if(e.keyCode == 13) {
-                this.props.setView("view/searchResults/query?"+this.parameterize({string: e.target.value}));
+                this.props.setView("view/searchResults/query?"+this.parameterize(params));
             }
         },
         gotoProfile : function() {
