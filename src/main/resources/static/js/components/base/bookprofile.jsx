@@ -4,8 +4,9 @@ define([
     'jsx!components/bookprofile/bookinfo',
     'jsx!components/bookprofile/bookextras',
     'jsx!components/template/editbookmodal',
+    'jsx!components/template/sharebookmodal',
     'stores/books'
-], function(_,React, BookInfoComponent, BookExtrasComponent, BookEditModal) {
+], function(_,React, BookInfoComponent, BookExtrasComponent, BookEditModal, ShareBookModal) {
     return React.createClass({
         getInitialState: function() {
             var loggedIn = false;
@@ -63,6 +64,11 @@ define([
                     <div id="modalEditBook" className="modal">
                         <div className="modal-content container editBook">
                             <BookEditModal book={this.state.book}/>
+                        </div>
+                    </div>
+                    <div id="modalShare" className="modal">
+                        <div className="modal-content container shareBook">
+                            <ShareBookModal book={this.state.book}/>
                         </div>
                     </div>
                 </div>

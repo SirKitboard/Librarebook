@@ -10,6 +10,8 @@ import com.notdecaf.models.Author;
 import com.notdecaf.models.Book;
 import com.notdecaf.models.Genre;
 import com.notdecaf.models.Publisher;
+import com.sendgrid.SendGrid;
+import com.sendgrid.SendGridException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -198,6 +204,42 @@ public class BookController implements BaseController<Book> {
         List<Book> books = BookFactory.findRecentBooks();
         return ResponseEntity.ok(books);
 //        return null;
+    }
+
+    @RequestMapping(value = "/api/items/books/share/{id}", method = RequestMethod.GET)
+    public ResponseEntity share(HttpServletRequest request, @PathVariable long id) {
+        Book book = BookFactory.getBookFromCache(id);
+        if (book == null){
+            return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
+        }
+
+        Properties prop = new Properties();
+        Map<String, String[]> requestMap = request.getParameterMap();
+        if(!requestMap.containsKey("email")) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        try{
+            InputStream input = new FileInputStream("application.properties");
+            prop.load(input);
+
+            SendGrid sendgrid = new SendGrid(prop.getProperty("sendgrid.api-key"));
+            SendGrid.Email email = new SendGrid.Email();
+            email.addTo("raancihteal@gmail.com");
+            email.setFrom("raancihteal@gmail.com");
+            email.setSubject(request.getParameter("userEmail") + "has shared a book with you on Librarebook");
+            email.setText(book.getTitle() + " " + book.getDescription());
+
+            SendGrid.Response response = sendgrid.send(email);
+            return ResponseEntity.ok(response.getMessage());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SendGridException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

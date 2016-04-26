@@ -10,7 +10,7 @@ define([
             var loggedIn = false;
             checkedOut = this.isCheckedOut(this.props.book);
             $(".modal-trigger.edit-modal").leanModal();
-
+            $(".modal-trigger.share-modal").leanModal();
             return {
                 'checkedOut': checkedOut
             }
@@ -45,13 +45,13 @@ define([
         },
         componentDidMount : function() {
             $(".modal-trigger.editModalTrigger").leanModal();
+            $(".modal-trigger.shareModalTrigger").leanModal();
         },
         componentWillUpdate: function(nextProps,nextState) {
             if (window.currentUser) {
                 nextBook = nextProps.book;
                 if (nextBook) {
                     isCheckedOut = this.isCheckedOut(nextBook);
-                    debugger;
                     if ("checkedOut" in nextBook) {
                         nextState.checkedOut = nextBook.checkedOut;
                     } else {
@@ -95,12 +95,11 @@ define([
 
             var likeStyle = {
                 color: 'red',
-                fontSize : '30px'
+                fontSize : '30px',
             };
 
-            var editStyle = {
+            var iconStyle = {
                 fontSize : '30px',
-                margin : '5px'
             };
 
             if (this.state.checkedOut) {
@@ -119,7 +118,8 @@ define([
                     <h5>by {authorText}</h5>
                     <div className="row">
                         {this.props.book.favorited ? <span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like-filled"/> : <span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like"/> }
-                        {this.props.loggedIn ? <a href="#modalEditBook" style={editStyle} className="modal-trigger editModalTrigger icons8-edit-property">&nbsp;</a> : null}
+                        {this.props.loggedIn ? <a href="#modalEditBook" style={iconStyle} className="modal-trigger editModalTrigger"><i style={iconStyle} className="material-icons">edit</i></a> : null}
+                        {this.props.loggedIn ? <a href="#modalShare" className="modal-trigger shareModalTrigger "><i style={iconStyle} className="material-icons">share</i></a> : null}
                         {card}
                     </div>
                     <p>ISBN: {this.props.book.isbn}</p>
