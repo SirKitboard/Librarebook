@@ -42,6 +42,9 @@ define([
             });
             var self = this;
             $("#searchDetails").mouseleave(function() {
+                if($(".nav-search").find(":focus").length > 0 ){
+                    return;
+                }
                 if($("#searchDetails").find(":focus").length > 0 ){
                     return;
                 }
@@ -129,7 +132,7 @@ define([
         toggleCart : function() {
             if(this.state.cartOpen) {
                 $("#cart").animate({
-                    right:"-450px"
+                    right:"-460px"
                 }, 500);
                 $("#dark-cover").animate({
                     opacity: '0'
@@ -152,9 +155,19 @@ define([
                 })
             }
         },
+        parameterize: function(params){
+            debugger;
+            var ret = [];
+            for (var property in params) {
+                if (params.hasOwnProperty(property)) {
+                    ret.push(property + "=" + params[property]);
+                }
+            }
+            return ret.join("&");
+        },
         submitSearch : function(e) {
             if(e.keyCode == 13) {
-                this.props.setView("view/searchResults/"+JSON.stringify({query:e.target.value}));
+                this.props.setView("view/searchResults/query?"+this.parameterize({string: e.target.value}));
             }
         },
         gotoProfile : function() {
@@ -176,7 +189,7 @@ define([
             var searchDetails = (
                 <div id="searchDetails" style={detailStyle} className="searchDetails container">
                     <div className="row">
-                        <div className="col s12 m6 genre-filters input-field">
+                        <div className="col s12 m6 genre-filters">
                             <p>
                                 <input type="checkbox" id="genre_fiction" />
                                 <label htmlFor="genre_fiction">Fiction</label>
