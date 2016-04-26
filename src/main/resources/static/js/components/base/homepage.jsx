@@ -29,6 +29,9 @@ define([
                 var recommendedSection = <Section books={this.state.popular} title='Recommended Books' id="Recommended"/>
             } else {
                 var loginSection = <LoginSection id="login"/>;
+                
+                
+                
             }
             var popularSection = <Section books={this.state.popular} title='Popular Books' id="popular"/>;
             var newReleasesSection = <Section setView={this.props.setView} books={this.props.stores.books.getRecents()} title='New Releases' id="new"/>;

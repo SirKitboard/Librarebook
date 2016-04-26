@@ -7,9 +7,10 @@ define([
     'jsx!components/base/searchresults',
     'jsx!components/base/userprofile',
     'jsx!components/base/admindashboard',
+    'jsx!components/base/faq',
     'stores/books',
     'actions/books'
-], function(_,React, NavbarCompnent, HomepageComponent, BookprofileComponent, SearchResultsComponent, UserProfileComponent, AdminDashboardComponent, BooksStore, BooksActions) {
+], function(_,React, NavbarCompnent, HomepageComponent, BookprofileComponent, SearchResultsComponent, UserProfileComponent, AdminDashboardComponent, FaqComponent, BooksStore, BooksActions) {
     return React.createClass({
         getInitialState: function () {
             var URLHash = window.location.hash.substring(1);
@@ -82,6 +83,9 @@ define([
                     break;
                 case 'searchResults':
                     componentRendered = <SearchResultsComponent setView={this.setView} view={this.state.view}/>
+                    break;
+                case 'faq':
+                    componentRendered = <FaqComponent/>
 
             }
             return (
