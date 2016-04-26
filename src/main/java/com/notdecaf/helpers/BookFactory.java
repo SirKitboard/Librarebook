@@ -3,6 +3,8 @@ package com.notdecaf.helpers;
 import com.notdecaf.daos.BookDao;
 import com.notdecaf.models.Book;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
@@ -13,6 +15,8 @@ import java.util.List;
  */
 @Controller
 public class BookFactory {
+    private static final int PAGE_SIZE = 20;
+
     private static List<Book> lruBookCache = new ArrayList<Book>();
 
     private static BookDao bookDao;
@@ -59,5 +63,13 @@ public class BookFactory {
     }
 
     public static void delete(long id) {bookDao.delete(id);}
+
+    public static List<Book> findByTitle(String title, int page) {
+        int start = page*PAGE_SIZE;
+        int end = start + PAGE_SIZE;
+        Page<Book> books = bookDao.findByTitleContainsIgnoreCase(new PageRequest(start, end), title);
+        List<Book> bookList = books.getContent();
+        return bookList;
+    }
 //    private static linearSearchBook
 }

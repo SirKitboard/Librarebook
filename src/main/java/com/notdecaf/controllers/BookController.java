@@ -42,12 +42,28 @@ public class BookController implements BaseController<Book> {
     @Autowired
     private GenreDao genreDao;
 
-    @RequestMapping(value = "/api/items/books", method = RequestMethod.GET)
     public ResponseEntity<Book[]> all(HttpSession session) {
         Iterable<Book> books = BookFactory.findAll();
         List<Book> bookList = new ArrayList<Book>();
         for (Book book : books) {
             bookList.add(book);
+        }
+        return ResponseEntity.ok(bookList.toArray(new Book[0]));
+    }
+
+    @RequestMapping(value = "/api/items/books", method = RequestMethod.GET)
+    public ResponseEntity<Book[]> search(HttpServletRequest req) {
+        List<Book> bookList = new ArrayList<Book>();
+        if(req.getParameterMap().containsKey("string")) {
+            int page = 0;
+            if(req.getParameter("page") != null) {
+                page = Integer.parseInt(req.getParameter("page"));
+            }
+
+            bookList = BookFactory.findByTitle(req.getParameter("string"), page);
+        }
+        if(bookList.size() == 0) {
+            return new ResponseEntity<Book[]>(HttpStatus.NO_CONTENT);
         }
         return ResponseEntity.ok(bookList.toArray(new Book[0]));
     }
