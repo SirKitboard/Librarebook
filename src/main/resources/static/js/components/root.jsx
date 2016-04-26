@@ -9,8 +9,10 @@ define([
     'jsx!components/base/admindashboard',
     'jsx!components/base/faq',
     'stores/books',
-    'actions/books'
-], function(_,React, NavbarCompnent, HomepageComponent, BookprofileComponent, SearchResultsComponent, UserProfileComponent, AdminDashboardComponent, FaqComponent, BooksStore, BooksActions) {
+    'actions/books',
+    'stores/genres',
+    'actions/genres'
+], function(_,React, NavbarCompnent, HomepageComponent, BookprofileComponent, SearchResultsComponent, UserProfileComponent, AdminDashboardComponent, FaqComponent, BooksStore, BooksActions, GenresStore, GenresActions) {
     return React.createClass({
         getInitialState: function () {
             var URLHash = window.location.hash.substring(1);
@@ -43,12 +45,15 @@ define([
                 console.log(window.currentUser.favoriteItemIDs);
             }
             this.stores = {
-                books: new BooksStore()
+                books: new BooksStore(),
+                genres: new GenresStore()
             };
-            this.stores.books.addChangeListener(this.onChangeBooks);
+            this.stores.books.addChangeListener(this.onStoreUpdate);
+            this.stores.books.addChangeListener(this.onStoreUpdate);
             BooksActions.pullRecents();
+            GenresActions.pull();
         },
-        onChangeBooks: function() {
+        onStoreUpdate: function() {
             this.forceUpdate();
         },
         componentDidMount : function() {
@@ -93,7 +98,7 @@ define([
                     <div>
                         {componentRendered}
                     </div>
-                    <div id='navigation'><NavbarCompnent showShadow={showNavShadow} setView={this.setView}/></div>
+                    <div id='navigation'><NavbarCompnent stores={this.stores} showShadow={showNavShadow} setView={this.setView}/></div>
                     <div id="dark-cover"></div>
                     <div id='cart' className="z-depth-2"></div>
                 </div>

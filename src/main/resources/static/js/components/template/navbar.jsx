@@ -193,41 +193,37 @@ define([
                 <div id="searchDetails" style={detailStyle} className="searchDetails container">
                     <div className="row">
                         <div className="col s12 m6 genre-filters">
-                            <p>
-                                <input type="checkbox" id="genre_fiction" />
-                                <label htmlFor="genre_fiction">Fiction</label>
-                            </p>
-                            <p>
-                                <input type="checkbox" id="genre_youngadult"/>
-                                <label htmlFor="genre_youngadult">Young Adult</label>
-                            </p>
-                            <p>
-                                <input type="checkbox" id="genre_mature"/>
-                                <label htmlFor="genre_mature">Mature</label>
-                            </p>
-                            <p>
-                                <input type="checkbox" id="genre_biography"/>
-                                <label htmlFor="genre_biography">Biography</label>
-                            </p>
-                            <p>
-                                <input type="checkbox" id="genre_sci-fi"/>
-                                <label htmlFor="genre_sci-fi">Science Fiction</label>
-                            </p>
-                            <p>
-                                <input type="checkbox" id="genre_mystery"/>
-                                <label htmlFor="genre_mystery">Mystery</label>
-                            </p>
-                            <p>
-                                <input type="checkbox" id="genre_romance"/>
-                                <label htmlFor="genre_romance">Romance</label>
-                            </p>
-
+                            {
+                                _.map(this.props.stores.genres.getAll(), function(genre) {
+                                    var id = "genre_" + genre.name;
+                                    return (<p>
+                                        <input type="checkbox" id={id} ref={id} />
+                                        <label htmlFor={id}>{genre.name}</label>
+                                    </p>);
+                                })
+                            }
                         </div>
                         <div className="col s12 m6 search-filters">
                             <div className="row">
                                 <div className="input-field col s12">
-                                    <input ref="Author" id="Author" type="text" className="validate"/>
+                                    <input ref="authorFilter" id="Author" type="text" className="validate"/>
                                     <label htmlFor="Author">Author</label>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="input-field col s12">
+                                    <input ref="publisherFilter" id="Publisher" type="text" className="validate"/>
+                                    <label htmlFor="Publisher">Publisher</label>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="input-field col s6">
+                                    <input ref="rating" id="rating" type="number" min="0" max="5" className="validate"/>
+                                    <label tmlFor="rating">Rating</label>
+                                </div>
+                                <div className="input-field col s6">
+                                    <input ref="isbn" id="isbn" type="number" className="validate"/>
+                                    <label tmlFor="isbn">ISBN</label>
                                 </div>
                             </div>
                             <div className="row">
@@ -238,12 +234,6 @@ define([
                                 <div className="input-field col s12 m6">
                                     <input ref="toyear" id="toyear" type="text" className="validate"/>
                                     <label htmlFor="toyear">To Year</label>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="input-field col s12">
-                                    <input ref="rating" id="rating" type="number" min="0" max="5" className="validate"/>
-                                    <label tmlFor="rating">Rating</label>
                                 </div>
                             </div>
                         </div>
@@ -291,7 +281,7 @@ define([
                         </ul>
                         <div onFocus={this.showDetails} className="nav-search">
                             <div className="input-field">
-                                <input id="search" type="search" placeholder="Search" onKeyDown={this.submitSearch} required/>
+                                <input id="search" type="search" placeholder="Search" autoComplete="off" onKeyDown={this.submitSearch} required/>
                                 <label htmlFor="search"><i className="grey-text material-icons">search</i></label>
                                 <i className="grey-text material-icons">close</i>
                             </div>
