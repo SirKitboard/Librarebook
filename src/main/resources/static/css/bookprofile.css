@@ -30,17 +30,19 @@
       position: absolute;
       right: 12px; }
   #profileContent #addToCart {
-    margin-top: 80px; }
+    margin-top: 10px; }
   #profileContent #instantCheckout {
-    margin-top: 80px;
+    margin-top: 10px;
     margin-right: 10px; }
   #profileContent #purchase {
-    margin-top: 80px;
-    margin-right: 20px; }
+    margin-top: 10px;
+    margin-right: 10px; }
+  #profileContent #return {
+    margin-top: 10px;
+    margin-right: 10px; }
   #profileContent #bookAvailable {
     margin-top: 50px;
-    margin-bottom: 50px;
-    max-width: 300px; }
+    margin-bottom: 50px; }
   #profileContent .bookPreview {
     display: inline-block;
     margin-left: 30px;

@@ -104,11 +104,11 @@ define([
 
             if (this.state.checkedOut) {
                 var returnOrCheckOut =
-                    (<div className= "btn-large right" id="return" onClick={this.return}>Return</div>);
+                    (<div className= "btn-large right bookButton" id="return" onClick={this.return}>Return</div>);
                 console.log(returnOrCheckOut);
             } else {
                 var returnOrCheckOut =
-                    (<div className= "btn-large right" id="instantCheckout" onClick={this.checkout}>Checkout</div>);
+                    (<div className= "btn-large right bookButton" id="instantCheckout" onClick={this.checkout}>Checkout</div>);
             }
 
             return (
@@ -140,9 +140,11 @@ define([
                     <span>
                         <p className="left-align">Rating</p><p className="right-align"></p>
                     </span>
-                    <div className= {"btn-large right " + disabled} id="addToCart">Add to cart</div>
-                    { returnOrCheckOut }
-                    <div className= {"btn-large right"} id="purchase" onClick={this.purchase}>Purchase</div>
+                    <div>
+                        <div className= {"btn-large right" + disabled} id="addToCart">Add to cart</div>
+                        { returnOrCheckOut }
+                        <div className= {"btn-large right bookButton"} id="purchase" onClick={this.purchase}>Purchase</div>
+                    </div>
                 </div>
             )
         }
