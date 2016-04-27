@@ -36,6 +36,14 @@ define([
                     this.return(action.data);
                     this.event.emit("change");
                     break;
+                case Constants.UPDATE_BOOK:
+                    this.update(action.data);
+                    this.event.emit("change");
+                    break;
+                case Constants.RENEW:
+                    this.renew(action.data);
+                    this.event.emit("change");
+                    break;
             }
 
         }.bind(this));
@@ -85,13 +93,24 @@ define([
         if (this.books[id]) {
             this.books[id].checkedOut = false;
         }
-    },
+    };
+    
+    Store.prototype.renew = function(data) {
+        if (this.books[data.bookId]) {
+            var book = this.books[data.bookId];
+            for (var i=0; i<book.checkedOutBy.length; i++) {
+                if (book.checkedOutBy[i].user == data.userId) {
+                    book.checkedOutBy[0].dueDate = data.newDate;
+                }
+            }
+        }
+    };
 
     Store.prototype.toggleFavorite = function(response) {
         this.books[response.bookID].favorited = response.status;
     };
 
-    Store.prototype.update = function(id) {
+    Store.prototype.update = function(book) {
         this.books[book.id] = book;
     };
 

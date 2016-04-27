@@ -2,6 +2,7 @@ package com.notdecaf.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.notdecaf.helpers.PasswordStorage;
+import com.notdecaf.helpers.SetHelper;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -101,14 +102,11 @@ public class User extends IDModel implements Cloneable{
     }
 
     public void removeCheckedOutItem(UserCheckedOutItem checkedOutItem) {
-        Set<UserCheckedOutItem> newSet = new HashSet<>();
-        for(UserCheckedOutItem item : currentlyCheckedOutItems) {
-            if(item.getId() == checkedOutItem.getId()) {
-                continue;
-            }
-            newSet.add(item);
-        }
-        this.currentlyCheckedOutItems = newSet;
+        this.currentlyCheckedOutItems = SetHelper.remove(this.currentlyCheckedOutItems,checkedOutItem);
+    }
+
+    public void updateCheckedOutItem(UserCheckedOutItem checkedOutItem) {
+        this.currentlyCheckedOutItems = SetHelper.update(currentlyCheckedOutItems,checkedOutItem);
     }
 
     public Set<UserCheckoutHistory> getCheckoutHistory() {

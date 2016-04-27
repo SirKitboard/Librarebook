@@ -108,14 +108,11 @@ public abstract class Item extends IDModel{
     }
 
     public void removeCheckedOutItem(UserCheckedOutItem checkedOutItem) {
-        Set<UserCheckedOutItem> newSet = new HashSet<>();
-        for(UserCheckedOutItem item : checkedOutBy) {
-            if(item.getId() == checkedOutItem.getId()) {
-                continue;
-            }
-            newSet.add(item);
-        }
-        this.checkedOutBy = newSet;
+        this.checkedOutBy = SetHelper.remove(this.checkedOutBy,checkedOutItem);
+    }
+
+    public void updateCheckedOutItem(UserCheckedOutItem checkedOutItem) {
+        this.checkedOutBy = SetHelper.update(this.checkedOutBy,checkedOutItem);
     }
 
     public Set<UserCheckoutHistory> getCheckoutHistory() {

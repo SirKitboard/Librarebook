@@ -2,13 +2,14 @@ package com.notdecaf.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
  * Created by Adi on 4/7/2016.
  */
 @Entity
-public class UserCheckedOutItem {
+public class UserCheckedOutItem extends IDModel{
 
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,6 +26,9 @@ public class UserCheckedOutItem {
     @NotNull
     private Date checkedOutOn;
 
+    @NotNull
+    private Date dueDate;
+
     public UserCheckedOutItem() {
 
     }
@@ -33,6 +37,11 @@ public class UserCheckedOutItem {
         this.user = user;
         this.item = item;
         this.checkedOutOn = new Date();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(this.checkedOutOn);
+        calendar.add(Calendar.DATE, 7);
+        this.dueDate = new Date(calendar.getTimeInMillis());
     }
 
     public long getId() {
@@ -62,5 +71,13 @@ public class UserCheckedOutItem {
 
     public void setCheckedOutOn(Date checkedOutOn) {
         this.checkedOutOn = checkedOutOn;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 }

@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by Adi on 4/7/2016.
  */
 @Entity
-public class UserCheckoutHistory {
+public class UserCheckoutHistory extends IDModel{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

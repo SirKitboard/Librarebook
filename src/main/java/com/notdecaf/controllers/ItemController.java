@@ -26,10 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Adi on 3/28/2016.
@@ -224,13 +221,8 @@ public class ItemController {
 
         user.addCheckedOutItem(userCheckedOutItem);
         item.addCheckedOutItem(userCheckedOutItem);
-        userDao.save(user);
-        itemDao.save(item);
 
-        ItemFactory.update(item);
-        if (item instanceof Book) {
-            BookFactory.update((Book) item);
-        }
+        updateCache(item);
         return ResponseEntity.ok(null);
     }
 
@@ -258,13 +250,43 @@ public class ItemController {
             itemDao.save(item);
             checkedOutItemDao.delete(prevCheckedOutItem);
 
-            ItemFactory.update(item);
-            if (item instanceof Book) {
-                BookFactory.update((Book) item);
-            }
-
+            updateCache(item);
             return ResponseEntity.ok(null);
         }
+    }
+
+    @RequestMapping(value = "/api/items/{id}/renew", method = RequestMethod.POST)
+    public ResponseEntity renew(HttpServletRequest req, @PathVariable long id) {
+        User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        Item item = ItemFactory.getItemFromCache(id);
+        if(item == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        UserCheckedOutItem checkedOutItem = null;
+        for (UserCheckedOutItem userCheckedOutItem: item.getCheckedOutBy()) {
+            if (userCheckedOutItem.getItem() == item.getId() && userCheckedOutItem.getUser() == user.getId()) {
+                checkedOutItem = userCheckedOutItem;
+            }
+        }
+        if (checkedOutItem == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(checkedOutItem.getDueDate());
+        calendar.add(Calendar.DATE, 7);
+        Date newDueDate = new Date(calendar.getTimeInMillis());
+
+        checkedOutItem.setDueDate(newDueDate);
+        checkedOutItemDao.save(checkedOutItem);
+
+        item.updateCheckedOutItem(checkedOutItem);
+        user.updateCheckedOutItem(checkedOutItem);
+
+        updateCache(item);
+        return ResponseEntity.ok(newDueDate);
     }
 
     @RequestMapping(value = "/api/items/{id}/purchase", method = RequestMethod.POST)
@@ -292,4 +314,10 @@ public class ItemController {
         }
     }
 
+    public void updateCache(Item item) {
+        ItemFactory.update(item);
+        if (item instanceof Book) {
+            BookFactory.update((Book) item);
+        }
+    }
 }

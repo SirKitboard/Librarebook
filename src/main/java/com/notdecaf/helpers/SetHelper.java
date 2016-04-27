@@ -28,4 +28,16 @@ public class SetHelper {
         }
         return newSet;
     }
+
+    public static <E extends IDModel> Set<E> update(Set<E> set, E object) {
+        Set<E> newSet = new HashSet<>();
+        for(E item : set) {
+            if(item.getId() == object.getId()) {
+                newSet.add(object);
+            } else {
+                newSet.add(item);
+            }
+        }
+        return newSet;
+    }
 }

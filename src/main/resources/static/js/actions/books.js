@@ -103,6 +103,22 @@ define([
                 }
             })
         },
+        renew: function(id) {
+            $.ajax({
+                url:"/api/items/"+id+"/renew",
+                method: "POST",
+                success: function (response) {
+                    AppDispatcher.dispatch({
+                        actionType: Constants.RENEW,
+                        data: {
+                            bookId: id,
+                            userId: window.currentUser.id,
+                            newDate: response
+                        }
+                    })
+                }
+            });
+        },
         update : function(bookID) {
             $.ajax({
                 url: "/api/items/books/" + bookID,
