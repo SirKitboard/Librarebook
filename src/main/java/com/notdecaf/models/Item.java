@@ -62,6 +62,7 @@ public abstract class Item extends IDModel{
     @JoinTable(name="items_flags", joinColumns = {@JoinColumn(name="itemID", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "userID", referencedColumnName = "id")})
     private Set<User> flaggedBy;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @NotNull
