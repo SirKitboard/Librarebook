@@ -22,10 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -278,28 +275,31 @@ public class BookController implements BaseController<Book> {
 //        return null;
     }
 
-    @RequestMapping(value = "/api/items/books/share/{id}", method = RequestMethod.GET)
-    public ResponseEntity share(HttpServletRequest request, @PathVariable long id) {
-        Book book = BookFactory.getBookFromCache(id);
+    @RequestMapping(value = "/api/items/books/share", method = RequestMethod.POST)
+    public ResponseEntity share(HttpServletRequest request) {
+        Map<String, String[]> requestMap = request.getParameterMap();
+        if(!requestMap.containsKey("toEmail") || !requestMap.containsKey("userEmail") || !requestMap.containsKey("bookID")) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        long bookID = Long.parseLong(request.getParameter("bookID"));
+        Book book = BookFactory.getBookFromCache(bookID);
         if (book == null){
             return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
         }
 
         Properties prop = new Properties();
-        Map<String, String[]> requestMap = request.getParameterMap();
-        if(!requestMap.containsKey("email")) {
-            return ResponseEntity.badRequest().body(null);
-        }
-
         try{
-            InputStream input = new FileInputStream("application.properties");
+            ClassLoader classLoader = getClass().getClassLoader();
+            File file = new File(classLoader.getResource("application.properties").getFile());
+            InputStream input = new FileInputStream(file);
             prop.load(input);
 
             SendGrid sendgrid = new SendGrid(prop.getProperty("sendgrid.api-key"));
             SendGrid.Email email = new SendGrid.Email();
-            email.addTo("raancihteal@gmail.com");
-            email.setFrom("raancihteal@gmail.com");
-            email.setSubject(request.getParameter("userEmail") + "has shared a book with you on Librarebook");
+            String userEmail = request.getParameter("userEmail");
+            email.addTo(request.getParameter("toEmail"));
+            email.setFrom(userEmail);
+            email.setSubject(userEmail + " has shared a book with you on Librarebook");
             email.setText(book.getTitle() + " " + book.getDescription());
 
             SendGrid.Response response = sendgrid.send(email);
@@ -311,7 +311,7 @@ public class BookController implements BaseController<Book> {
         } catch (SendGridException e) {
             e.printStackTrace();
         }
-        return null;
+        return ResponseEntity.badRequest().body(null);
     }
 
 }

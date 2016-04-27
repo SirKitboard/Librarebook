@@ -10,7 +10,7 @@ define([
         DELETE_BOOK: 5,
         RETURN: 6,
         ADD_GENRE: 7,
-        RENEW: 8
+        RENEW: 8,
     }
 
     return Constants

@@ -23,7 +23,7 @@ define([
         },
 
         shareByEmail: function() {
-            BookActions.sendEmail(this.refs, this.props.book.id);
+            BookActions.sendEmail(this.refs, this.props.book.id, window.currentUser.email);
         },
 
         render: function() {
@@ -36,7 +36,7 @@ define([
                     <div id="share" className="col s12">
 
                     </div>
-                    <div id="email" class="input-field col s12">
+                    <div id="email" className="input-field col s12">
                         <input ref="emailInput" id="emailInput" placeholder="To" type="email" className="col s11 validate"/>
                         <a href="#" onClick={this.shareByEmail}><i className="material-icons">send</i></a>
                     </div>

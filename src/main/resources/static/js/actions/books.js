@@ -119,17 +119,21 @@ define([
                 }
             });
         },
-        update : function(bookID) {
+        update : function(refs, bookID) {
             $.ajax({
                 url: "/api/items/books/" + bookID,
                 method: "PUT",
+                data: {
+                    title: $(refs.title).val(),
+                    description: $(refs.description).val(),
+                    yearPublished: $(refs.yearPublished).val(),
+                    totalLicenses: $(refs.totalLicenses).val(),
+                    language: $(refs.language).val(),
+                    status: $(refs.status).val(),
+                    numPages: $(refs.numPages).val(),
+                },
                 success: function (response) {
-                    AppDispatcher.dispatch({
-                        actionType: Constants.UPDATE_BOOK,
-                        data: {
-                            data: response
-                        }
-                    })
+    
                 }
             })
         },
@@ -147,6 +151,7 @@ define([
                 }
             })
         },
+
         search: function(params, success) {
             $.ajax({
                 method:"GET",
@@ -162,6 +167,27 @@ define([
                     success(response);
                 }
             })
-        }
+        },
+
+        sendEmail : function(refs, bookID, userEmail) {
+            var toEmail = $(refs.emailInput).val();
+            $.ajax({
+                url: "/api/items/books/share",
+                method: "POST",
+                processData: false,
+                data: {
+                    toEmail: email,
+                    bookID : bookID,
+                    userEmail : userEmail,
+                },
+                success: function(response) {
+                    console.log(response)
+                },
+                error: function (result, status, err) {
+                    console.log("error", result);
+                }
+            })
+        },
+
     };
 });
