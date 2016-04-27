@@ -287,6 +287,9 @@ public class BookController implements BaseController<Book> {
             SendGrid sendgrid = new SendGrid(PropertiesManager.getProperty("sendgrid.api-key"));
             SendGrid.Email email = new SendGrid.Email();
             User user = (User) request.getSession().getAttribute("user");
+            if (user == null){
+                return new ResponseEntity<Book>(HttpStatus.UNAUTHORIZED);
+            }
 
             String userEmail = user.getEmail();
             email.addTo(request.getParameter("toEmail"));
