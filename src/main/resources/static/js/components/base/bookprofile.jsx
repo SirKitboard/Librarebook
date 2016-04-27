@@ -4,7 +4,7 @@ define([
     'jsx!components/bookprofile/bookinfo',
     'jsx!components/bookprofile/bookextras',
     'jsx!components/template/editbookmodal',
-    'jsx!components/template/sharebookmodal',
+    'jsx!components/bookprofile/sharebookmodal',
     'stores/books'
 ], function(_,React, BookInfoComponent, BookExtrasComponent, BookEditModal, ShareBookModal) {
     return React.createClass({

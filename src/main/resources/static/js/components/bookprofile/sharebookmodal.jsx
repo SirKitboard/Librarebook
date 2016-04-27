@@ -3,7 +3,6 @@ define([
     'react',
     'jsx!components/bookprofile/bookinfo',
     'actions/books',
-
 ], function (_, React, BookInfoComponent, BookActions) {
     return React.createClass({
         getInitialState: function() {
@@ -23,7 +22,7 @@ define([
         },
 
         shareByEmail: function() {
-            BookActions.sendEmail(this.refs, this.props.book.id, window.currentUser.email);
+            BookActions.sendEmail(this.refs, this.props.book.id);
         },
 
         render: function() {

@@ -100,10 +100,12 @@ define([
             var likeStyle = {
                 color: 'red',
                 fontSize : '30px',
+                margin: '10px'
             };
 
             var iconStyle = {
                 fontSize : '30px',
+                margin: '10px'
             };
 
             if (this.state.checkedOut) {
@@ -138,9 +140,9 @@ define([
                     <h5>by {authorText}</h5>
                     <p>{this.props.book.checkedOutOn}</p>
                     <div className="row">
-                        {this.props.book.favorited ? <span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like-filled"/> : <span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like"/> }
+                        {this.props.book.favorited ? <a><span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like-filled"/></a> : <span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like"/> }
                         {this.props.loggedIn ? <a href="#modalEditBook" style={iconStyle} className="modal-trigger editModalTrigger"><i style={iconStyle} className="material-icons">edit</i></a> : null}
-                        {this.props.loggedIn ? <a href="#modalShare" className="modal-trigger shareModalTrigger "><i style={iconStyle} className="material-icons">share</i></a> : null}
+                        {this.props.loggedIn ? <a href="#modalShare" style={iconStyle} className="modal-trigger shareModalTrigger "><i style={iconStyle} className="material-icons">share</i></a> : null}
                         {card}
                     </div>
                     <p>ISBN: {this.props.book.isbn}</p>

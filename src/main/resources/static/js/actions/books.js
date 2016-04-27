@@ -172,17 +172,14 @@ define([
                 }
             })
         },
-
-        sendEmail : function(refs, bookID, userEmail) {
-            var toEmail = $(refs.emailInput).val();
+        sendEmail : function(refs, bookID) {
+            var toEmail = refs.emailInput.value;
             $.ajax({
-                url: "/api/items/books/share",
+                url: "/api/items/books/"+bookID+"/share",
                 method: "POST",
-                processData: false,
                 data: {
-                    toEmail: email,
-                    bookID : bookID,
-                    userEmail : userEmail,
+                    toEmail: toEmail,
+                    userEmail : window.currentUser.email
                 },
                 success: function(response) {
                     console.log(response)
