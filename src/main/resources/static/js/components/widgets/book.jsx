@@ -27,9 +27,6 @@ define([
 			if(title && title.length > 35) {
 				title = title.substr(0, 32) + "..."
 			}
-			if(!title) {
-				debugger;
-			}
 			return(
 				<div className="z-depth-1 book">
 					<div className="cover" style={backgroundStyle}>

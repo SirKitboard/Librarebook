@@ -151,12 +151,7 @@ define([
                 }
             })
         },
-<<<<<<< refs/remotes/origin/master
-
-        search: function(params, success) {
-=======
         search: function(params, success, noMoreContent) {
->>>>>>> Added infinite scrolling to search results
             $.ajax({
                 method:"GET",
                 url:"/api/items/books",
