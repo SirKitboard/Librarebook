@@ -6,6 +6,7 @@ import com.notdecaf.daos.PublisherDao;
 import com.notdecaf.helpers.BookFactory;
 import com.notdecaf.helpers.ItemStatus;
 import com.notdecaf.helpers.Language;
+import com.notdecaf.helpers.PropertiesManager;
 import com.notdecaf.models.Author;
 import com.notdecaf.models.Book;
 import com.notdecaf.models.Genre;
@@ -275,26 +276,19 @@ public class BookController implements BaseController<Book> {
 //        return null;
     }
 
-    @RequestMapping(value = "/api/items/books/share", method = RequestMethod.POST)
-    public ResponseEntity share(HttpServletRequest request) {
+    @RequestMapping(value = "/api/items/books/{id}/share", method = RequestMethod.POST)
+    public ResponseEntity share(HttpServletRequest request, @PathVariable long id) {
         Map<String, String[]> requestMap = request.getParameterMap();
-        if(!requestMap.containsKey("toEmail") || !requestMap.containsKey("userEmail") || !requestMap.containsKey("bookID")) {
+        if(!requestMap.containsKey("toEmail") || !requestMap.containsKey("userEmail")) {
             return ResponseEntity.badRequest().body(null);
         }
-        long bookID = Long.parseLong(request.getParameter("bookID"));
-        Book book = BookFactory.getBookFromCache(bookID);
+        Book book = BookFactory.getBookFromCache(id);
         if (book == null){
             return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
         }
 
-        Properties prop = new Properties();
         try{
-            ClassLoader classLoader = getClass().getClassLoader();
-            File file = new File(classLoader.getResource("application.properties").getFile());
-            InputStream input = new FileInputStream(file);
-            prop.load(input);
-
-            SendGrid sendgrid = new SendGrid(prop.getProperty("sendgrid.api-key"));
+            SendGrid sendgrid = new SendGrid(PropertiesManager.getProperty("sendgrid.api-key"));
             SendGrid.Email email = new SendGrid.Email();
             String userEmail = request.getParameter("userEmail");
             email.addTo(request.getParameter("toEmail"));
@@ -304,10 +298,6 @@ public class BookController implements BaseController<Book> {
 
             SendGrid.Response response = sendgrid.send(email);
             return ResponseEntity.ok(response.getMessage());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (SendGridException e) {
             e.printStackTrace();
         }
