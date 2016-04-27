@@ -19,7 +19,7 @@ $tloa-yellow: #FFB74D;
 }
 
 .nav-wrapper-outer {
-     z-index: 1005;
+    z-index: 1003;
     position:fixed;
     top:0px;
     left:0px;
@@ -145,7 +145,7 @@ $tloa-yellow: #FFB74D;
 .fixedElement {
     position:absolute;
     width:100%;
-    z-index:1006;
+    z-index:1002;
 }
 
 .login {

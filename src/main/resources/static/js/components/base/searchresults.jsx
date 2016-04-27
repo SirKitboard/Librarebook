@@ -2,17 +2,31 @@ define([
     'underscore',
     'react',
     'jsx!components/template/navbar',
+    'jsx!components/widgets/preloader',
     'jsx!components/searchprofile/results',
     'actions/books'
-], function(_, React, NavigationBar, SearchResults, BookActions) {
+], function(_, React, NavigationBar, Preloader, SearchResults, BookActions) {
     return React.createClass({
         getInitialState : function() {
             return {
                 'results': null,
-                loading: true
+                loading: true,
+                page:'0',
+                moreContent: true
             }
         },
-        fetchBooks: function(view) {
+        initalFetch: function(view) {
+            this.setState({
+                page: 0
+            })
+            this.fetchBooks(view, 0);
+        },
+        fetchMoreBooks: function() {
+            if(!this.state.loading) {
+                this.fetchBooks(this.props.view, this.state.page)
+            }
+        },
+        fetchBooks: function(view, page) {
             this.setState({
                 loading: true
             });
@@ -22,17 +36,38 @@ define([
             _.each(view, function(param) {
                 param = param.split("=");
                 params[param[0]] = param[1];
-            })
+            });
+            params['page'] = page;
             // console.log(params);
-            BookActions.search(params, this.setBooks);
+            if(page == 0) {
+                BookActions.search(params, this.setBooks, this.eor);
+            } else {
+                BookActions.search(params, this.appendBooks, this.eor);
+            }
+
         },
         setBooks: function(books) {
             this.setState({
-                results: books
+                results: books,
+                loading: false,
+                page: 1
+            })
+        },
+        eor: function () {
+            this.setState({
+                moreContent: false
+            })
+        },
+        appendBooks: function(books) {
+            books = this.state.results.concat(books);
+            this.setState({
+                results: books,
+                loading: false,
+                page: this.state.page + 1
             })
         },
         componentWillMount: function() {
-            this.fetchBooks(this.props.view);
+            this.initalFetch(this.props.view);
         },
         componentWillUpdate: function(nextProps, nextState) {
             if(nextProps.view != this.props.view) {
@@ -41,20 +76,24 @@ define([
         },
         componentDidMount: function() {
             $('.dropdown-button').dropdown();
+            var self = this;
             $(window).scroll(function(e){
                 // console.log('hi');
-              var $el = $('.fixedElement');
-              // console.log($(this).scrollTop());
-              var isPositionFixed = ($el.css('position') == 'fixed');
-              if ($(this).scrollTop() > 400 && !isPositionFixed){
-                $('.fixedElement').css({'position': 'fixed', 'top': '64px'});
-                // console.log('fix!');
-              }
-              if ($(this).scrollTop() < 400 && isPositionFixed)
-              {
-                $('.fixedElement').css({'position': 'absolute', 'top': '464px'});
-                // console.log('unfix!');
-              }
+                var $el = $('.fixedElement');
+                var isPositionFixed = ($el.css('position') == 'fixed');
+                if ($(this).scrollTop() > 400 && !isPositionFixed){
+                    $('.fixedElement').css({'position': 'fixed', 'top': '64px'});
+                    $('nav').css({'box-shadow': 'none'})
+                }
+                if ($(this).scrollTop() < 400 && isPositionFixed) {
+                    $('.fixedElement').css({'position': 'absolute', 'top': '464px'});
+                    $('nav').css({'box-shadow':'0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)'})
+                }
+                if(self.state.moreContent) {
+                    if ($(this).scrollTop() > $(document).height() - $(this).height() - 200) {
+                        self.fetchMoreBooks();
+                    }
+                }
             });
         },
         render: function() {
@@ -79,8 +118,8 @@ define([
                     </div>
                     <div className="row">
                         <div className="col s12">
-                            <div className="col s10 offset-s1">
-                                <button className="btn-large center-align" id="loadButton">Load More</button>
+                            <div className="col s10 offset-s1" style={{textAlign: 'center'}}>
+                                {this.state.moreContent ? (this.state.loading ? <Preloader className="center-align"/> : <button onClick={this.fetchMoreBooks} className="btn-large center-align" id="loadButton">Load More</button>): <span style={{color:'#AAA'}}>End of results</span> }
                             </div>
                         </div>
                     </div>

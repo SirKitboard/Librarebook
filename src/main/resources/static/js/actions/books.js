@@ -151,20 +151,29 @@ define([
                 }
             })
         },
+<<<<<<< refs/remotes/origin/master
 
         search: function(params, success) {
+=======
+        search: function(params, success, noMoreContent) {
+>>>>>>> Added infinite scrolling to search results
             $.ajax({
                 method:"GET",
                 url:"/api/items/books",
                 data: params,
-                success: function(response) {
-                    _.each(response, function (book) {
-                        AppDispatcher.dispatch({
-                            actionType: Constants.ADD_BOOK,
-                            data: book
-                        })
-                    });
-                    success(response);
+                success: function(response, status, jqxhr) {
+                    if(jqxhr.status == 200) {
+                        _.each(response, function (book) {
+                            AppDispatcher.dispatch({
+                                actionType: Constants.ADD_BOOK,
+                                data: book
+                            })
+                        });
+                        success(response);
+                    }
+                    else {
+                        noMoreContent()
+                    }
                 }
             })
         },
