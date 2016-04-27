@@ -179,7 +179,6 @@ define([
                 method: "POST",
                 data: {
                     toEmail: toEmail,
-                    userEmail : window.currentUser.email
                 },
                 success: function(response) {
                     console.log(response)

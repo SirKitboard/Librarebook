@@ -7,10 +7,7 @@ import com.notdecaf.helpers.BookFactory;
 import com.notdecaf.helpers.ItemStatus;
 import com.notdecaf.helpers.Language;
 import com.notdecaf.helpers.PropertiesManager;
-import com.notdecaf.models.Author;
-import com.notdecaf.models.Book;
-import com.notdecaf.models.Genre;
-import com.notdecaf.models.Publisher;
+import com.notdecaf.models.*;
 import com.sendgrid.SendGrid;
 import com.sendgrid.SendGridException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.*;
 import java.util.*;
 
 /**
@@ -279,7 +275,7 @@ public class BookController implements BaseController<Book> {
     @RequestMapping(value = "/api/items/books/{id}/share", method = RequestMethod.POST)
     public ResponseEntity share(HttpServletRequest request, @PathVariable long id) {
         Map<String, String[]> requestMap = request.getParameterMap();
-        if(!requestMap.containsKey("toEmail") || !requestMap.containsKey("userEmail")) {
+        if(!requestMap.containsKey("toEmail")) {
             return ResponseEntity.badRequest().body(null);
         }
         Book book = BookFactory.getBookFromCache(id);
@@ -290,7 +286,9 @@ public class BookController implements BaseController<Book> {
         try{
             SendGrid sendgrid = new SendGrid(PropertiesManager.getProperty("sendgrid.api-key"));
             SendGrid.Email email = new SendGrid.Email();
-            String userEmail = request.getParameter("userEmail");
+            User user = (User) request.getSession().getAttribute("user");
+
+            String userEmail = user.getEmail();
             email.addTo(request.getParameter("toEmail"));
             email.setFrom(userEmail);
             email.setSubject(userEmail + " has shared a book with you on Librarebook");
