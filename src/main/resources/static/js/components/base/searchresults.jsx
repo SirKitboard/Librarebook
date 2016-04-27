@@ -12,7 +12,8 @@ define([
                 'results': null,
                 loading: true,
                 page:'0',
-                moreContent: true
+                moreContent: true,
+                displayMode: "list"
             }
         },
         initalFetch: function(view) {
@@ -96,6 +97,11 @@ define([
                 }
             });
         },
+        toggleDisplayMode: function() {
+            this.setState({
+                displayMode: this.state.displayMode == "grid" ? "list" : "grid"
+            })
+        },
         render: function() {
             return(
                 <div id="searchResultComponent" className="padNav">
@@ -112,14 +118,24 @@ define([
                                 <p className="center-align">Author</p>
                             </div>
                         </div>
+                        <div className="display-mode">
+                            <div className="switch">
+                                <label>
+                                    <i className="material-icons">grid_on</i> Grid
+                                    <input onClick={this.toggleDisplayMode} defaultChecked={this.state.displayMode == "list"} type="checkbox"/>
+                                    <span className="lever"></span>
+                                    List <i className="material-icons">list</i>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     <div style={{paddingTop:'52px'}}className="row searchResults">
-                        <SearchResults setView={this.props.setView} books={this.state.results}/>
+                        <SearchResults display={this.state.displayMode} setView={this.props.setView} books={this.state.results}/>
                     </div>
                     <div className="row">
                         <div className="col s12">
                             <div className="col s10 offset-s1" style={{textAlign: 'center'}}>
-                                {this.state.moreContent ? (this.state.loading ? <Preloader className="center-align"/> : <button onClick={this.fetchMoreBooks} className="btn-large center-align" id="loadButton">Load More</button>): <span style={{color:'#AAA'}}>End of results</span> }
+                                {this.state.moreContent ? (this.state.loading ? <Preloader className="center-align"/> : <button onClick={this.fetchMoreBooks} className="btn-large waves-effect waves-light center-align" id="loadButton">Load More</button>): <span style={{color:'#AAA'}}>End of results</span> }
                             </div>
                         </div>
                     </div>
