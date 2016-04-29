@@ -41,7 +41,7 @@ define([
             BookActions.purchase(this.props.book.id, this.props.book.isbn);
         },
         toggleRenew: function() {
-            console.log("hi");
+            BookActions.toggleRenew(this.props.book.id);
         },
         renew: function () {
             BookActions.renew(this.props.book.id);
@@ -100,17 +100,14 @@ define([
                 if (!checkedOutItem.renewed) {
                     if (checkedOutItem.willRenew) {
                         var checked = "checked";
-                    } else {
-                        var checked = "";
                     }
-
                     if (daysLeft <= 3) {
                         var renewCheckbox =
                             (
                                 <form className="left" action="#">
                                     <p>
-                                        <input type="checkbox" id="test5" checked={checked} onChange={this.toggleRenew}/>
-                                        <label htmlFor="test5">Renew Book</label>
+                                        <input type="checkbox" id="renewCheckbox" checked={checked} onClick={this.toggleRenew}/>
+                                        <label htmlFor="renewCheckbox">Renew Book</label>
                                     </p>
                                 </form>
                             );

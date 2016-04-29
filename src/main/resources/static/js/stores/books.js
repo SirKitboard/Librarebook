@@ -44,6 +44,10 @@ define([
                     this.renew(action.data);
                     this.event.emit("change");
                     break;
+                case Constants.TOGGLE_RENEW:
+                    this.toggleAutoRenew(action.data);
+                    this.event.emit("change");
+                    break;
             }
 
         }.bind(this));
@@ -101,9 +105,22 @@ define([
     Store.prototype.renew = function(data) {
         if (this.books[data.bookId]) {
             var book = this.books[data.bookId];
+            var userId = window.currentUser.id;
             for (var i=0; i<book.checkedOutBy.length; i++) {
-                if (book.checkedOutBy[i].user == data.userId) {
+                if (book.checkedOutBy[i].user == userId) {
                     book.checkedOutBy[0].dueDate = data.newDate;
+                }
+            }
+        }
+    };
+    
+    Store.prototype.toggleAutoRenew = function(data) {
+        if (this.books[data.bookId]) {
+            var book = this.books[data.bookId];
+            var userId = window.currentUser.id;
+            for (var i=0; i<book.checkedOutBy.length; i++) {
+                if (book.checkedOutBy[i].user == userId) {
+                    book.checkedOutBy[0].willRenew = data.willRenew;
                 }
             }
         }

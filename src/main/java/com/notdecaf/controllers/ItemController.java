@@ -213,17 +213,20 @@ public class ItemController {
         if(item == null) {
             return ResponseEntity.badRequest().body(null);
         }
+        if (item.getAvailableLicenses() == 0) {
+            return ResponseEntity.badRequest().body(null);
+        }
         if (checkedOutItemDao.findByItemIdAndUserId(item.getId(),user.getId()) != null) {
             return ResponseEntity.badRequest().body(null);
         }
-        UserCheckedOutItem userCheckedOutItem = new UserCheckedOutItem(user,item);
+        UserCheckedOutItem userCheckedOutItem = new UserCheckedOutItem(user,item, 3);
         checkedOutItemDao.save(userCheckedOutItem);
 
         user.addCheckedOutItem(userCheckedOutItem);
         item.addCheckedOutItem(userCheckedOutItem);
 
         updateCache(item);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(userCheckedOutItem);
     }
 
     @RequestMapping(value = "/api/items/{id}/return", method = RequestMethod.POST)
@@ -251,12 +254,13 @@ public class ItemController {
             checkedOutItemDao.delete(prevCheckedOutItem);
 
             updateCache(item);
+
             return ResponseEntity.ok(null);
         }
     }
 
-    @RequestMapping(value = "/api/items/{id}/renew", method = RequestMethod.POST)
-    public ResponseEntity renew(HttpServletRequest req, @PathVariable long id) {
+    @RequestMapping(value = "/api/items/{id}/autorenew", method=RequestMethod.POST)
+    public ResponseEntity toggleAutoRenew(HttpServletRequest req, @PathVariable long id) {
         User user = (User) req.getSession().getAttribute("user");
         if(user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
@@ -274,12 +278,49 @@ public class ItemController {
         if (checkedOutItem == null) {
             return ResponseEntity.badRequest().body(null);
         }
+        checkedOutItem.setRenew(!checkedOutItem.getWillRenew());
+        checkedOutItemDao.save(checkedOutItem);
+
+        item.updateCheckedOutItem(checkedOutItem);
+        user.updateCheckedOutItem(checkedOutItem);
+        updateCache(item);
+
+        return ResponseEntity.ok(checkedOutItem.getWillRenew());
+    }
+
+    @RequestMapping(value = "/api/items/{id}/renew", method = RequestMethod.POST)
+    public ResponseEntity renew(HttpServletRequest req, @PathVariable long id) {
+        User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        Item item = ItemFactory.getItemFromCache(id);
+        if(item == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        if (item.getAvailableLicenses() == 0) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        UserCheckedOutItem checkedOutItem = null;
+        for (UserCheckedOutItem userCheckedOutItem: item.getCheckedOutBy()) {
+            if (userCheckedOutItem.getItem() == item.getId() && userCheckedOutItem.getUser() == user.getId()) {
+                checkedOutItem = userCheckedOutItem;
+            }
+        }
+        if (checkedOutItem == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        if (checkedOutItem.isRenewed()) {
+            return ResponseEntity.badRequest().body(null);
+        }
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(checkedOutItem.getDueDate());
         calendar.add(Calendar.DATE, 7);
         Date newDueDate = new Date(calendar.getTimeInMillis());
 
         checkedOutItem.setDueDate(newDueDate);
+        checkedOutItem.setRenewed(true);
+        checkedOutItem.setRenew(false);
         checkedOutItemDao.save(checkedOutItem);
 
         item.updateCheckedOutItem(checkedOutItem);

@@ -4,6 +4,7 @@ import com.notdecaf.helpers.EmailPreference;
 import com.notdecaf.helpers.UserStatus;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by Adi on 3/28/2016.
@@ -19,6 +20,9 @@ public class UserPreferences {
 
     @Enumerated(EnumType.STRING)
     private EmailPreference emailPreference;
+
+    @NotNull
+    private int checkoutLength;
 
     public UserStatus getStatus() {
         return status;
@@ -38,6 +42,14 @@ public class UserPreferences {
 
     public void setEmailPreference(EmailPreference emailPreference) {
         this.emailPreference = emailPreference;
+    }
+
+    public int getCheckoutLength() {
+        return checkoutLength;
+    }
+
+    public void setCheckoutLength(int checkoutLength) {
+        this.checkoutLength = checkoutLength;
     }
 
     public UserPreferences() {

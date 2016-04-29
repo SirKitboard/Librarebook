@@ -115,12 +115,26 @@ define([
                         actionType: Constants.RENEW,
                         data: {
                             bookId: id,
-                            userId: window.currentUser.id,
                             newDate: response
                         }
                     })
                 }
             });
+        },
+        toggleRenew: function(id) {
+          $.ajax({
+              url:"/api/items/"+id+"/autorenew",
+              method: "POST",
+              success: function (response) {
+                  AppDispatcher.dispatch({
+                      actionType: Constants.TOGGLE_RENEW,
+                      data: {
+                          bookId: id,
+                          willRenew: response
+                      }
+                  })
+              }
+          });
         },
         update : function(refs, bookID) {
             $.ajax({

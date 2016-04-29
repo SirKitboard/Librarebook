@@ -11,6 +11,7 @@ define([
         RETURN: 6,
         ADD_GENRE: 7,
         RENEW: 8,
+        TOGGLE_RENEW: 9
     }
 
     return Constants

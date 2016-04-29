@@ -29,18 +29,26 @@ public class UserCheckedOutItem extends IDModel{
     @NotNull
     private Date dueDate;
 
+    @NotNull
+    private boolean renewed;
+
+    @NotNull
+    private boolean willRenew;
+
     public UserCheckedOutItem() {
 
     }
 
-    public UserCheckedOutItem(User user, Item item) {
+    public UserCheckedOutItem(User user, Item item, int checkoutLength) {
         this.user = user;
         this.item = item;
+        this.renewed = false;
+        this.willRenew = false;
         this.checkedOutOn = new Date();
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(this.checkedOutOn);
-        calendar.add(Calendar.DATE, 7);
+        calendar.add(Calendar.DATE, checkoutLength);
         this.dueDate = new Date(calendar.getTimeInMillis());
     }
 
@@ -79,5 +87,21 @@ public class UserCheckedOutItem extends IDModel{
 
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public boolean isRenewed() {
+        return renewed;
+    }
+
+    public void setRenewed(boolean renewed) {
+        this.renewed = renewed;
+    }
+
+    public boolean getWillRenew() {
+        return willRenew;
+    }
+
+    public void setRenew(boolean renew) {
+        this.willRenew = renew;
     }
 }

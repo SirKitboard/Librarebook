@@ -210,7 +210,7 @@ public abstract class Item extends IDModel{
 
     public int getAvailableLicenses() {
         // Calculate total licenses based on user checkout mapping
-        return this.totalLicenses;
+        return this.totalLicenses - checkedOutBy.size();
     }
 
     public Series getSeries() {
