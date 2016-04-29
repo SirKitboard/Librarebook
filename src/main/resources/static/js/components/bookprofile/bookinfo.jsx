@@ -40,8 +40,14 @@ define([
         purchase: function() {
             BookActions.purchase(this.props.book.id, this.props.book.isbn);
         },
+        toggleRenew: function() {
+            console.log("hi");
+        },
         renew: function () {
             BookActions.renew(this.props.book.id);
+        },
+        addToWaitlist: function() {
+            // BookActions.addToWaitlist(this.props.book.id);
         },
         delete: function() {
             BookActions.delete(this.props.book.id);
@@ -77,6 +83,42 @@ define([
                 }
             }
 
+            var purchaseButton = (<div className = "btn-large right bookButton" id="purchase" onClick={this.purchase}>Purchase</div>);
+            if (this.state.checkedOut) {
+                var checkedOutItem = _.find(this.props.book.checkedOutBy, function(item) { return item.user == window.currentUser.id; });
+                var dateCheckedOut = new Date(checkedOutItem.checkedOutOn);
+                var dueDate = new Date(checkedOutItem.dueDate);
+                var timeDiff = Math.abs(dueDate.getTime() - dateCheckedOut.getTime());
+                var daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                console.log(daysLeft);
+
+                var checkoutInfo = (<p>Checked out on {dateCheckedOut.toDateString()} at {dateCheckedOut.toTimeString()}</p>);
+                var returnInfo = (<p>Book will be returned {dueDate.toDateString()}</p>);
+                var returnButton = (<div className = "btn-large right bookButton" id="return" onClick={this.return}>Return</div>);
+                var downloadButton = (<div className = "btn-large right bookButton" id="Download">Download</div>);
+
+                if (!checkedOutItem.renewed) {
+                    if (checkedOutItem.willRenew) {
+                        var checked = "checked";
+                    } else {
+                        var checked = "";
+                    }
+
+                    if (daysLeft <= 3) {
+                        var renewCheckbox =
+                            (
+                                <form className="left" action="#">
+                                    <p>
+                                        <input type="checkbox" id="test5" checked={checked} onChange={this.toggleRenew}/>
+                                        <label htmlFor="test5">Renew Book</label>
+                                    </p>
+                                </form>
+                            );
+                    }
+                }
+            }
+
+
             var available = this.props.book.availableLicenses;
             if (available > 0) {
                 var card =
@@ -85,17 +127,39 @@ define([
                             <p className="center-align">Available</p>
                         </div>
                     </div>);
-                var disabled = ""
-            } else {
+                var disabled = "";
+
+                if (!this.state.checkedOut) {
+                    var instantCheckout = (<div className= "btn-large right bookButton" id="instantCheckout" onClick={this.checkout}>Checkout</div>);
+                    var addToCart = (<div className= "btn-large right bookButton"  id="addToCart">Add to cart</div>);
+                }
+            }else {
                 var card =
                     (<div className="card red z-depth-1" id="bookAvailable">
                         <div className="card-content white-text">
                             <p className="center-align">Unavailable</p>
                         </div>
                     </div>);
-
-                var disabled = "disabled"
+                if (!this.state.checkedOut) {
+                    var addToWaitlist = (<div className= "btn-large right bookButton"  id="addToWaitlist" onClick={this.addToWaitlist}>Add to Waitlist</div>);
+                    var recommendButton = (<div className= "btn-large right bookButton"  id="recommendMore">Recommend</div>);
+                    var disabled = "disabled";
+                }
             }
+
+            var bookActionButtons =
+                (
+                    <div>
+                        {renewCheckbox}
+                        {returnButton}
+                        {instantCheckout}
+                        {recommendButton}
+                        {addToWaitlist}
+                        {purchaseButton}
+                        {downloadButton}
+                        {addToCart}
+                    </div>
+                );
 
             var likeStyle = {
                 color: 'red',
@@ -108,38 +172,13 @@ define([
                 margin: '10px'
             };
 
-            if (this.state.checkedOut) {
-                var returnOrCheckOut =
-                    (
-                        <div>
-                            <div className = "btn-large right bookButton" id="return" onClick={this.return}>Return</div>
-                            <div className = "btn-large right bookButton" id="renew" onClick={this.renew}>Renew</div>
-                            <div className = "btn-large right bookButton" id="purchase" onClick={this.purchase}>Purchase</div>
-                        </div>
-                    );
-
-                var checkedOutItem = _.find(this.props.book.checkedOutBy, function(item) { return item.user == window.currentUser.id; });
-                var dateCheckedOut = new Date(checkedOutItem.checkedOutOn);
-                var dueDate = new Date(checkedOutItem.dueDate);
-                var checkoutInfo = (<p>Checked out on {dateCheckedOut.toDateString()} at {dateCheckedOut.toTimeString()}</p>);
-                var returnInfo = (<p>Book will be returned {dueDate.toDateString()}</p>);
-            } else {
-                var returnOrCheckOut =
-                    (
-                        <div>
-                            <div className= {"btn-large right" + disabled} id="addToCart">Add to cart</div>
-                            <div className= "btn-large right bookButton" id="instantCheckout" onClick={this.checkout}>Checkout</div>
-                            <div className= "btn-large right bookButton" id="purchase" onClick={this.purchase}>Purchase</div>
-                        </div>
-                    );
-            }
-
             return (
                 <div id="bookInfo">
                     <h2> {this.props.book.title} </h2>
                     <h5>by {authorText}</h5>
                     <p>{this.props.book.checkedOutOn}</p>
                     <div className="row">
+                        <a><span style={likeStyle} onClick={this.toggleFavorite} className=""/></a>
                         {this.props.book.favorited ? <a><span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like-filled"/></a> : <span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like"/> }
                         {this.props.loggedIn ? <a href="#modalEditBook" style={iconStyle} className="modal-trigger editModalTrigger"><i style={iconStyle} className="material-icons">edit</i></a> : null}
                         {this.props.loggedIn ? <a href="#modalShare" style={iconStyle} className="modal-trigger shareModalTrigger "><i style={iconStyle} className="material-icons">share</i></a> : null}
@@ -167,7 +206,7 @@ define([
                         {checkoutInfo}
                         {returnInfo}
                     </div>
-                        { returnOrCheckOut }
+                        { bookActionButtons }
                 </div>
             )
         }

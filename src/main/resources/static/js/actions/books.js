@@ -30,7 +30,10 @@ define([
                 success: function(response) {
                     AppDispatcher.dispatch({
                         actionType: Constants.CHECKOUT,
-                        data: id
+                        data: {
+                            checkOutItem: response,
+                            id: id
+                        }
                     })
                 }
             })

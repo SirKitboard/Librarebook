@@ -83,15 +83,18 @@ define([
         return this.books[id];
     };
 
-    Store.prototype.checkoutBook = function(id) {
-        if (this.books[id]) {
-            this.books[id].checkedOut = true;
+    Store.prototype.checkoutBook = function(data) {
+        if (this.books[data.id]) {
+            this.books[data.id].checkedOut = true;
+            this.books[data.id].checkedOutBy.push(data.checkOutItem);
+            this.books[data.id].availableLicenses--;
         }
     };
 
     Store.prototype.return = function(id) {
         if (this.books[id]) {
             this.books[id].checkedOut = false;
+            this.books[id].availableLicenses++;
         }
     };
     
