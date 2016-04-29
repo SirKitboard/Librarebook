@@ -10,7 +10,8 @@ define([
         getInitialState: function() {
             var tab = 0;
             if(this.props.view.split("/")[2]) {
-                tab = this.props.view.split("/")[2]
+                tab = parseInt(this.props.view.split("/")[2]);
+                console.log(tab);
             }
             return {
                 selectedTab : tab
