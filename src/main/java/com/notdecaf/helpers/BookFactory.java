@@ -67,7 +67,7 @@ public class BookFactory {
     public static List<Book> findByTitle(String title, int page) {
         int start = page*PAGE_SIZE;
         int end = start + PAGE_SIZE;
-        Page<Book> books = bookDao.findByTitleContainsIgnoreCase(new PageRequest(start, end), title);
+        Page<Book> books = bookDao.findByTitleContainsIgnoreCase(new PageRequest(page, PAGE_SIZE), title);
         List<Book> bookList = books.getContent();
         return bookList;
     }
