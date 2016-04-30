@@ -8,7 +8,6 @@ define([
             // var liked = this.props.book.favorited;
             var self = this;
             var loggedIn = false;
-            console.log(this.props.book);
             checkedOut = this.isCheckedOut(this.props.book);
             $(".modal-trigger.edit-modal").leanModal();
             $(".modal-trigger.share-modal").leanModal();
@@ -47,8 +46,12 @@ define([
         renew: function () {
             BookActions.renew(this.props.book.id);
         },
-        addToWaitlist: function() {
-            BookActions.addToWaitlist(this.props.book.id);
+        addHold: function() {
+            BookActions.addHold(this.props.book.id);
+        },
+        removeHold: function() {
+            BookActions.removeHold(this.props.book.id);
+            console.log("clicked");
         },
         delete: function() {
             BookActions.delete(this.props.book.id);
@@ -144,15 +147,14 @@ define([
                     var reserved;
                     var waitlistButton;
                     if (user) {
-                        var reserved = _.find(user.reservedItems, function(item) {
+                        var reserved = _.find(user.holdItems, function(item) {
                             return item.id == book.id;
                         });
-                        console.log(window.currentUser.reservedItems);
                     }
                     if (reserved) {
-                        waitlistButton = (<div className= "btn-large right bookButton"  id="removeWaitlist">Remove Reservation</div>);
+                        waitlistButton = (<div className= "btn-large right bookButton"  id="removeHold" onClick={this.removeHold}>Remove Hold</div>);
                     } else {
-                        waitlistButton = (<div className= "btn-large right bookButton"  id="addToWaitlist" onClick={this.addToWaitlist}>Reserve Copy</div>);
+                        waitlistButton = (<div className= "btn-large right bookButton"  id="addHold" onClick={this.addHold}>Place Hold</div>);
                     }
                     var recommendButton = (<div className= "btn-large right bookButton"  id="recommendMore">Recommend</div>);
                     var disabled = "disabled";

@@ -67,8 +67,8 @@ public class ItemController {
         return ResponseEntity.ok(null);
     }
 
-    @RequestMapping(value = "/api/items/{id}/reserve", method = RequestMethod.POST)
-    public ResponseEntity reserve(HttpServletRequest request, @PathVariable long id) {
+    @RequestMapping(value = "/api/items/{id}/hold", method = RequestMethod.POST)
+    public ResponseEntity hold(HttpServletRequest request, @PathVariable long id) {
         User user = (User) request.getSession().getAttribute("user");
         if(user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
@@ -77,12 +77,31 @@ public class ItemController {
         if(item == null) {
             return ResponseEntity.badRequest().body(null);
         }
-        item.getReservedBy().add(user);
-        user.getReservedItems().add(item);
+        item.getHoldsBy().add(user);
+        user.getHoldItems().add(item);
         itemDao.save(item);
         userDao.save(user);
 
         updateCache(item);
+        return ResponseEntity.ok(null);
+    }
+
+    @RequestMapping(value = "/api/items/{id}/removehold", method = RequestMethod.POST)
+    public ResponseEntity removeHold(HttpServletRequest request, @PathVariable long id) {
+        User user = (User) request.getSession().getAttribute("user");
+        if(user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        Item item = ItemFactory.getItemFromCache(id);
+        if(item == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        Set<User> holdsBy = SetHelper.remove(item.getHoldsBy(), user);
+        Set<Item> holdItems = SetHelper.remove(user.getHoldItems(), item);
+        user.setHoldItems(holdItems);
+        item.setHoldsBy(holdsBy);
+        itemDao.save(item);
+        userDao.save(user);
         return ResponseEntity.ok(null);
     }
 

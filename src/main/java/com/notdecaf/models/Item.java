@@ -10,7 +10,6 @@ import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -99,7 +98,7 @@ public abstract class Item extends IDModel{
     @JsonBackReference
     @ManyToMany
     @JoinTable(name="waitlist", joinColumns = {@JoinColumn(name="itemID", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "userID", referencedColumnName = "id")})
-    private Set<User> reservedBy;
+    private Set<User> holdsBy;
 
     public Set<UserCheckedOutItem> getCheckedOutBy() {
         return checkedOutBy;
@@ -257,12 +256,12 @@ public abstract class Item extends IDModel{
         this.dateAdded = dateAdded;
     }
 
-    public Set<User> getReservedBy() {
-        return reservedBy;
+    public Set<User> getHoldsBy() {
+        return holdsBy;
     }
 
-    public void setReservedBy(Set<User> reservedBy) {
-        this.reservedBy = reservedBy;
+    public void setHoldsBy(Set<User> holdsBy) {
+        this.holdsBy = holdsBy;
     }
 
     public Item(String title, Set<Genre> genres, Set<Author> authors, Publisher publisher, String description, int yearPublished, int totalLicenses, Language language, ItemStatus status) {

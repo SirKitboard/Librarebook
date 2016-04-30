@@ -205,17 +205,29 @@ define([
                 }
             })
         },
-        addToWaitlist: function(id) {
+        addHold: function(id) {
             $.ajax({
-               url: "/api/items/"+id+"/reserve",
+               url: "/api/items/"+id+"/hold",
                 method: "POST",
                 success: function(response) {
                     AppDispatcher.dispatch({
-                        actionType: Constants.RESERVE,
+                        actionType: Constants.HOLD,
                         data: id
                     })
                 }
             });
+        },
+        removeHold: function(id) {
+            $.ajax({
+                url: "/api/items/"+id+"/removehold",
+                method: "POST",
+                success: function(response) {
+                    AppDispatcher.dispatch({
+                        actionType: Constants.REMOVE_HOLD,
+                        data: id
+                    })
+                }
+            })
         }
     };
 });

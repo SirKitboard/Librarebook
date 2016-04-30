@@ -48,8 +48,12 @@ define([
                     this.toggleAutoRenew(action.data);
                     this.event.emit("change");
                     break;
-                case Constants.RESERVE:
-                    this.reserve(action.data);
+                case Constants.HOLD:
+                    this.hold(action.data);
+                    this.event.emit("change");
+                    break;
+                case Constants.REMOVE_HOLD:
+                    this.removeHold(action.data);
                     this.event.emit("change");
                     break;
             }
@@ -134,15 +138,23 @@ define([
         this.books[response.bookID].favorited = response.status;
     };
 
-    Store.prototype.reserve = function(id) {
+    Store.prototype.hold = function(id) {
         if (this.books[id]) {
-            if (window.currentUser.reservedItems) {
-                window.currentUser.reservedItems.push(this.books[id]);
+            if (window.currentUser.holdItems) {
+                window.currentUser.holdItems.push(this.books[id]);
             } else {
-                window.currentUser.reservedItems = [this.books.id];
+                window.currentUser.holdItems = [this.books.id];
             }
         }
-    }
+    };
+
+    Store.prototype.removeHold = function(id) {
+        if (this.books[id]) {
+            window.currentUser.holdItems = window.currentUser.holdItems.filter(function (item) {
+               item.id !== id;
+            });
+        }
+    };
 
     Store.prototype.update = function(id) {
         this.books[id] = book;

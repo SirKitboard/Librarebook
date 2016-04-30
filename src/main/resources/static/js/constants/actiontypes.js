@@ -12,7 +12,8 @@ define([
         ADD_GENRE: 7,
         RENEW: 8,
         TOGGLE_RENEW: 9,
-        RESERVE: 10
+        HOLD: 10,
+        REMOVE_HOLD: 11
     }
 
     return Constants

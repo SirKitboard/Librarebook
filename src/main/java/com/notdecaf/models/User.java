@@ -8,7 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -89,8 +88,8 @@ public class User extends IDModel implements Cloneable{
     @ManyToMany(mappedBy = "flaggedBy")
     private Set<Item> flags;
 
-    @ManyToMany(mappedBy = "reservedBy")
-    private Set<Item> reservedItems;
+    @ManyToMany(mappedBy = "holdsBy")
+    private Set<Item> holdItems;
 
     public User(String firstName, String lastName, Date dob, String email, String gender, String password, Address address) throws PasswordStorage.CannotPerformOperationException {
         this.firstName = firstName;
@@ -321,12 +320,12 @@ public class User extends IDModel implements Cloneable{
     public void addToCart(Item item){shoppingCart.add(item);}
 
 
-    public Set<Item> getReservedItems() {
-        return reservedItems;
+    public Set<Item> getHoldItems() {
+        return holdItems;
     }
 
-    public void setReservedItems(Set<Item> reservedItem) {
-        this.reservedItems = reservedItems;
+    public void setHoldItems(Set<Item> holdItems) {
+        this.holdItems = holdItems;
     }
 
     public void handleUpdate(HashMap<String, String> params) {
