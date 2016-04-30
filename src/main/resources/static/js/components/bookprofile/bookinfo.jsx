@@ -8,6 +8,7 @@ define([
             // var liked = this.props.book.favorited;
             var self = this;
             var loggedIn = false;
+            console.log(this.props.book);
             checkedOut = this.isCheckedOut(this.props.book);
             $(".modal-trigger.edit-modal").leanModal();
             $(".modal-trigger.share-modal").leanModal();
@@ -47,7 +48,7 @@ define([
             BookActions.renew(this.props.book.id);
         },
         addToWaitlist: function() {
-            // BookActions.addToWaitlist(this.props.book.id);
+            BookActions.addToWaitlist(this.props.book.id);
         },
         delete: function() {
             BookActions.delete(this.props.book.id);
@@ -71,6 +72,8 @@ define([
             }
         },
         render: function() {
+            var book = this.props.book;
+            var user = window.currentUser;
             var authors = this.props.book.authors;
             var authorText = "";
             if (authors) {
@@ -85,7 +88,7 @@ define([
 
             var purchaseButton = (<div className = "btn-large right bookButton" id="purchase" onClick={this.purchase}>Purchase</div>);
             if (this.state.checkedOut) {
-                var checkedOutItem = _.find(this.props.book.checkedOutBy, function(item) { return item.user == window.currentUser.id; });
+                var checkedOutItem = _.find(book.checkedOutBy, function(item) { return item.user == user.id; });
                 var dateCheckedOut = new Date(checkedOutItem.checkedOutOn);
                 var dueDate = new Date(checkedOutItem.dueDate);
                 var timeDiff = Math.abs(dueDate.getTime() - dateCheckedOut.getTime());
@@ -116,7 +119,7 @@ define([
             }
 
 
-            var available = this.props.book.availableLicenses;
+            var available = book.availableLicenses;
             if (available > 0) {
                 var card =
                     (<div className="card green" id="bookAvailable">
@@ -138,7 +141,19 @@ define([
                         </div>
                     </div>);
                 if (!this.state.checkedOut) {
-                    var addToWaitlist = (<div className= "btn-large right bookButton"  id="addToWaitlist" onClick={this.addToWaitlist}>Add to Waitlist</div>);
+                    var reserved;
+                    var waitlistButton;
+                    if (user) {
+                        var reserved = _.find(user.reservedItems, function(item) {
+                            return item.id == book.id;
+                        });
+                        console.log(window.currentUser.reservedItems);
+                    }
+                    if (reserved) {
+                        waitlistButton = (<div className= "btn-large right bookButton"  id="removeWaitlist">Remove Reservation</div>);
+                    } else {
+                        waitlistButton = (<div className= "btn-large right bookButton"  id="addToWaitlist" onClick={this.addToWaitlist}>Reserve Copy</div>);
+                    }
                     var recommendButton = (<div className= "btn-large right bookButton"  id="recommendMore">Recommend</div>);
                     var disabled = "disabled";
                 }
@@ -151,7 +166,7 @@ define([
                         {returnButton}
                         {instantCheckout}
                         {recommendButton}
-                        {addToWaitlist}
+                        {waitlistButton}
                         {purchaseButton}
                         {downloadButton}
                         {addToCart}

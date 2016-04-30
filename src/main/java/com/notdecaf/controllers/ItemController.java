@@ -69,8 +69,21 @@ public class ItemController {
 
     @RequestMapping(value = "/api/items/{id}/reserve", method = RequestMethod.POST)
     public ResponseEntity reserve(HttpServletRequest request, @PathVariable long id) {
-        //TODO: Implement Method
-        return null;
+        User user = (User) request.getSession().getAttribute("user");
+        if(user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        Item item = ItemFactory.getItemFromCache(id);
+        if(item == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        item.getReservedBy().add(user);
+        user.getReservedItems().add(item);
+        itemDao.save(item);
+        userDao.save(user);
+
+        updateCache(item);
+        return ResponseEntity.ok(null);
     }
 
     @RequestMapping(value = "/api/items/{id}/flag", method = RequestMethod.POST)
@@ -219,7 +232,7 @@ public class ItemController {
         if (checkedOutItemDao.findByItemIdAndUserId(item.getId(),user.getId()) != null) {
             return ResponseEntity.badRequest().body(null);
         }
-        UserCheckedOutItem userCheckedOutItem = new UserCheckedOutItem(user,item, 3);
+        UserCheckedOutItem userCheckedOutItem = new UserCheckedOutItem(user,item, 7);
         checkedOutItemDao.save(userCheckedOutItem);
 
         user.addCheckedOutItem(userCheckedOutItem);

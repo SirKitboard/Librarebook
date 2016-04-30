@@ -48,6 +48,10 @@ define([
                     this.toggleAutoRenew(action.data);
                     this.event.emit("change");
                     break;
+                case Constants.RESERVE:
+                    this.reserve(action.data);
+                    this.event.emit("change");
+                    break;
             }
 
         }.bind(this));
@@ -129,6 +133,16 @@ define([
     Store.prototype.toggleFavorite = function(response) {
         this.books[response.bookID].favorited = response.status;
     };
+
+    Store.prototype.reserve = function(id) {
+        if (this.books[id]) {
+            if (window.currentUser.reservedItems) {
+                window.currentUser.reservedItems.push(this.books[id]);
+            } else {
+                window.currentUser.reservedItems = [this.books.id];
+            }
+        }
+    }
 
     Store.prototype.update = function(id) {
         this.books[id] = book;

@@ -205,6 +205,17 @@ define([
                 }
             })
         },
-
+        addToWaitlist: function(id) {
+            $.ajax({
+               url: "/api/items/"+id+"/reserve",
+                method: "POST",
+                success: function(response) {
+                    AppDispatcher.dispatch({
+                        actionType: Constants.RESERVE,
+                        data: id
+                    })
+                }
+            });
+        }
     };
 });

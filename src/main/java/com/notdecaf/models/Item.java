@@ -96,6 +96,11 @@ public abstract class Item extends IDModel{
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "item")
     private Set<UserCheckoutHistory> checkoutHistory;
 
+    @JsonBackReference
+    @ManyToMany
+    @JoinTable(name="waitlist", joinColumns = {@JoinColumn(name="itemID", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "userID", referencedColumnName = "id")})
+    private Set<User> reservedBy;
+
     public Set<UserCheckedOutItem> getCheckedOutBy() {
         return checkedOutBy;
     }
@@ -250,6 +255,14 @@ public abstract class Item extends IDModel{
 
     public void setDateAdded(Date dateAdded) {
         this.dateAdded = dateAdded;
+    }
+
+    public Set<User> getReservedBy() {
+        return reservedBy;
+    }
+
+    public void setReservedBy(Set<User> reservedBy) {
+        this.reservedBy = reservedBy;
     }
 
     public Item(String title, Set<Genre> genres, Set<Author> authors, Publisher publisher, String description, int yearPublished, int totalLicenses, Language language, ItemStatus status) {

@@ -89,6 +89,9 @@ public class User extends IDModel implements Cloneable{
     @ManyToMany(mappedBy = "flaggedBy")
     private Set<Item> flags;
 
+    @ManyToMany(mappedBy = "reservedBy")
+    private Set<Item> reservedItems;
+
     public Set<UserCheckedOutItem> getCurrentlyCheckedOutItems() {
         return currentlyCheckedOutItems;
     }
@@ -297,6 +300,15 @@ public class User extends IDModel implements Cloneable{
     }
 
     public void addToCart(Item item){shoppingCart.add(item);}
+
+
+    public Set<Item> getReservedItems() {
+        return reservedItems;
+    }
+
+    public void setReservedItems(Set<Item> reservedItem) {
+        this.reservedItems = reservedItems;
+    }
 
     public void handleUpdate(HashMap<String, String> params) {
         //TODO: Handle update
