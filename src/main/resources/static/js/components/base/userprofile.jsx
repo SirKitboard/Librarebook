@@ -85,6 +85,10 @@ define([
                              <div className="collapsible-header"><i className="material-icons">library_books</i>Books you've favorited</div>
                              <div className="collapsible-body"><BookCarousel books={window.currentUser.favorites}/></div>
                          </li>
+                         <li>
+                             <div className="collapsible-header"><i className="material-icons">library_books</i>Books you've wished for</div>
+                             <div className="collapsible-body"><BookCarousel books={window.currentUser.wishlist}/></div>
+                         </li>
                     </ul>
                     <div className="fixed-action-btn">
                         <a className="btn-floating btn-large red modal-trigger profile-modal" href="#confirmationModal">

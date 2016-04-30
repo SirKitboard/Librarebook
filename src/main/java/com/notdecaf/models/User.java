@@ -92,6 +92,33 @@ public class User extends IDModel implements Cloneable{
     @ManyToMany(mappedBy = "reservedBy")
     private Set<Item> reservedItems;
 
+    public User(String firstName, String lastName, Date dob, String email, String gender, String password, Address address) throws PasswordStorage.CannotPerformOperationException {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dob = dob;
+        this.email = email;
+        this.gender = gender;
+        this.hashedPassword = PasswordStorage.createHash(password).getBytes();
+        this.address = address;
+        this.profileImage = "";
+        this.coverImage = "";
+        this.favorites = new HashSet<Item>();
+        this.shoppingCart = new HashSet<Item>();
+        this.wishlist = new HashSet<Item>();
+        this.notInterested = new HashSet<Item>();
+        this.currentlyCheckedOutItems = new HashSet<UserCheckedOutItem>();
+        this.checkoutHistory = new HashSet<UserCheckoutHistory>();
+        this.ratings = new HashSet<UserItemRating>();
+        this.reviewRatings = new HashSet<UserReviewRating>();
+        this.preferences = new UserPreferences();
+        this.flags = new HashSet<Item>();
+        this.reservedItems = new HashSet<Item>();
+    }
+
+    public User() {
+
+    }
+
     public Set<UserCheckedOutItem> getCurrentlyCheckedOutItems() {
         return currentlyCheckedOutItems;
     }
@@ -126,22 +153,6 @@ public class User extends IDModel implements Cloneable{
 
     public void setFlags(Set<Item> flags) {
         this.flags = flags;
-    }
-
-
-
-    public User(String firstName, String lastName, Date dob, String email, String gender, String password, Address address) throws PasswordStorage.CannotPerformOperationException {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dob = dob;
-        this.email = email;
-        this.gender = gender;
-        this.hashedPassword = PasswordStorage.createHash(password).getBytes();
-        this.address = address;
-    }
-
-    public User() {
-
     }
 
     public boolean verifyCredentials(String password) {
@@ -273,6 +284,14 @@ public class User extends IDModel implements Cloneable{
 
     public void setWishlist(Set<Item> wishlist) {
         this.wishlist = wishlist;
+    }
+
+    public void addToWishList(Item item){
+        wishlist.add(item);
+    }
+
+    public void removeFromWishList(Item item){
+        wishlist.remove(item);
     }
 
     public Set<Item> getNotInterested() {
