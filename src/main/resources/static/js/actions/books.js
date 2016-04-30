@@ -185,6 +185,7 @@ define([
                         success(response);
                     }
                     else {
+                        success([]);
                         noMoreContent()
                     }
                 }

@@ -132,15 +132,18 @@ define([
             }
         },
         componentDidUpdate: function(prevProps, prevState) {
+            console.log('update')
             $('select').material_select('destroy');
             $('select').material_select();
             if(prevState.filters.minRating != this.state.filters.minRating) {
                 this.filterBooks();
             }
+            if(prevState.filters.genres != this.state.filters.genres) {
+                this.fetchBooks(this.props.view, 0, this.state.sort, this.state.order);
+            }
         },
         updateFilters: function () {
             var filters = $("#genreSelect").val();
-
             var minRating = parseInt(this.refs.ratingFilter.value);
             var newFilters = {};
             if(this.state.filters.genres != filters) {
@@ -185,7 +188,6 @@ define([
             })
         },
         updateRequest: function() {
-            debugger;
             this.setState({
                 sort: this.refs.sortSelect.value,
                 order: this.refs.ordSelect.value,
@@ -193,6 +195,7 @@ define([
             });
         },
         render: function() {
+            console.log('render');
             return(
                 <div id="searchResultComponent" className="padNav">
                     <div className="row searchBanner valign-wrapper"></div>
@@ -261,7 +264,7 @@ define([
                                 <label>Genres</label>
                             </div>
                             <div className="input-field col s12 m6">
-                                <input placeholder="Rating" id="ratingFilter" ref="ratingFilter" type="number" min="0" max="5"/>
+                                <input placeholder="Rating" id="ratingFilter" ref="ratingFilter" type="number" defaultValue="0" min="0" max="5"/>
                                 <label htmlFor="ratingFilter">Minimum Rating</label>
                             </div>
                             </div>
