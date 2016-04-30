@@ -7,8 +7,6 @@ define([
     return React.createClass({
         getInitialState: function(){
             // var liked = this.props.book.favorited;
-            var self = this;
-            var loggedIn = false;
             checkedOut = this.isCheckedOut(this.props.book);
             $(".modal-trigger.edit-modal").leanModal();
             $(".modal-trigger.share-modal").leanModal();

@@ -91,9 +91,8 @@ public abstract class Item extends IDModel{
     public void setSamplePath(String samplePath) {
         this.samplePath = samplePath;
     }
-
-    @JsonBackReference
-    @OneToMany
+    
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "item")
     private Set<UserItemRating> ratings;
 
     @ManyToOne
@@ -265,6 +264,18 @@ public abstract class Item extends IDModel{
 
     public void setRatings(Set<UserItemRating> ratings) {
         this.ratings = ratings;
+    }
+
+    public void addRating(UserItemRating rating) {
+        this.ratings.add(rating);
+    }
+
+    public void removeRating(UserItemRating rating) {
+        this.ratings = SetHelper.remove(this.ratings, rating);
+    }
+
+    public void updateRating(UserItemRating rating) {
+        this.ratings = SetHelper.update(this.ratings, rating);
     }
 
     public Date getDateAdded() {

@@ -26,7 +26,7 @@ define([
                             <img style={{width:'500px', height:'auto'}} src={imageURL} className="valign"/>
                         </div>
                         <div id="reviewsTab" className="col s12">
-                            <button>Rate Book</button>
+                            <a href="#modalReview" className="modal-trigger shareModalTrigger btn">Rate Book</a>
                         </div>
                     </div>
                 </div>

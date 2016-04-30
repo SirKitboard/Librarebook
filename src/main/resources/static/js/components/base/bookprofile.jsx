@@ -5,8 +5,8 @@ define([
     'jsx!components/bookprofile/bookextras',
     'jsx!components/template/editbookmodal',
     'jsx!components/bookprofile/sharebookmodal',
-    'stores/books'
-], function(_,React, BookInfoComponent, BookExtrasComponent, BookEditModal, ShareBookModal) {
+    'actions/books'
+], function(_,React, BookInfoComponent, BookExtrasComponent, BookEditModal, ShareBookModal, BookActions) {
     return React.createClass({
         getInitialState: function() {
             var loggedIn = false;
@@ -45,12 +45,19 @@ define([
                 }
             }
         },
+        rate: function() {
+            var radioId = $('input[name=rating]:checked', '#ratingForm').attr("id");
+            var rating = $("label[for=" + radioId + "]","#ratingForm").text();
+            console.log(rating);
+            BookActions.rate(this.state.book.id, rating);
+        },
         render: function() {
             if (this.state.loading) {
                 return (
                     <p>Loading</p>
                 )
             }
+            
             return (
                 <div className="padNav" id="profileContent">
                     <div className="row" id="bookProfileTop">
@@ -69,6 +76,43 @@ define([
                     <div id="modalShare" className="modal">
                         <div className="modal-content container shareBook">
                             <ShareBookModal loggedIn={this.state.loggedIn} book={this.state.book}/>
+                        </div>
+                    </div>
+                    <div id="modalReview" className="modal">
+                        <div className="modal-content reviewBook">
+                            <div className="rating row">
+                                <form action="#" id="ratingForm">
+                                    <span>
+                                        <input name="rating" type="radio" id="star1" />
+                                        <label htmlFor="star1">1</label>
+                                    </span>
+                                    <span>
+                                        <input name="rating" type="radio" id="star2" />
+                                        <label htmlFor="star2">2</label>
+                                    </span>
+                                    <span>
+                                        <input name="rating" type="radio" id="star3" />
+                                        <label htmlFor="star3">3</label>
+                                    </span>
+                                    <span>
+                                        <input name="rating" type="radio" id="star4" />
+                                        <label htmlFor="star4">4</label>
+                                    </span>
+                                    <span>
+                                        <input name="rating" type="radio" id="star5" />
+                                        <label htmlFor="star5">5</label>
+                                    </span>
+                                </form>
+                            </div>
+                            <div classNames="row">
+                                <div className="input-field col s12">
+                                    <textarea id="textarea1" className="materialize-textarea"></textarea>
+                                    <label htmlFor="textarea1">Review</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <div className= "modal-action modal-close waves-effect waves-green btn-flat" onClick={this.rate}>Submit</div>
                         </div>
                     </div>
                 </div>

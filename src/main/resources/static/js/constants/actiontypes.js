@@ -15,9 +15,10 @@ define([
         HOLD: 10,
         REMOVE_HOLD: 11,
         ADD_AUTHOR: 12,
-        ADD_PUBLISHER:13
-
-    }
+        ADD_PUBLISHER:13,
+        RATE: 14,
+        REMOVE_RATING: 15
+    };
 
     return Constants
 });

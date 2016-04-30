@@ -75,7 +75,7 @@ public class User extends IDModel implements Cloneable{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<UserCheckoutHistory> checkoutHistory;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<UserItemRating> ratings;
 
     @JsonBackReference
@@ -310,6 +310,18 @@ public class User extends IDModel implements Cloneable{
 
     public void setRatings(Set<UserItemRating> ratings) {
         this.ratings = ratings;
+    }
+
+    public void addRating(UserItemRating rating) {
+        this.ratings.add(rating);
+    }
+
+    public void removeRating(UserItemRating rating) {
+        this.ratings = SetHelper.remove(this.ratings, rating);
+    }
+
+    public void updateRating(UserItemRating rating) {
+        this.ratings = SetHelper.update(this.ratings, rating);
     }
 
     public Set<UserReviewRating> getReviewRatings() {

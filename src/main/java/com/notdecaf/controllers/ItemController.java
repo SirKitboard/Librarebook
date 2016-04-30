@@ -1,9 +1,6 @@
 package com.notdecaf.controllers;
 
-import com.notdecaf.daos.ItemDao;
-import com.notdecaf.daos.UserCheckedOutItemDao;
-import com.notdecaf.daos.UserCheckoutHistoryDao;
-import com.notdecaf.daos.UserDao;
+import com.notdecaf.daos.*;
 import com.notdecaf.helpers.BookFactory;
 import com.notdecaf.helpers.ItemFactory;
 import com.notdecaf.helpers.SetHelper;
@@ -24,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
@@ -45,6 +43,9 @@ public class ItemController {
 
     @Autowired
     private UserCheckoutHistoryDao checkoutHistoryDao;
+
+    @Autowired
+    private UserItemRatingDao itemRatingDao;
 
     @RequestMapping(value = "/api/items/{id}", method = RequestMethod.GET)
     public ResponseEntity<Item> get(HttpSession session, @PathVariable long id) {
@@ -68,8 +69,8 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/api/items/{id}/hold", method = RequestMethod.POST)
-    public ResponseEntity hold(HttpServletRequest request, @PathVariable long id) {
-        User user = (User) request.getSession().getAttribute("user");
+    public ResponseEntity hold(HttpServletRequest req, @PathVariable long id) {
+        User user = (User) req.getSession().getAttribute("user");
         if(user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
@@ -87,8 +88,8 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/api/items/{id}/removehold", method = RequestMethod.POST)
-    public ResponseEntity removeHold(HttpServletRequest request, @PathVariable long id) {
-        User user = (User) request.getSession().getAttribute("user");
+    public ResponseEntity removeHold(HttpServletRequest req, @PathVariable long id) {
+        User user = (User) req.getSession().getAttribute("user");
         if(user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
@@ -286,7 +287,6 @@ public class ItemController {
             checkedOutItemDao.delete(prevCheckedOutItem);
 
             updateCache(item);
-
             return ResponseEntity.ok(null);
         }
     }
@@ -315,8 +315,8 @@ public class ItemController {
 
         item.updateCheckedOutItem(checkedOutItem);
         user.updateCheckedOutItem(checkedOutItem);
-        updateCache(item);
 
+        updateCache(item);
         return ResponseEntity.ok(checkedOutItem.getWillRenew());
     }
 
@@ -385,6 +385,57 @@ public class ItemController {
         } catch(Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
+    }
+
+    @RequestMapping(value = "/api/items/{id}/rate", method = RequestMethod.POST)
+    public ResponseEntity rate(HttpServletRequest req, @PathVariable long id) {
+        User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        Item item = ItemFactory.getItemFromCache(id);
+        if(item == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        int rating = Integer.parseInt(req.getParameter("rating"));
+        UserItemRating userItemRating = itemRatingDao.findByItemIdAndUserId(item.getId(),user.getId());
+        if (userItemRating == null) {
+            userItemRating = new UserItemRating(rating,user,item);
+            itemRatingDao.save(userItemRating);
+            item.addRating(userItemRating);
+            user.addRating(userItemRating);
+        } else {
+            userItemRating.setRating(rating);
+            itemRatingDao.save(userItemRating);
+            item.updateRating(userItemRating);
+            user.updateRating(userItemRating);
+        }
+
+        updateCache(item);
+        return ResponseEntity.ok(null);
+    }
+
+    @RequestMapping(value = "/api/items/{id}/removerating", method = RequestMethod.POST)
+    public ResponseEntity removeRating(HttpServletRequest req, @PathVariable long id) {
+        User user = (User) req.getSession().getAttribute("user");
+        if(user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        Item item = ItemFactory.getItemFromCache(id);
+        if(item == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        UserItemRating userItemRating = itemRatingDao.findByItemIdAndUserId(item.getId(), user.getId());
+        if (userItemRating == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        item.removeRating(userItemRating);
+        user.removeRating(userItemRating);
+        itemRatingDao.delete(userItemRating);
+
+        updateCache(item);
+        return ResponseEntity.ok(null);
     }
 
     public void updateCache(Item item) {

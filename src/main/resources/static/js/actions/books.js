@@ -197,7 +197,7 @@ define([
                 url: "/api/items/books/"+bookID+"/share",
                 method: "POST",
                 data: {
-                    toEmail: toEmail,
+                    toEmail: toEmail
                 },
                 success: function(response) {
                     console.log(response)
@@ -247,5 +247,23 @@ define([
                 }
             })
         },
+        rate: function (id, rating) {
+            $.ajax({
+                url: "/api/items/"+id+"/rate",
+                method: "POST",
+                data: {
+                    rating: rating
+                },
+                success: function(response) {
+                    AppDispatcher.dispatch({
+                        actionType: Constants.RATE,
+                        data: {
+                            bookId: id,
+                            rating: rating
+                        }
+                    })
+                }
+            })
+        }
     };
 });

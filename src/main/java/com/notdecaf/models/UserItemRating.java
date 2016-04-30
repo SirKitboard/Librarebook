@@ -10,7 +10,7 @@ import java.util.Set;
  * Created by purav on 3/28/16.
  */
 @Entity
-public class UserItemRating {
+public class UserItemRating extends IDModel{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,13 +19,11 @@ public class UserItemRating {
     @NotNull
     private int rating;
 
-    @JsonBackReference
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @JsonBackReference
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
 
@@ -54,16 +52,16 @@ public class UserItemRating {
         this.rating = rating;
     }
 
-    public User getUser() {
-        return user;
+    public long getUser() {
+        return user.getId();
     }
 
     public void setUser(User user) {
         this.user = user;
     }
 
-    public Item getItem() {
-        return item;
+    public long getItem() {
+        return item.getId();
     }
 
     public void setItem(Item item) {

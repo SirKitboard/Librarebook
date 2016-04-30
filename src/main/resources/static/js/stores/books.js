@@ -56,6 +56,10 @@ define([
                     this.removeHold(action.data);
                     this.event.emit("change");
                     break;
+                case Constants.RATE:
+                    this.rate(action.data);
+                    this.event.emit("change");
+                    break;
             }
 
         }.bind(this));
@@ -168,6 +172,12 @@ define([
         });
         return books;
     }
+
+    Store.prototype.rate = function(data) {
+        if (this.books[data.bookId]) {
+            this.books.rating = data.rating;
+        }
+    };
 
     Store.prototype.update = function(id) {
         this.books[id] = book;
