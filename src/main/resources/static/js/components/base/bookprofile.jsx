@@ -68,7 +68,7 @@ define([
                     </div>
                     <div id="modalShare" className="modal">
                         <div className="modal-content container shareBook">
-                            <ShareBookModal book={this.state.book}/>
+                            <ShareBookModal loggedIn={this.state.loggedIn} book={this.state.book}/>
                         </div>
                     </div>
                 </div>

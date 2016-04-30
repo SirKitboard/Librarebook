@@ -208,7 +208,7 @@ define([
                         <a><span style={likeStyle} onClick={this.toggleFavorite} className=""/></a>
                         {this.props.book.favorited ? <a><span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like-filled"/></a> : <span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like"/> }
                         {this.props.loggedIn ? <a href="#modalEditBook" className="modal-trigger editModalTrigger"><i style={iconStyle} className="material-icons">edit</i></a> : null}
-                        {this.props.loggedIn ? <a href="#modalShare" className="modal-trigger shareModalTrigger "><i style={iconStyle} className="material-icons">share</i></a> : null}
+                        <a href="#modalShare" className="modal-trigger shareModalTrigger "><i style={iconStyle} className="material-icons">share</i></a>
                         {!this.props.loggedIn ? null : isWishlisted(this.props.book) ? <a><i className="material-icons">playlist_add</i></a> :
                             <a><i className="material-icons">playlist_add</i></a>}
                         {card}
