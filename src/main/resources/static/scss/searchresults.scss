@@ -48,6 +48,12 @@
     width: 100%;
   }
 
+  #filterByModal {
+    .dropdown-content.select-dropdown {
+      max-height: 200px;
+    }
+  }
+
   .page-manager {
     background: white;
     border: 1px solid #333;

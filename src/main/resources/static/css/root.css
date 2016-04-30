@@ -482,6 +482,8 @@ html, body {
   opacity: 1; }
 #searchResultComponent #loadButton {
   width: 100%; }
+#searchResultComponent #filterByModal .dropdown-content.select-dropdown {
+  max-height: 200px; }
 #searchResultComponent .page-manager {
   background: white;
   border: 1px solid #333;

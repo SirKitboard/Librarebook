@@ -87,7 +87,7 @@ define([
                     componentRendered = <BookprofileComponent stores={this.stores} setView={this.setView} view={this.state.view}/>
                     break;
                 case 'searchResults':
-                    componentRendered = <SearchResultsComponent setView={this.setView} view={this.state.view}/>
+                    componentRendered = <SearchResultsComponent stores={this.stores} setView={this.setView} view={this.state.view}/>
                     break;
                 case 'faq':
                     componentRendered = <FaqComponent/>

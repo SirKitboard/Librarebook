@@ -8,15 +8,46 @@ define([
 ], function(_, React, NavigationBar, Preloader, SearchResults, BookActions) {
     return React.createClass({
         getInitialState : function() {
+            var params = {}
+            var view = this.props.view.split("query?").slice(-1)[0];
+            view = view.split("&");
+            var self = this;
+            _.each(view, function(param) {
+                param = param.split("=");
+                if(param[0] == "genres") {
+                    params[param[0]] = param[1].split(",");
+                } else {
+                    params[param[0]] = param[1];
+                }
+            });
             return {
                 results: null,
+                filteredResults: null,
                 loading: true,
                 page:'0',
                 moreContent: true,
                 displayMode: "list",
                 sort: "",
-                ord: ""
+                ord: "",
+                filters: {
+                    genres: params["genres"]
+                },
+                initialFilters: {}
             }
+        },
+        filterBooks: function() {
+            var self = this;
+            if(!this.state.filters.minRating || this.state.filters.minRating == 0) {
+                var filteredBooks = this.state.results;
+            }
+            else {
+                var filteredBooks = _.filter(this.state.results, function (book) {
+                    return book.rating > self.state.filters.minRating
+                });
+            }
+            this.setState({
+                filteredResults: filteredBooks
+            })
         },
         initalFetch: function(view) {
             this.setState({
@@ -42,16 +73,17 @@ define([
             var params = {}
             view = view.split("query?").slice(-1)[0];
             view = view.split("&");
+            var self = this;
             _.each(view, function(param) {
                 param = param.split("=");
                 if(param[0] == "genres") {
-                    params[param[0]] = param[1].split(",");
+                    // Do nothing
                 } else {
                     params[param[0]] = param[1];
                 }
             });
+            params['genres'] = this.state.filters.genres;
             params['page'] = page;
-            // console.log(params);
             if(sort != "") {
                 params['sort'] = sort;
                 params['ord'] = ord;
@@ -71,11 +103,13 @@ define([
                 page: 1
             })
             this.fetchMoreBooks();
+            this.filterBooks();
         },
         eor: function () {
             this.setState({
                 moreContent: false
             })
+            this.filterBooks();
         },
         appendBooks: function(books) {
             books = this.state.results.concat(books);
@@ -84,6 +118,7 @@ define([
                 loading: false,
                 page: this.state.page + 1
             });
+            this.filterBooks();
         },
         componentWillMount: function() {
             this.initalFetch(this.props.view);
@@ -96,9 +131,34 @@ define([
                 this.fetchBooks(nextProps.view, 0, nextState.sort, nextState.order);
             }
         },
+        componentDidUpdate: function(prevProps, prevState) {
+            $('select').material_select('destroy');
+            $('select').material_select();
+            if(prevState.filters.minRating != this.state.filters.minRating) {
+                this.filterBooks();
+            }
+        },
+        updateFilters: function () {
+            var filters = $("#genreSelect").val();
+
+            var minRating = parseInt(this.refs.ratingFilter.value);
+            var newFilters = {};
+            if(this.state.filters.genres != filters) {
+                newFilters.genres = filters;
+            }
+            if(this.state.filters.minRating != minRating) {
+                newFilters.minRating = minRating;
+            }
+            console.log(newFilters);
+            this.setState({
+                filters: newFilters
+            })
+        },
         componentDidMount: function() {
-            $('#sortSelect').material_select();
-            $('#ordSelect').material_select();
+            $('#filterByTrigger').leanModal({
+                complete: this.updateFilters
+            });
+            $('select').material_select();
 
             var self = this;
 
@@ -125,6 +185,7 @@ define([
             })
         },
         updateRequest: function() {
+            debugger;
             this.setState({
                 sort: this.refs.sortSelect.value,
                 order: this.refs.ordSelect.value,
@@ -137,9 +198,9 @@ define([
                     <div className="row searchBanner valign-wrapper"></div>
                     <div style={{background:'white', top:'464px'}}className="row tab-row searchTabs z-depth-1 fixedElement">
                         <div className="col s12">
-                            <div className="tab col s3 dropdown-button" href='#' data-activates='genreDropdown' data-beloworigin="true">
-                                <p className="center-align">Genre</p>
-                            </div>
+                            <a style={{marginTop: '22px'}} href="#filterByModal" id="filterByTrigger" className="col s2 btn modal-trigger waves-effect waves-light">
+                                Filters
+                            </a>
                             <div className="input-field col s4 center-align">
                                 <select ref="sortSelect" id="sortSelect" defaultValue="">
                                     <option value="" disabled>Sort By</option>
@@ -150,7 +211,7 @@ define([
                                 </select>
                                 <label>Sort By</label>
                             </div>
-                            <div className="input-field col s3 center-align">
+                            <div className="input-field col s4 center-align">
                                 <select id="ordSelect" ref="ordSelect" defaultValue="">
                                     <option value="" disabled>Order</option>
                                     <option value="asc">Ascending</option>
@@ -174,12 +235,35 @@ define([
                         </div>
                     </div>
                     <div style={{paddingTop:'80px'}}className="row searchResults">
-                        <SearchResults fetchMoreBooks={this.fetchMoreBooks} display={this.state.displayMode} setView={this.props.setView} books={this.state.results}/>
+                        <SearchResults fetchMoreBooks={this.fetchMoreBooks} display={this.state.displayMode} setView={this.props.setView} books={this.state.filteredResults}/>
                     </div>
                     <div className="row">
                         <div className="col s12">
                             <div className="col s10 offset-s1" style={{textAlign: 'center'}}>
                                 {this.state.moreContent ? (this.state.loading ? <Preloader className="center-align"/> : <button onClick={this.fetchMoreBooks} className="btn-large waves-effect waves-light center-align" id="loadButton">Load More</button>): <span style={{color:'#AAA'}}>End of results</span> }
+                            </div>
+                        </div>
+                    </div>
+                    <div className="modal" id="filterByModal" style={{height: '400px'}} >
+                        <div className="modal-content container">
+                            <h3>Filters</h3>
+                            <div className="row">
+                            <div className="input-field col s12 m6 center-align">
+                                <select size="4" style={{overflowY: 'scroll'}} id="genreSelect" ref="genreSelect" defaultValue={this.state.filters.genres} multiple>
+                                    <option value="" disabled>Genres</option>
+                                    {
+                                        _.map(this.props.stores.genres.getAll(), function(genre) {
+                                            // var id = "genre_" + genre.name;
+                                            return <option value={genre.id}>{genre.name}</option>
+                                        })
+                                    }
+                                </select>
+                                <label>Genres</label>
+                            </div>
+                            <div className="input-field col s12 m6">
+                                <input placeholder="Rating" id="ratingFilter" ref="ratingFilter" type="number" min="0" max="5"/>
+                                <label htmlFor="ratingFilter">Minimum Rating</label>
+                            </div>
                             </div>
                         </div>
                     </div>

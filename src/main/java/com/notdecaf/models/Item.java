@@ -244,6 +244,14 @@ public abstract class Item extends IDModel{
         return ratings;
     }
 
+    public double getRating() {
+        double value = 0;
+        for(UserItemRating rating: this.ratings) {
+            value+= rating.getRating();
+        }
+        return value/(this.ratings.size() == 0 ? 1 : this.ratings.size());
+    }
+
     public void setRatings(Set<UserItemRating> ratings) {
         this.ratings = ratings;
     }
