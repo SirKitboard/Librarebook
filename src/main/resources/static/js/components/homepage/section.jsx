@@ -9,7 +9,7 @@ define([
         },
         render : function() {
             return (
-                <div className="homepage-section" id={"section-"+this.props.id}>
+                <div className="section white" id={"section-"+this.props.id}>
                     <h2 className="section-heading">{this.props.title}</h2>
                     <div className="books">
                         <BookCarousel setView={this.props.setView} books={this.props.books}/>
