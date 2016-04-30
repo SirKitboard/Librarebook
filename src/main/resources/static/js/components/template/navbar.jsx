@@ -41,17 +41,17 @@ define([
                 selectYears: 60 // Creates a dropdown of 15 years to control year
             });
             var self = this;
-            // $("#searchDetails").mouseleave(function() {
-            //     if($(".nav-search").find(":focus").length > 0 ){
-            //         return;
-            //     }
-            //     if($("#searchDetails").find(":focus").length > 0 ){
-            //         return;
-            //     }
-            //     self.setState({
-            //         showSearchDetails: false
-            //     })
-            // })
+            $("#searchDetails").mouseleave(function() {
+                if($(".nav-search").find(":focus").length > 0 ){
+                    return;
+                }
+                if($("#searchDetails").find(":focus").length > 0 ){
+                    return;
+                }
+                self.setState({
+                    showSearchDetails: false
+                })
+            })
         },
         showDetails : function() {
             this.setState({
