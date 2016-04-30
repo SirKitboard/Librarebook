@@ -59,7 +59,7 @@ define([
             });
         },
         login: function(e) {
-            UserActions.login(this.refs, this.loginError());
+            UserActions.login(this.refs, this.loginError);
         },
         loginError:function() {
             var self = this;
