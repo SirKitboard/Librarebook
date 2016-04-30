@@ -59,6 +59,7 @@ define([
         componentDidMount : function() {
             $(".modal-trigger.editModalTrigger").leanModal();
             $(".modal-trigger.shareModalTrigger").leanModal();
+            $('#actionsDropdown').dropdown();
         },
         componentWillUpdate: function(nextProps,nextState) {
             if (window.currentUser) {
@@ -91,7 +92,7 @@ define([
                 }
             }
 
-            var purchaseButton = (<div className = "btn-large right bookButton" id="purchase" onClick={this.purchase}>Purchase</div>);
+            var purchaseButton = (<li><a onClick={this.purchase}>Purchase</a></li>);
             if (this.state.checkedOut) {
                 var checkedOutItem = _.find(book.checkedOutBy, function(item) { return item.user == user.id; });
                 var dateCheckedOut = new Date(checkedOutItem.checkedOutOn);
@@ -102,8 +103,8 @@ define([
 
                 var checkoutInfo = (<p>Checked out on {dateCheckedOut.toDateString()} at {dateCheckedOut.toTimeString()}</p>);
                 var returnInfo = (<p>Book will be returned {dueDate.toDateString()}</p>);
-                var returnButton = (<div className = "btn-large right bookButton" id="return" onClick={this.return}>Return</div>);
-                var downloadButton = (<div className = "btn-large right bookButton" id="Download">Download</div>);
+                var returnButton = (<li><a onClick={this.return}>Return</a></li>);
+                var downloadButton = (<li><a>Download</a></li>);
 
                 if (!checkedOutItem.renewed) {
                     if (checkedOutItem.willRenew) {
@@ -112,12 +113,10 @@ define([
                     if (daysLeft <= 3) {
                         var renewCheckbox =
                             (
-                                <form className="left" action="#">
-                                    <p>
+                                <li className="left" action="#">
                                         <input type="checkbox" id="renewCheckbox" checked={checked} onClick={this.toggleRenew}/>
                                         <label htmlFor="renewCheckbox">Renew Book</label>
-                                    </p>
-                                </form>
+                                </li>
                             );
                     }
                 }
@@ -135,8 +134,8 @@ define([
                 var disabled = "";
 
                 if (!this.state.checkedOut) {
-                    var instantCheckout = (<div className= "btn-large right bookButton" id="instantCheckout" onClick={this.checkout}>Checkout</div>);
-                    var addToCart = (<div className= "btn-large right bookButton"  id="addToCart">Add to cart</div>);
+                    var instantCheckout = (<li><a onClick={this.checkout}>Checkout</a></li>);
+                    var addToCart = (<li><a>Add to cart</a></li>);
                 }
             }else {
                 var card =
@@ -154,28 +153,28 @@ define([
                         });
                     }
                     if (reserved) {
-                        waitlistButton = (<div className= "btn-large right bookButton"  id="removeHold" onClick={this.removeHold}>Remove Hold</div>);
+                        waitlistButton = (<li><a onClick={this.removeHold}>Remove Hold</a></li>);
                     } else {
-                        waitlistButton = (<div className= "btn-large right bookButton"  id="addHold" onClick={this.addHold}>Place Hold</div>);
+                        waitlistButton = (<li><a onClick={this.addHold}>Place Hold</a></li>);
                     }
-                    var recommendButton = (<div className= "btn-large right bookButton"  id="recommendMore">Recommend</div>);
+                    var recommendButton = (<li><a>Recommend</a></li>);
                     var disabled = "disabled";
                 }
             }
 
-            var bookActionButtons =
-                (
-                    <div>
-                        {renewCheckbox}
-                        {returnButton}
-                        {instantCheckout}
-                        {recommendButton}
-                        {waitlistButton}
-                        {purchaseButton}
-                        {downloadButton}
-                        {addToCart}
-                    </div>
-                );
+            // var bookActionButtons =
+            //     (
+            //         <div className="fixed-action-btn" style={{bottom: '45px', right:'24px'}}>
+            //             {renewCheckbox}
+            //             {returnButton}
+            //             {instantCheckout}
+            //             {recommendButton}
+            //             {waitlistButton}
+            //             {purchaseButton}
+            //             {downloadButton}
+            //             {addToCart}
+            //         </div>
+            //     );
 
             var likeStyle = {
                 color: 'red',
@@ -197,7 +196,10 @@ define([
                 }
                 return false;
             };
-
+            var sampleButton = null;
+            if(this.props.book.samplePath) {
+                sampleButton = <li><a href={this.props.book.samplePath} target="_blank">Sample</a></li>
+            }
 
             return (
                 <div id="bookInfo">
@@ -213,6 +215,7 @@ define([
                             <a><i className="material-icons">playlist_add</i></a>}
                         {card}
                     </div>
+                    <a className="dropdown-button btn" id="actionsDropdown" data-activates='actionsDropdownList'>Actions</a>
                     <p>ISBN: {this.props.book.isbn}</p>
                     <hr />
                     <p>Description</p>
@@ -235,7 +238,17 @@ define([
                         {checkoutInfo}
                         {returnInfo}
                     </div>
-                        { bookActionButtons }
+                    <ul id='actionsDropdownList' className='dropdown-content'>
+                        {renewCheckbox}
+                        {returnButton}
+                        {instantCheckout}
+                        {recommendButton}
+                        {waitlistButton}
+                        {purchaseButton}
+                        {downloadButton}
+                        {sampleButton}
+                        {addToCart}
+                    </ul>
                 </div>
             )
         }

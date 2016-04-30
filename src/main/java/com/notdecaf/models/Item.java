@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.notdecaf.helpers.ItemStatus;
 import com.notdecaf.helpers.Language;
+import com.notdecaf.helpers.PDF;
 import com.notdecaf.helpers.SetHelper;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -80,6 +81,16 @@ public abstract class Item extends IDModel{
 
     @CreatedDate
     private Date dateAdded;
+
+    private String samplePath;
+
+    public String getSamplePath() {
+        return PDF.getSamplePDFPath(this.samplePath);
+    }
+
+    public void setSamplePath(String samplePath) {
+        this.samplePath = samplePath;
+    }
 
     @JsonBackReference
     @OneToMany
