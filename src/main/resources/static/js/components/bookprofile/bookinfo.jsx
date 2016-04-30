@@ -72,6 +72,8 @@ define([
 
                     }
                 }
+            } else {
+                nextState.checkedOut = false;
             }
         },
         render: function() {

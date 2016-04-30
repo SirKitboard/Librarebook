@@ -25,7 +25,9 @@ define([
                         <div id="imagesTab" className="col s12 valign-wrapper">
                             <img style={{width:'500px', height:'auto'}} src={imageURL} className="valign"/>
                         </div>
-                        <div id="reviewsTab" className="col s12">Reviews</div>
+                        <div id="reviewsTab" className="col s12">
+                            <button>Rate Book</button>
+                        </div>
                     </div>
                 </div>
             )

@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -111,7 +112,7 @@ public class User extends IDModel implements Cloneable{
         this.reviewRatings = new HashSet<UserReviewRating>();
         this.preferences = new UserPreferences();
         this.flags = new HashSet<Item>();
-        this.reservedItems = new HashSet<Item>();
+        this.holdItems = new HashSet<Item>();
     }
 
     public User() {
