@@ -187,7 +187,18 @@ define([
             if(this.refs.isbn.value.length != 0){
                 params.isbn = this.refs.isbn.value;
             }
-
+            var genres = this.props.stores.genres.getAll();
+            var selectedGenres = [];
+            var self = this;
+            _.each(genres, function(genre) {
+                var id = "genre_" + genre.name;
+                if(self.refs[id].checked) {
+                    selectedGenres.push(genre.id);
+                }
+            });
+            if(selectedGenres.length > 0) {
+                params.genres = selectedGenres;
+            }
             if(e.keyCode == 13) {
                 this.props.setView("view/searchResults/query?"+this.parameterize(params));
             }
@@ -219,7 +230,7 @@ define([
                                 _.map(this.props.stores.genres.getAll(), function(genre) {
                                     var id = "genre_" + genre.name;
                                     return (<p>
-                                        <input type="checkbox" id={id} ref={id} />
+                                        <input type="checkbox"  id={id} ref={id} />
                                         <label htmlFor={id}>{genre.name}</label>
                                     </p>);
                                 })

@@ -44,7 +44,11 @@ define([
             view = view.split("&");
             _.each(view, function(param) {
                 param = param.split("=");
-                params[param[0]] = param[1];
+                if(param[0] == "genres") {
+                    params[param[0]] = param[1].split(",");
+                } else {
+                    params[param[0]] = param[1];
+                }
             });
             params['page'] = page;
             // console.log(params);

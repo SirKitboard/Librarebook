@@ -4,10 +4,7 @@ import com.notdecaf.daos.AuthorDao;
 import com.notdecaf.daos.GenreDao;
 import com.notdecaf.daos.PublisherDao;
 import com.notdecaf.daos.UserDao;
-import com.notdecaf.helpers.BookFactory;
-import com.notdecaf.helpers.ItemStatus;
-import com.notdecaf.helpers.Language;
-import com.notdecaf.helpers.PropertiesManager;
+import com.notdecaf.helpers.*;
 import com.notdecaf.models.*;
 import com.sendgrid.SendGrid;
 import com.sendgrid.SendGridException;
@@ -21,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -83,6 +81,15 @@ public class BookController implements BaseController<Book> {
         boolean ratingExists = requestMap.containsKey("rating");
         boolean fromYearExists = requestMap.containsKey("fromYear");
         boolean toYearExists = requestMap.containsKey("toYear");
+        boolean genresExist = requestMap.containsKey("genres[]");
+        String[] genresNums;
+        ArrayList<Genre> genres = new ArrayList<Genre>();
+        if(genresExist) {
+            genresNums = requestMap.get("genres[]");
+            for(String genreNum : genresNums) {
+                genres.add(genreDao.findOne(Long.parseLong(genreNum)));
+            }
+        }
         List<Book> filteredList = new ArrayList<Book>();
         for(Book book: bookList) {
             if(authorExists) {
@@ -125,9 +132,22 @@ public class BookController implements BaseController<Book> {
                     continue;
                 }
             }
+            if(genresExist) {
+                boolean found = false;
+                for(Genre genre: genres) {
+                    if(SetHelper.search(book.getGenres(), genre)) {
+                        found = true;
+                        break;
+                    }
+                }
+                if(!found) {
+                    continue;
+                }
+            }
+
             filteredList.add(book);
         }
-        if(bookList.size() == 0) {
+        if(filteredList.size() == 0) {
             return new ResponseEntity<Book[]>(HttpStatus.NO_CONTENT);
         }
         return ResponseEntity.ok(filteredList.toArray(new Book[0]));

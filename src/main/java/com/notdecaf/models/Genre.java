@@ -11,7 +11,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name="genres")
-public class Genre {
+public class Genre extends IDModel{
     public Genre() {
     }
 
