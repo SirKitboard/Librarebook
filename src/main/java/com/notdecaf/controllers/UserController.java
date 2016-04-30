@@ -1,13 +1,10 @@
 package com.notdecaf.controllers;
 
 import com.notdecaf.daos.AddressDao;
+import com.notdecaf.daos.ReviewDao;
 import com.notdecaf.daos.UserDao;
 import com.notdecaf.helpers.PasswordStorage;
-import com.notdecaf.models.Address;
-import com.notdecaf.daos.ReviewDao;
-import com.notdecaf.models.Review;
-import com.notdecaf.models.User;
-import com.notdecaf.models.UserPreferences;
+import com.notdecaf.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Adi on 3/28/2016.
@@ -88,6 +82,7 @@ public class UserController implements BaseController<User> {
                     request.getParameter("gender"),
                     request.getParameter("password"),
                     address);
+
             addressDao.save(address);
             userDao.save(user);
             return ResponseEntity.ok(user);
@@ -177,7 +172,11 @@ public class UserController implements BaseController<User> {
 
     @RequestMapping(value = "/api/users/{id}/wishlist", method = RequestMethod.GET)
     public ResponseEntity getWishList(HttpServletRequest request, @PathVariable long id) {
-        return null;
+        User user = userDao.findOne(id);
+        if (user == null){
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(user.getWishlist());
     }
 
     @RequestMapping(value = "/api/users/{id}/settings", method = RequestMethod.GET)

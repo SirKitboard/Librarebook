@@ -188,6 +188,17 @@ define([
                 margin: '10px'
             };
 
+            isWishlisted = function(book) {
+                var wishlist = window.currentUser.wishlist;
+                for (var i = 0, len=wishlist.length; i<len; i++) {
+                    if (wishlist[i].id == book.id){
+                        return true;
+                    }
+                }
+                return false;
+            };
+
+
             return (
                 <div id="bookInfo">
                     <h2> {this.props.book.title} </h2>
@@ -198,7 +209,8 @@ define([
                         {this.props.book.favorited ? <a><span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like-filled"/></a> : <span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like"/> }
                         {this.props.loggedIn ? <a href="#modalEditBook" className="modal-trigger editModalTrigger"><i style={iconStyle} className="material-icons">edit</i></a> : null}
                         {this.props.loggedIn ? <a href="#modalShare" className="modal-trigger shareModalTrigger "><i style={iconStyle} className="material-icons">share</i></a> : null}
-                        {this.props.loggedIn ? <a href="#" className="modal-trigger shareModalTrigger "><i style={iconStyle} className="material-icons">library_add</i></a> : null}
+                        {!this.props.loggedIn ? null : isWishlisted(this.props.book) ? <a><i className="material-icons">playlist_add</i></a> :
+                            <a><i className="material-icons">playlist_add</i></a>}
                         {card}
                     </div>
                     <p>ISBN: {this.props.book.isbn}</p>
