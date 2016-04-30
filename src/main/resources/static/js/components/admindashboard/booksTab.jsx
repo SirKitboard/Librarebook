@@ -15,6 +15,8 @@ define([
                 "year": 1994,
                 "publisher": "John Doe"
             }
+
+
             return {
                 books : [book, book, book, book, book, book, book],
                 selectedBook: 0
@@ -45,9 +47,43 @@ define([
 
             BookActions.addBook(data);
         },
-        
+
         componentDidMount: function() {
             $('.modal-trigger').leanModal();
+        },
+        slidetoMainTab: function() {
+            $("#mainTab").animate({
+                left: '0px'
+            });
+            $("#authorTab").animate({
+                left: '550px'
+            });
+            $("#publisherTab").animate({
+                left: '1100px'
+            });
+
+        },
+        slideToAuthorTab : function() {
+            $("#mainTab").animate({
+                left: '-550px'
+            });
+            $("#authorTab").animate({
+                left: '0px'
+            });
+            $("#publisherTab").animate({
+                left: '550px'
+            });
+        },
+        slideToPublisherTab : function() {
+            $("#mainTab").animate({
+                left: '-1100px'
+            });
+            $("#authorTab").animate({
+                left: '-550px'
+            });
+            $("#publisherTab").animate({
+                left: '0px'
+            });
         },
         render: function() {
             return (
@@ -76,79 +112,127 @@ define([
                     </div>
                     <div className="fixed-action-btn">
                        <a className="btn-floating btn-large red modal-trigger" href="#addBookModal">
-                         <i className="large material-icons">add</i>
+                          <i className="large material-icons">add</i>
                        </a>
-                     </div>
-                     <div id="addBookModal" className="modal">
-                         <div className="modal-content container">
-                             <div className="row">
-                                 <div className="input-field col s12">
-                                     <input ref="title" id="title" type="text" className="validate" length="20"/>
-                                     <label htmlFor="title">Title</label>
-                                 </div>\
-                                 <div className="input-field col s12 m6">
-                                     <input ref="genre" id="genre" type="text" className="validate"/>
-                                     <label htmlFor="genre">Genre</label>
-                                 </div>
-                             </div>
-                             <div className="row">
-                                 <div className="input-field col s12 m6">
-                                     <input ref="author" id="author" type="text" className="validate" length="20"/>
-                                     <label htmlFor="author">Author</label>
-                                 </div>
-                                 <div className="input-field col s12 m6">
-                                     <input ref="publisher" id="publisher" type="text" className="validate"/>
-                                     <label htmlFor="publisher">Publisher</label>
-                                 </div>
-                             </div>
-                             <div className="row">
-                                 <div className="input-field col s12">
-                                     <textarea id="description" ref="description" className="materialize-textarea"></textarea>
-                                     <label htmlFor="description">Description</label>
-                                 </div>
-                             </div>
-                             <div className="row">
-                                 <div className="input-field col s12">
-                                     <textarea id="yearPublished" ref="yearPublished" className="materialize-textarea"></textarea>
-                                     <label htmlFor="yearPublished">Year Published</label>
-                                 </div>
-                             </div>
-                             <div className="row">
-                                 <div className="input-field col s12">
-                                     <textarea id="totalLicenses" ref="totalLicenses" className="materialize-textarea"></textarea>
-                                     <label htmlFor="totalLicenenses">Total Licenses </label>
-                                 </div>
-                             </div>
-                             <div className="row">
-                                 <div className="input-field col s12">
-                                     <textarea id="language" ref="language" className="materialize-textarea"></textarea>
-                                     <label htmlFor="language">Language</label>
-                                 </div>
-                             </div>
-                             <div className="row">
-                                 <div className="input-field col s12">
-                                     <textarea id="numPages" ref="numPages" className="materialize-textarea"></textarea>
-                                     <label htmlFor="numPages">Number Of Pages</label>
-                                 </div>
-                             </div>
-                             <div className="row">
-                                 <div className="file-field input-field">
-                                   <div className="btn">
-                                     <span>PDF</span>
-                                     <input onChange={this.handleFile} ref="files" type="file" accept="application/pdf"/>
-                                   </div>
-                                   <div className="file-path-wrapper">
-                                     <input className="file-path validate" type="text" placeholder="Upload book pdf" />
-                                   </div>
-                                 </div>
-                             </div>
-                             <div className="row">
-                             <button onClick={this.addBook} className="btn waves-effect waves-light modal-close" id='login' type="submit" name="action">Submit
-                                 <i className="material-icons right">send</i>
-                             </button>
-                             </div>
-                         </div>
-                     </div>
+                    </div>
+                    <div id="addBookModal" className="modal">
+                        <div className="modal-content">
+                            <div className="tabs-manager">
+                                <div id="mainTab" className="tabcontent">
+                                     <div className="row">
+                                         <div className="input-field col s12">
+                                             <input ref="title" id="title" type="text" className="validate" length="20"/>
+                                             <label htmlFor="title">Title</label>
+                                         </div>
+                                         <div className="input-field col s12 m6">
+                                             <input ref="genre" id="genre" type="text" className="validate"/>
+                                             <label htmlFor="genre">Genre</label>
+                                         </div>
+                                     </div>
+                                     <div className="row">
+                                         <div className="input-field col s12 m6">
+                                             <input onClick={this.slideToAuthorTab} ref="author" id="author" type="text" className="validate" length="20"/>
+                                             <label htmlFor="author">Author</label>
+                                         </div>
+                                         <div className="input-field col s12 m6">
+                                             <input onClick={this.slideToPublisherTab}ref="publisher" id="publisher" type="text" className="validate"/>
+                                             <label htmlFor="publisher">Publisher</label>
+                                         </div>
+                                     </div>
+                                     <div className="row">
+                                         <div className="input-field col s12">
+                                             <textarea id="description" ref="description" className="materialize-textarea"></textarea>
+                                             <label htmlFor="description">Description</label>
+                                         </div>
+                                     </div>
+                                     <div className="row">
+                                         <div className="input-field col s12">
+                                             <textarea id="yearPublished" ref="yearPublished" className="materialize-textarea"></textarea>
+                                             <label htmlFor="yearPublished">Year Published</label>
+                                         </div>
+                                     </div>
+                                     <div className="row">
+                                         <div className="input-field col s12">
+                                             <textarea id="totalLicenses" ref="totalLicenses" className="materialize-textarea"></textarea>
+                                             <label htmlFor="totalLicenenses">Total Licenses </label>
+                                         </div>
+                                     </div>
+                                     <div className="row">
+                                         <div className="input-field col s12">
+                                             <textarea id="language" ref="language" className="materialize-textarea"></textarea>
+                                             <label htmlFor="language">Language</label>
+                                         </div>
+                                     </div>
+                                     <div className="row">
+                                         <div className="input-field col s12">
+                                             <textarea id="numPages" ref="numPages" className="materialize-textarea"></textarea>
+                                             <label htmlFor="numPages">Number Of Pages</label>
+                                         </div>
+                                     </div>
+                                     <div className="row">
+                                         <div className="file-field input-field">
+                                             <div className="btn">
+                                                 <span>PDF</span>
+                                                 <input onChange={this.handleFile} ref="files" type="file" accept="application/pdf"/>
+                                             </div>
+                                             <div className="file-path-wrapper">
+                                                 <input className="file-path validate" type="text" placeholder="Upload book pdf" />
+                                             </div>
+                                         </div>
+                                     </div>
+                                     <div className="row">
+                                         <button onClick={this.addBook} className="btn waves-effect waves-light modal-close" id='login' type="submit" name="action">Submit
+                                             <i className="material-icons right">send</i>
+                                         </button>
+                                     </div>
+                                </div>
+                                <div id="authorTab" className="tabcontent">
+                                     <h3>Author</h3>
+                                     <p>Pick an author.</p>
+                                      <div className="search-wrapper card">
+                                          <input id="search"></input>
+                                          <i className="material-icons">search</i>
+                                          <div className="search-results"></div>
+                                      </div>
+                                    <form action="#">
+                                        <p>
+                                            <input type="checkbox" className="filled-in" id="filled-in-box" checked="checked" />
+                                            <label for="filled-in-box">Filled in</label>
+                                        </p>
+                                        <p>
+                                            <input type="checkbox" className="filled-in" id="filled-in-box" checked="checked" />
+                                            <label for="filled-in-box">Filled in</label>
+                                        </p>
+                                        <p>
+                                            <input type="checkbox" className="filled-in" id="filled-in-box" checked="checked" />
+                                            <label for="filled-in-box">Filled in</label>
+                                        </p>
+                                        <p>
+                                            <input type="checkbox" className="filled-in" id="filled-in-box" checked="checked" />
+                                            <label for="filled-in-box">Filled in</label>
+                                        </p>
+                                        <p>
+                                            <input type="checkbox" className="filled-in" id="filled-in-box" checked="checked" />
+                                            <label for="filled-in-box">Filled in</label>
+                                        </p>
+                                    </form>
+
+                                     <a onClick={this.slidetoMainTab}  className="waves-effect waves-light btn">done</a>
+                                </div>
+                                <div id="publisherTab" className="tabcontent">
+                                    <h3>Publisher</h3>
+                                    <div className="input-field">
+                                        <div className="search-wrapper card">
+                                            <input id="search"></input>
+                                            <i className="material-icons">search</i>
+                                            <div className="search-results"></div>
+                                        </div>
+                                        <a onClick={this.slidetoMainTab}  className="waves-effect waves-light btn">done</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             )
         }

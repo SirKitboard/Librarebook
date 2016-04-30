@@ -51,6 +51,43 @@
             height:100%;
             overflow-y: scroll;
         }
+        #addBookModal{
+
+            .tabs-manager{
+                width: 550px;
+                height:600px;
+                overflow-x: hidden;
+                position: relative;
+            }
+
+            .tabcontent {
+                width: 550px;
+                padding: 20px 10px;
+            }
+
+
+
+            #mainTab{
+                position: absolute;
+                top: 0px;
+                left: 0px;
+            }
+
+            #authorTab{
+                position: absolute;
+                top: 0px;
+                left: 1100px;
+            }
+
+            #publisherTab{
+                position: absolute;
+                top: 0px;
+                left: 1650px;
+            }
+
+        }
+
+
     }
 
     #usersTab {

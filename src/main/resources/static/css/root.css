@@ -245,6 +245,26 @@ html, body {
   #adminPanel #booksTab .bookDetails {
     height: 100%;
     overflow-y: scroll; }
+  #adminPanel #booksTab #addBookModal .tabs-manager {
+    width: 550px;
+    height: 600px;
+    overflow-x: hidden;
+    position: relative; }
+  #adminPanel #booksTab #addBookModal .tabcontent {
+    width: 550px;
+    padding: 20px 10px; }
+  #adminPanel #booksTab #addBookModal #mainTab {
+    position: absolute;
+    top: 0px;
+    left: 0px; }
+  #adminPanel #booksTab #addBookModal #authorTab {
+    position: absolute;
+    top: 0px;
+    left: 1100px; }
+  #adminPanel #booksTab #addBookModal #publisherTab {
+    position: absolute;
+    top: 0px;
+    left: 1650px; }
 #adminPanel #usersTab {
   height: calc(100% - 135px);
   margin: 0; }

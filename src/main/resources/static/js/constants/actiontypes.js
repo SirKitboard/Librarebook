@@ -13,7 +13,10 @@ define([
         RENEW: 8,
         TOGGLE_RENEW: 9,
         HOLD: 10,
-        REMOVE_HOLD: 11
+        REMOVE_HOLD: 11,
+        ADD_AUTHOR: 12,
+        ADD_PUBLISHER:13
+
     }
 
     return Constants
