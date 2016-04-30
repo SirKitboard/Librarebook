@@ -156,7 +156,6 @@ define([
             }
         },
         parameterize: function(params){
-            debugger;
             var ret = [];
             for (var property in params) {
                 if (params.hasOwnProperty(property)) {

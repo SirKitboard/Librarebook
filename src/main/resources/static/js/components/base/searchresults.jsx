@@ -9,7 +9,7 @@ define([
     return React.createClass({
         getInitialState : function() {
             return {
-                'results': null,
+                results: null,
                 loading: true,
                 page:'0',
                 moreContent: true,
@@ -53,6 +53,7 @@ define([
                 loading: false,
                 page: 1
             })
+            this.fetchMoreBooks();
         },
         eor: function () {
             this.setState({
@@ -65,7 +66,7 @@ define([
                 results: books,
                 loading: false,
                 page: this.state.page + 1
-            })
+            });
         },
         componentWillMount: function() {
             this.initalFetch(this.props.view);
@@ -78,24 +79,28 @@ define([
         componentDidMount: function() {
             $('.dropdown-button').dropdown();
             var self = this;
-            $(window).scroll(function(e){
-                // console.log('hi');
-                var $el = $('.fixedElement');
-                var isPositionFixed = ($el.css('position') == 'fixed');
-                if ($(this).scrollTop() > 400 && !isPositionFixed){
-                    $('.fixedElement').css({'position': 'fixed', 'top': '64px'});
-                    $('nav').css({'box-shadow': 'none'})
-                }
-                if ($(this).scrollTop() < 400 && isPositionFixed) {
-                    $('.fixedElement').css({'position': 'absolute', 'top': '464px'});
-                    $('nav').css({'box-shadow':'0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)'})
-                }
-                if(self.state.moreContent) {
-                    if ($(this).scrollTop() > $(document).height() - $(this).height() - 200) {
-                        self.fetchMoreBooks();
-                    }
-                }
-            });
+
+            // $(window).bind("scroll.infinite-scroll", function(e){
+            //     // console.log('hi');
+            //     var $el = $('.fixedElement');
+            //     var isPositionFixed = ($el.css('position') == 'fixed');
+            //     if ($(this).scrollTop() > 400 && !isPositionFixed){
+            //         $('.fixedElement').css({'position': 'fixed', 'top': '64px'});
+            //         $('nav').css({'box-shadow': 'none'})
+            //     }
+            //     if ($(this).scrollTop() < 400 && isPositionFixed) {
+            //         $('.fixedElement').css({'position': 'absolute', 'top': '464px'});
+            //         $('nav').css({'box-shadow':'0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)'})
+            //     }
+            //     if(self.state.moreContent) {
+            //         if ($(this).scrollTop() > $(document).height() - $(this).height() - 400) {
+            //             self.fetchMoreBooks();
+            //         }
+            //     }
+            // });
+        },
+        componentWillUnmount: function() {
+            $(window).unbind("scroll.infinite-scroll");
         },
         toggleDisplayMode: function() {
             this.setState({
@@ -130,7 +135,7 @@ define([
                         </div>
                     </div>
                     <div style={{paddingTop:'52px'}}className="row searchResults">
-                        <SearchResults display={this.state.displayMode} setView={this.props.setView} books={this.state.results}/>
+                        <SearchResults fetchMoreBooks={this.fetchMoreBooks} display={this.state.displayMode} setView={this.props.setView} books={this.state.results}/>
                     </div>
                     <div className="row">
                         <div className="col s12">

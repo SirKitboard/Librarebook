@@ -175,6 +175,7 @@ define([
                 data: params,
                 success: function(response, status, jqxhr) {
                     if(jqxhr.status == 200) {
+                        console.log(response.length);
                         _.each(response, function (book) {
                             AppDispatcher.dispatch({
                                 actionType: Constants.ADD_BOOK,

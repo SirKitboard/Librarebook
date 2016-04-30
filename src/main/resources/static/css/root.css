@@ -477,5 +477,50 @@ html, body {
   opacity: 1; }
 #searchResultComponent #loadButton {
   width: 100%; }
+#searchResultComponent .page-manager {
+  background: white;
+  border: 1px solid #333;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  width: auto;
+  height: 50px;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  -webkit-transform: translate(-50%, 0);
+  -moz-transform: translate(-50%, 0);
+  -ms-transform: translate(-50%, 0);
+  -o-transform: translate(-50%, 0);
+  transform: translate(-50%, 0); }
+  #searchResultComponent .page-manager .page-number {
+    position: relative;
+    top: -20px;
+    font-size: 30px; }
+#searchResultComponent .page .page-header {
+  font-size: 30px;
+  text-align: center;
+  display: inline-block;
+  position: relative;
+  color: #333; }
+  #searchResultComponent .page .page-header:before {
+    content: "";
+    position: absolute;
+    height: 5px;
+    border-bottom: 1px solid #333;
+    top: 15px;
+    width: 200px;
+    right: 100%;
+    margin-right: 10px;
+    margin-left: 15px; }
+  #searchResultComponent .page .page-header:after {
+    content: "";
+    position: absolute;
+    height: 5px;
+    border-bottom: 1px solid #333;
+    top: 15px;
+    width: 200px;
+    left: 100%;
+    margin-left: 10px;
+    margin-right: 15px; }
 
 /*# sourceMappingURL=root.css.map */
