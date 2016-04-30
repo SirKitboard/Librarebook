@@ -52,13 +52,25 @@ public class BookController implements BaseController<Book> {
     public ResponseEntity<Book[]> search(HttpServletRequest req) {
         List<Book> bookList = new ArrayList<Book>();
         Map<String, String[]> requestMap = req.getParameterMap();
-        if(requestMap.containsKey("string")) {
+        if(requestMap.containsKey("string") && !requestMap.containsKey("sort")) {
             int page = 0;
             if(req.getParameter("page") != null) {
                 page = Integer.parseInt(req.getParameter("page"));
             }
 
             bookList = BookFactory.findByTitle(req.getParameter("string"), page);
+        } else if(requestMap.containsKey("string") && requestMap.containsKey("sort")) {
+            boolean ascending = true;
+            if(requestMap.containsKey("ord")) {
+                ascending = !req.getParameter("ord").equalsIgnoreCase("desc");
+            }
+            int page = 0;
+            if(req.getParameter("page") != null) {
+                page = Integer.parseInt(req.getParameter("page"));
+            }
+
+            bookList = BookFactory.findByTitle(req.getParameter("string"), page, req.getParameter("sort"), ascending);
+
         } else {
             Iterable<Book> books = BookFactory.findAll();
             for (Book book : books) {

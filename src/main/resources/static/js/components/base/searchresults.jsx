@@ -13,7 +13,9 @@ define([
                 loading: true,
                 page:'0',
                 moreContent: true,
-                displayMode: "list"
+                displayMode: "list",
+                sort: "",
+                ord: ""
             }
         },
         initalFetch: function(view) {
@@ -27,7 +29,13 @@ define([
                 this.fetchBooks(this.props.view, this.state.page)
             }
         },
-        fetchBooks: function(view, page) {
+        fetchBooks: function(view, page, sort, ord) {
+            if(!sort) {
+                sort = this.state.sort;
+            }
+            if(!ord) {
+                ord = this.state.order;
+            }
             this.setState({
                 loading: true
             });
@@ -40,6 +48,11 @@ define([
             });
             params['page'] = page;
             // console.log(params);
+            if(sort != "") {
+                params['sort'] = sort;
+                params['ord'] = ord;
+            }
+
             if(page == 0) {
                 BookActions.search(params, this.setBooks, this.eor);
             } else {
@@ -73,31 +86,31 @@ define([
         },
         componentWillUpdate: function(nextProps, nextState) {
             if(nextProps.view != this.props.view) {
-                this.fetchBooks(nextProps.view);
+                this.fetchBooks(nextProps.view, 0);
+            }
+            else if(nextState.sort != this.state.sort || nextState.order != this.state.order) {
+                this.fetchBooks(nextProps.view, 0, nextState.sort, nextState.order);
             }
         },
         componentDidMount: function() {
-            $('.dropdown-button').dropdown();
+            $('#sortSelect').material_select();
+            $('#ordSelect').material_select();
+
             var self = this;
 
-            // $(window).bind("scroll.infinite-scroll", function(e){
-            //     // console.log('hi');
-            //     var $el = $('.fixedElement');
-            //     var isPositionFixed = ($el.css('position') == 'fixed');
-            //     if ($(this).scrollTop() > 400 && !isPositionFixed){
-            //         $('.fixedElement').css({'position': 'fixed', 'top': '64px'});
-            //         $('nav').css({'box-shadow': 'none'})
-            //     }
-            //     if ($(this).scrollTop() < 400 && isPositionFixed) {
-            //         $('.fixedElement').css({'position': 'absolute', 'top': '464px'});
-            //         $('nav').css({'box-shadow':'0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)'})
-            //     }
-            //     if(self.state.moreContent) {
-            //         if ($(this).scrollTop() > $(document).height() - $(this).height() - 400) {
-            //             self.fetchMoreBooks();
-            //         }
-            //     }
-            // });
+            $(window).bind("scroll.infinite-scroll", function(e){
+                // console.log('hi');
+                var $el = $('.fixedElement');
+                var isPositionFixed = ($el.css('position') == 'fixed');
+                if ($(this).scrollTop() > 400 && !isPositionFixed){
+                    $('.fixedElement').css({'position': 'fixed', 'top': '64px'});
+                    $('nav').css({'box-shadow': 'none'})
+                }
+                if ($(this).scrollTop() < 400 && isPositionFixed) {
+                    $('.fixedElement').css({'position': 'absolute', 'top': '464px'});
+                    $('nav').css({'box-shadow':'0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)'})
+                }
+            });
         },
         componentWillUnmount: function() {
             $(window).unbind("scroll.infinite-scroll");
@@ -107,20 +120,42 @@ define([
                 displayMode: this.state.displayMode == "grid" ? "list" : "grid"
             })
         },
+        updateRequest: function() {
+            this.setState({
+                sort: this.refs.sortSelect.value,
+                order: this.refs.ordSelect.value,
+                results: []
+            });
+        },
         render: function() {
             return(
                 <div id="searchResultComponent" className="padNav">
                     <div className="row searchBanner valign-wrapper"></div>
                     <div style={{background:'white', top:'464px'}}className="row tab-row searchTabs z-depth-1 fixedElement">
                         <div className="col s12">
-                            <div className="tab col s4 dropdown-button" href='#' data-activates='genreDropdown' data-beloworigin="true">
+                            <div className="tab col s3 dropdown-button" href='#' data-activates='genreDropdown' data-beloworigin="true">
                                 <p className="center-align">Genre</p>
                             </div>
-                            <div className="tab col s4 dropdown-button" href='#' data-activates='titleDropdown' data-beloworigin="true">
-                                <p className="center-align">Title</p>
+                            <div className="input-field col s4 center-align">
+                                <select ref="sortSelect" id="sortSelect" defaultValue="">
+                                    <option value="" disabled>Sort By</option>
+                                    <option value="title">Title</option>
+                                    <option value="author">Author</option>
+                                    <option value="publisher">Publisher</option>
+                                    <option value="popularity">Popularity</option>
+                                </select>
+                                <label>Sort By</label>
                             </div>
-                            <div className="tab col s4 dropdown-button" href='#' data-activates='authorDropdown' data-beloworigin="true">
-                                <p className="center-align">Author</p>
+                            <div className="input-field col s3 center-align">
+                                <select id="ordSelect" ref="ordSelect" defaultValue="">
+                                    <option value="" disabled>Order</option>
+                                    <option value="asc">Ascending</option>
+                                    <option value="desc">Descending</option>
+                                </select>
+                                <label>Order</label>
+                            </div>
+                            <div style={{marginTop: '22px'}} className="col s2 btn waves-effect waves-light" onClick={this.updateRequest}>
+                                Update
                             </div>
                         </div>
                         <div className="display-mode">
@@ -134,7 +169,7 @@ define([
                             </div>
                         </div>
                     </div>
-                    <div style={{paddingTop:'52px'}}className="row searchResults">
+                    <div style={{paddingTop:'80px'}}className="row searchResults">
                         <SearchResults fetchMoreBooks={this.fetchMoreBooks} display={this.state.displayMode} setView={this.props.setView} books={this.state.results}/>
                     </div>
                     <div className="row">
@@ -144,32 +179,6 @@ define([
                             </div>
                         </div>
                     </div>
-
-                    <ul id="genreDropdown" className='dropdown-content'>
-                       <li><a href="#!">one</a></li>
-                       <li><a href="#!">two</a></li>
-                       <li><a href="#!">three</a></li>
-                     </ul>
-
-                     <ul id="titleDropdown" className="dropdown-content">
-                         <li>
-                             <form>
-                                 <input type="text" />
-                             </form>
-                         </li>
-                         <li><a href="#!">one</a></li>
-                         <li><a href="#!">two</a></li>
-                     </ul>
-
-                     <ul id="authorDropdown" className="dropdown-content">
-                         <li>
-                             <form>
-                                 <input type="text" />
-                             </form>
-                         </li>
-                         <li><a href="#!">one</a></li>
-                         <li><a href="#!">two</a></li>
-                     </ul>
                 </div>
             )
         }

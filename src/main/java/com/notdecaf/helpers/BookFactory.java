@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -20,6 +21,7 @@ public class BookFactory {
     private static List<Book> lruBookCache = new ArrayList<Book>();
 
     private static BookDao bookDao;
+
 
     @Autowired
     public void setBookDao(BookDao bookDao) {
@@ -67,8 +69,77 @@ public class BookFactory {
     public static List<Book> findByTitle(String title, int page) {
         int start = page*PAGE_SIZE;
         int end = start + PAGE_SIZE;
-        Page<Book> books = bookDao.findByTitleContainsIgnoreCase(new PageRequest(page, PAGE_SIZE), title);
+        Page<Book> books = bookDao.findByTitleContainsIgnoreCase(new PageRequest(page, PAGE_SIZE), "%"+title+"%");
         List<Book> bookList = books.getContent();
+        return bookList;
+    }
+
+    public static List<Book> findByTitle(String title, int page, String sort, boolean ascending) {
+        int start = page*PAGE_SIZE;
+        int end = start + PAGE_SIZE;
+        Page<Book> books = null;
+        List<Book> bookList = null;
+        switch (sort) {
+            case "author":
+                if(ascending) {
+                    books = bookDao.findByTitleContainsIgnoreCaseOrderByAuthors_FirstNameAsc(new PageRequest(page, PAGE_SIZE), title);
+                } else {
+                    books = bookDao.findByTitleContainsIgnoreCaseOrderByAuthors_FirstNameDesc(new PageRequest(page, PAGE_SIZE), title);
+                }
+                bookList = books.getContent();
+                break;
+            case "publisher":
+                if(ascending) {
+                    books = bookDao.findByTitleContainsIgnoreCaseOrderByPublisher_NameAsc(new PageRequest(page, PAGE_SIZE), title);
+                } else {
+                    books = bookDao.findByTitleContainsIgnoreCaseOrderByPublisher_NameDesc(new PageRequest(page, PAGE_SIZE), title);
+                }
+                bookList = books.getContent();
+                break;
+            case "title":
+                if(ascending) {
+                    books = bookDao.findByTitleContainsIgnoreCaseOrderByTitleAsc(new PageRequest(page, PAGE_SIZE), title);
+                } else {
+                    books = bookDao.findByTitleContainsIgnoreCaseOrderByTitleDesc(new PageRequest(page, PAGE_SIZE), title);
+                }
+                bookList = books.getContent();
+                break;
+            case "favorites":
+                books = bookDao.findByTitleContainsIgnoreCase(null, title);
+                bookList = books.getContent();
+                if(ascending) {
+                    bookList.sort(new Comparator<Book>() {
+                        @Override
+                        public int compare(Book o1, Book o2) {
+                            if(o1.getFavoritedBy().size() > o2.getFavoritedBy().size()) {
+                                return -1;
+                            } else if(o1.getFavoritedBy().size() == o2.getFavoritedBy().size()) {
+                                return 0;
+                            } else {
+                                return 1;
+                            }
+                        }
+                    });
+                } else {
+                    bookList.sort(new Comparator<Book>() {
+                        @Override
+                        public int compare(Book o1, Book o2) {
+                            if(o1.getFavoritedBy().size() > o2.getFavoritedBy().size()) {
+                                return 1;
+                            } else if(o1.getFavoritedBy().size() == o2.getFavoritedBy().size()) {
+                                return 0;
+                            } else {
+                                return -1;
+                            }
+                        }
+                    });
+                }
+                bookList = bookList.subList(page*PAGE_SIZE, page*PAGE_SIZE+page);
+            default:
+                books = bookDao.findByTitleContainsIgnoreCase(new PageRequest(page, PAGE_SIZE), title);
+                bookList = books.getContent();
+        }
+
         return bookList;
     }
 //    private static linearSearchBook
