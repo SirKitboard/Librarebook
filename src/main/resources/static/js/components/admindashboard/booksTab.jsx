@@ -21,14 +21,16 @@ define([
             return {
                 books : [book, book, book, book, book, book, book],
                 selectedBook: 0,
-                authors: []
+                authors: [],
+                selectedAuthors: [],
+                selectedAuthorIDs: []
             }
         },
         
         addBook : function() {
             var title = $("#title").val();
             var description = $("#description").val();
-            var author = $("#author").val();
+
             var genre = $("#genre").val();
             var publisher = $("#publisher").val();
             var yearPublished = $("#yearPublished").val();
@@ -80,6 +82,7 @@ define([
             $("#publisherTab").animate({
                 left: '550px'
             });
+
         },
         slideToPublisherTab : function() {
             $("#mainTab").animate({
@@ -107,7 +110,36 @@ define([
                 authors: authors
             })
         },
+        authorClicked: function(e) {
+            if(e.target.checked) {
+                var authorIDs = this.state.selectedAuthorIDs;
+                var authors = this.state.selectedAuthors;
+                var authorID = e.target.getAttribute("data-id");
+                authorIDs.push(authorID);
+                var author = _.find(this.state.authors, function(author) {
+                    return (author.id+"") == authorID;
+                })
+                authors.push(author);
+                this.setState({
+                    selectedAuthorIDs: authorIDs,
+                    selectedAuthors: authors,
+
+                })
+            } else {
+                var authorIDs = this.state.selectedAuthorIDs;
+                var authors = this.state.selectedAuthors;
+                var index = authors.indexOf(e.target.getAttribute("data-id"));
+                authors.splice(index, 1);
+                authorIDs.splice(index, 1);
+                this.setState({
+                    selectedAuthors: authors,
+                    selectedAuthorIDs: authorIDs
+                })
+            }
+        },
         render: function() {
+            var self = this;
+
             return (
 
                 <div id="booksTab" className="row">
@@ -153,8 +185,8 @@ define([
                                      </div>
                                      <div className="row">
                                          <div className="input-field col s12 m6">
-                                             <input onClick={this.slideToAuthorTab} ref="author" id="author" type="text" className="validate" length="20"/>
-                                             <label htmlFor="author">Author</label>
+                                             <input onClick={this.slideToAuthorTab} ref="author" id="author" type="text" className="active validate" length="20" value={_.pluck(self.state.selectedAuthors, "firstName").join(",")}/>
+                                             <label className="active" htmlFor="author">Author</label>
                                          </div>
                                          <div className="input-field col s12 m6">
                                              <input onClick={this.slideToPublisherTab}ref="publisher" id="publisher" type="text" className="validate"/>
@@ -220,9 +252,14 @@ define([
                                               {
                                                   _.map(this.state.authors, function(author) {
                                                       var id = author.id;
+                                                      var selected = false;
+                                                      if(self.state.selectedAuthorIDs.indexOf(author.id+"") >=0) {
+                                                          selected = true;
+                                                      }
+
                                                       return (
                                                           <li>
-                                                              <input type="checkbox" id={id} />
+                                                              <input checked={selected} data-id={author.id} onChange={self.authorClicked} type="checkbox" id={id} />
                                                               <label htmlFor={id}>{author.firstName} {author.lastName}</label>
                                                           </li>
                                                       )
