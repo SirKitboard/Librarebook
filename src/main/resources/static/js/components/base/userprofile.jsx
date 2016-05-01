@@ -2,8 +2,9 @@ define([
     'underscore',
     'react',
     'jsx!components/widgets/bookCarousel',
-    'jsx!components/userprofile/updateUserProfile'
-], function(_, React,BookCarousel,UpdateUserProfile) {
+    'jsx!components/userprofile/updateUserProfile',
+    'jsx!components/widgets/adContainer'
+], function(_, React,BookCarousel,UpdateUserProfile, AdComponent) {
     return React.createClass({
         getInitialState : function() {
 
@@ -66,6 +67,9 @@ define([
                 <div className="container" style={{width:'90%', maxWidth:'none', marginTop: '80px'}}>
                     <div className="profile-card z-depth-1">
                         {profileInfo}
+                    </div>
+                    <div className="row">
+                        <AdComponent orientation="horizontal"/>
                     </div>
                     <h5>User History</h5>
                      <ul className="collapsible" data-collapsible="accordion">
