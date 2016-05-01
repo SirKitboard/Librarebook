@@ -27,6 +27,13 @@ define([
                 if (itemRating) {
                     buttonMessage = "Edit Rating";
                     var deleteRatingButton = (<div className="btn" onClick={this.deleteRating}>Delete Rating</div>);
+                    var userReview =
+                        (
+                          <div>
+                              <p>My Rating</p>
+                              <p className="ratingText">{this.props.book.rating.toFixed(1)}</p>
+                          </div>
+                        );
                 }
             }
             
@@ -44,10 +51,22 @@ define([
                         </div>
                         <div id="reviewsTab" className="col s12">
                             <div className="row rating">
-                                <p>Average Rating: {ratings.length > 0 ? this.props.book.rating : 0}</p>
-                                <p>{numRatings} total</p>
-                                <a href="#modalReview" className="modal-trigger ratingModalTrigger btn">{buttonMessage}</a>
-                                {deleteRatingButton}
+                                <div id="ratingsLeft" className="col s3 valign-wrapper">
+                                    <div>
+                                        <p className="center-align">Average Rating</p>
+                                        <p id="avgRating" className="ratingText center-align">{ratings.length > 0 ? this.props.book.rating.toFixed(1) : 0}</p>
+                                        <p id="ratingsCount" className="center-align">{numRatings} total</p>
+                                    </div>
+                                </div>
+                                <div id="ratingsRight" className="col s9">
+                                    {userReview}
+                                    <a href="#modalReview" className="modal-trigger ratingModalTrigger btn">{buttonMessage}</a>
+                                    {deleteRatingButton}
+                                </div>
+                            </div>
+                            <hr/>
+                            <div id="recommendations">
+                                <h5>Recommended Titles</h5>
                             </div>
                         </div>
                     </div>

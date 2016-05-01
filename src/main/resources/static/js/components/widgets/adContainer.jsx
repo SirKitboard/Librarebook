@@ -5,7 +5,7 @@ define([
     return React.createClass({
         getInitialState: function() {
             var hortizontalAds = ["Ad-lit_banner_0.png", "banner.PNG", "banner2.PNG", "cda_displayimage.jpg", "Inkbok Promotional Banner Ad.jpg"];
-            var verticalAds = [];
+            var verticalAds = ["vertbanner1.png","vertbanner2.jpg","vertbanner3.png","vertbanner4.png"];
             if(this.props.orientation == "horizontal") {
 
             }
@@ -24,7 +24,11 @@ define([
                     </div>
                 )
             }
-            return <div></div>
+            return (
+                <div style={{width: '100%', padding: '10px'}} className="ads-container">
+                    <img style={{width: '100%', height: '850px'}} src={"/img/ads/"+this.state.verticalAds[this.state.random]}/>
+                </div>
+            )
         }
     })
 });

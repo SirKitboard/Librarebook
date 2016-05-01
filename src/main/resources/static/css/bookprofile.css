@@ -31,13 +31,7 @@
       right: 12px; }
   #profileContent #addToCart {
     margin-top: 10px; }
-  #profileContent #instantCheckout {
-    margin-top: 10px;
-    margin-right: 10px; }
-  #profileContent #purchase {
-    margin-top: 10px;
-    margin-right: 10px; }
-  #profileContent #return {
+  #profileContent .bookButton {
     margin-top: 10px;
     margin-right: 10px; }
   #profileContent #bookAvailable {
@@ -65,5 +59,12 @@
   #profileContent #reviewsTab {
     height: 800px;
     background-color: gray; }
+    #profileContent #reviewsTab #ratingAvg {
+      font-size: 200%; }
+  #profileContent .share-button img {
+    width: 64px;
+    height: 64px;
+    margin: 10px;
+    border-radius: 8px; }
 
 /*# sourceMappingURL=bookprofile.css.map */

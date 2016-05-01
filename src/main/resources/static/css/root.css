@@ -448,7 +448,15 @@ html, body {
       margin: auto; }
   #profileContent #reviewsTab {
     height: 800px;
-    background-color: gray; }
+    background-color: gray;
+    padding-left: 0px; }
+    #profileContent #reviewsTab p.ratingText {
+      font-size: 250%;
+      margin: 5px; }
+    #profileContent #reviewsTab .btn {
+      margin-right: 10px; }
+    #profileContent #reviewsTab #ratingsCount {
+      margin-top: 0; }
   #profileContent .share-button img {
     width: 64px;
     height: 64px;

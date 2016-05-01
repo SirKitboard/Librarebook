@@ -5,8 +5,9 @@ define([
     'jsx!components/bookprofile/bookextras',
     'jsx!components/template/editbookmodal',
     'jsx!components/bookprofile/sharebookmodal',
+    'jsx!components/widgets/adContainer',
     'actions/books'
-], function(_,React, BookInfoComponent, BookExtrasComponent, BookEditModal, ShareBookModal, BookActions) {
+], function(_,React, BookInfoComponent, BookExtrasComponent, BookEditModal, ShareBookModal, AdComponent, BookActions) {
     return React.createClass({
         getInitialState: function() {
             var loggedIn = false;
@@ -72,8 +73,11 @@ define([
                         <div className="col l4">
                             <BookInfoComponent book={this.state.book} loggedIn={this.state.loggedIn}/>
                         </div>
-                        <div className="col l8">
+                        <div className="col l6">
                             <BookExtrasComponent book={this.state.book} loggedIn={this.state.loggedIn} id="bookExtras"/>
+                        </div>
+                        <div className="col l2">
+                            <AdComponent orientation="vertical"/>
                         </div>
                     </div>
                     <div id="modalEditBook" className="modal">
