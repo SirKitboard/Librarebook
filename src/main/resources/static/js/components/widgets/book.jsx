@@ -19,7 +19,7 @@ define([
 				imageURL = this.props.book.coverImageUrl;
 			}
 			var backgroundStyle = {
-				backgroundImage: "url("+imageURL+")",
+				backgroundImage: 'url("'+imageURL+'")',
 				backgroundSize: "cover"
 			};
 			var title = this.props.book.title;

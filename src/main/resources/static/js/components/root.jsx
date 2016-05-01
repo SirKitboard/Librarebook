@@ -79,7 +79,7 @@ define([
                     componentRendered = <HomepageComponent stores={this.stores} setView={this.setView} view={this.state.view}/>
                     break;
                 case 'profile':
-                    componentRendered = <UserProfileComponent setView={this.setView} view={this.state.view}/>
+                    componentRendered = <UserProfileComponent stores={this.stores} setView={this.setView} view={this.state.view}/>
                     break;
                 case 'adminDashboard':
                     showNavShadow = false;

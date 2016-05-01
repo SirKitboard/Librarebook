@@ -156,6 +156,19 @@ define([
         }
     };
 
+    Store.prototype.getCheckedOutbooks = function() {
+        var books = [];
+        var self = this;
+        _.each(window.currentUser.currentlyCheckedOutItems, function(item) {
+            if(self.books[item.item]) {
+                books.push(self.books[item.item])
+            } else {
+                self.action.getBook(item.item);
+            }
+        });
+        return books;
+    }
+
     Store.prototype.update = function(id) {
         this.books[id] = book;
     };

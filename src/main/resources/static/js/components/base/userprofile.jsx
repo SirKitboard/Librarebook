@@ -73,9 +73,13 @@ define([
                     </div>
                     <h5>User History</h5>
                      <ul className="collapsible" data-collapsible="accordion">
+                         <li>
+                             <div className="collapsible-header"><i className="material-icons">lock</i>Books you have currently checked out </div>
+                             <div className="collapsible-body">{window.currentUser.currentlyCheckedOutItems.length != 0 ? <BookCarousel books={this.props.stores.books.getCheckedOutbooks()}/>: <h5 style={{margin:'20px'}}>No checked out items</h5>}</div>
+                         </li>
                         <li>
-                          <div className="collapsible-header"><i className="material-icons">lock</i>Books you have borrowed </div>
-                          <div className="collapsible-body"><BookCarousel books={this.state.books}/></div>
+                          <div className="collapsible-header"><i className="material-icons">lock</i>Books you have borrowed in the past</div>
+                            <div className="collapsible-body">{window.currentUser.checkoutHistory.length != 0 ? <BookCarousel books={window.currentUser.checkoutHistory} />: <h5 style={{margin:'20px'}}>No items</h5>}</div>
                         </li>
                         <li>
                           <div className="collapsible-header"><i className="material-icons">rate_review</i>Books you have reviewed</div>
