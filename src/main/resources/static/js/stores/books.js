@@ -112,6 +112,7 @@ define([
         if (this.books[data.id]) {
             this.books[data.id].checkedOut = true;
             this.books[data.id].checkedOutBy.push(data.checkOutItem);
+            window.currentUser.currentlyCheckedOutItems.push(data.checkedOutItem);
             this.books[data.id].availableLicenses--;
         }
     };
@@ -119,6 +120,12 @@ define([
     Store.prototype.return = function(id) {
         if (this.books[id]) {
             this.books[id].checkedOut = false;
+            this.books[id].checkedOutBy = this.books[id].checkedOutBy.filter(function (item) {
+               return item.user == window.currentUser.id;
+            });
+            window.currentUser.currentlyCheckedOutItems = window.currentUser.currentlyCheckedOutItems.filter(function(checkout) {
+               return checkout.item = id;
+            });
             this.books[id].availableLicenses++;
         }
     };
@@ -151,20 +158,22 @@ define([
         this.books[response.bookID].favorited = response.status;
     };
 
-    Store.prototype.hold = function(id) {
-        if (this.books[id]) {
-            if (window.currentUser.holdItems) {
-                window.currentUser.holdItems.push(this.books[id]);
-            } else {
-                window.currentUser.holdItems = [this.books.id];
-            }
+    Store.prototype.hold = function(data) {
+        if (this.books[data.bookId]) {
+            var book = this.books[data.bookId];
+            book.holdsBy.push(data.holdItem);
+            window.currentUser.holdItems.push(data.holdItem);
         }
     };
 
     Store.prototype.removeHold = function(id) {
         if (this.books[id]) {
-            window.currentUser.holdItems = window.currentUser.holdItems.filter(function (item) {
-               return item.id !== id;
+            var book = this.books[id];
+            window.currentUser.holdItems = window.currentUser.holdItems.filter(function (hold) {
+               return hold.item !== id;
+            });
+            this.books[id].holdsBy = this.books[id].holdsBy.filter(function (hold) {
+                return hold.user !== window.currentUser.id;
             });
         }
     };

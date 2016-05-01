@@ -47,6 +47,9 @@ public class ItemController {
     @Autowired
     private UserItemRatingDao itemRatingDao;
 
+    @Autowired
+    private HoldItemDao holdItemDao;
+
     @RequestMapping(value = "/api/items/{id}", method = RequestMethod.GET)
     public ResponseEntity<Item> get(HttpSession session, @PathVariable long id) {
         Item item = ItemFactory.getItemFromCache(id);
@@ -78,13 +81,14 @@ public class ItemController {
         if(item == null) {
             return ResponseEntity.badRequest().body(null);
         }
-        item.getHoldsBy().add(user);
-        user.getHoldItems().add(item);
-        itemDao.save(item);
-        userDao.save(user);
+        HoldItem holdItem = new HoldItem(user, item);
+        holdItemDao.save(holdItem);
+
+        item.getHoldsBy().add(holdItem);
+        user.getHoldItems().add(holdItem);
 
         updateCache(item);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(holdItem);
     }
 
     @RequestMapping(value = "/api/items/{id}/removehold", method = RequestMethod.POST)
@@ -97,12 +101,16 @@ public class ItemController {
         if(item == null) {
             return ResponseEntity.badRequest().body(null);
         }
-        Set<User> holdsBy = SetHelper.remove(item.getHoldsBy(), user);
-        Set<Item> holdItems = SetHelper.remove(user.getHoldItems(), item);
-        user.setHoldItems(holdItems);
-        item.setHoldsBy(holdsBy);
-        itemDao.save(item);
-        userDao.save(user);
+        HoldItem holdItem = holdItemDao.findByUserIdAndItemId(user.getId(), item.getId());
+        if (holdItem == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        user.removeHold(holdItem);
+        item.removeHold(holdItem);
+        holdItemDao.delete(holdItem);
+
+        updateCache(item);
         return ResponseEntity.ok(null);
     }
 

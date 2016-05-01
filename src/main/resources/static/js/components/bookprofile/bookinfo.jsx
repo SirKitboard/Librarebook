@@ -165,8 +165,10 @@ define([
                     var reserved;
                     var waitlistButton;
                     if (user) {
-                        var reserved = _.find(user.holdItems, function(item) {
-                            return item.id == book.id;
+                        console.log(user.holdItems);
+                        console.log(this.props.book.holdsBy);
+                        var reserved = _.find(user.holdItems, function(hold) {
+                            return hold.item == book.id;
                         });
                     }
                     if (reserved) {

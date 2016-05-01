@@ -89,8 +89,8 @@ public class User extends IDModel implements Cloneable{
     @ManyToMany(mappedBy = "flaggedBy")
     private Set<Item> flags;
 
-    @ManyToMany(mappedBy = "holdsBy")
-    private Set<Item> holdItems;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private Set<HoldItem> holdItems;
 
     public User(String firstName, String lastName, Date dob, String email, String gender, String password, Address address) throws PasswordStorage.CannotPerformOperationException {
         this.firstName = firstName;
@@ -112,7 +112,7 @@ public class User extends IDModel implements Cloneable{
         this.reviewRatings = new HashSet<UserReviewRating>();
         this.preferences = new UserPreferences();
         this.flags = new HashSet<Item>();
-        this.holdItems = new HashSet<Item>();
+        this.holdItems = new HashSet<HoldItem>();
     }
 
     public User() {
@@ -335,12 +335,20 @@ public class User extends IDModel implements Cloneable{
     public void addToCart(Item item){shoppingCart.add(item);}
 
 
-    public Set<Item> getHoldItems() {
+    public Set<HoldItem> getHoldItems() {
         return holdItems;
     }
 
-    public void setHoldItems(Set<Item> holdItems) {
+    public void setHoldItems(Set<HoldItem> holdItems) {
         this.holdItems = holdItems;
+    }
+
+    public void addHold(HoldItem holdItem) {
+        this.holdItems.add(holdItem);
+    }
+
+    public void removeHold(HoldItem holdItem) {
+        this.holdItems = SetHelper.remove(this.holdItems,holdItem);
     }
 
     public void handleUpdate(HashMap<String, String> params) {

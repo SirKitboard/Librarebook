@@ -217,7 +217,10 @@ define([
                 success: function(response) {
                     AppDispatcher.dispatch({
                         actionType: Constants.HOLD,
-                        data: id
+                        data: {
+                            bookId: id,
+                            holdItem: response
+                        }
                     })
                 }
             });
