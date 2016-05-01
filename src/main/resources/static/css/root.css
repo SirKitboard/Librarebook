@@ -449,6 +449,11 @@ html, body {
   #profileContent #reviewsTab {
     height: 800px;
     background-color: gray; }
+  #profileContent .share-button img {
+    width: 64px;
+    height: 64px;
+    margin: 10px;
+    border-radius: 8px; }
 
 #searchResultComponent .searchBanner {
   height: 400px;

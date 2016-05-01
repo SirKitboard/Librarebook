@@ -27,6 +27,12 @@ define([
         shareToFacebook: function() {
             window.open("https://www.facebook.com/sharer/sharer.php?u="+window.location.href)
         },
+        shareToTwitter: function() {
+            window.open("https://twitter.com/intent/tweet?url="+encodeURIComponent(window.location.href));
+        },
+        shareToPinterest: function() {
+            window.open("http://pinterest.com/pin/create/button/?url="+encodeURIComponent(window.location.href)+"&media="+this.props.book.coverImageUrl+"&description=Librarebook")
+        },
         render: function() {
             return (
                 <div className="row">
@@ -35,7 +41,9 @@ define([
                         {this.props.loggedIn ? <li className="tab"><a href="#email">Email</a></li> : null }
                     </ul>
                     <div id="share" className="col s12">
-                        <a onClick={this.shareToFacebook} className="fb-share-button" data-href={window.location.href} data-layout="button" data-mobile-iframe="true"><img src="/img/square-facebook-128.png"/></a>
+                        <a onClick={this.shareToFacebook} className="share-button"><img className="z-depth-1" src="/img/square-facebook-128.png"/></a>
+                        <a onClick={this.shareToTwitter} className="share-button"><img className="z-depth-1" src="/img/Twitter-icon.png"/></a>
+                        <a onClick={this.shareToPinterest} className="share-button"><img className="z-depth-1" src="/img/pinterest.png"/></a>
                     </div>
                     {this.props.loggedIn ? <div id="email" className="input-field col s12">
                         <input ref="emailInput" id="emailInput" placeholder="To" type="email" className="col s11 validate"/>
