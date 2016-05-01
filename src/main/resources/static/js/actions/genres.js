@@ -13,6 +13,7 @@ define([
                 url:"/api/genres",
                 method: "GET",
                 success: function(response) {
+                    console.log(response);
                     _.each(response, function (genre) {
                         AppDispatcher.dispatch({
                             actionType: Constants.ADD_GENRE,

@@ -26,8 +26,8 @@ define([
                 selectedAuthors: [],
                 selectedAuthorIDs: [],
                 publishers: [],
-                selectedPublishers: [],
-                selectedPublisherIDs: []
+                selectedPublishers: null,
+                selectedPublisherIDs: null
             }
         },
         
@@ -36,7 +36,8 @@ define([
             var description = $("#description").val();
 
             var genre = $("#genre").val();
-            var publisher = $("#publisher").val();
+            var author = this.state.selectedAuthorIDs;
+            var publisher = this.state.selectedPublisherIDs;
             var yearPublished = $("#yearPublished").val();
             var totalLicenses = $("#totalLicenses").val();
             var language = $("#language").val();
@@ -61,6 +62,7 @@ define([
             $('.modal-trigger').leanModal();
             this.props.stores.authors.addChangeListener(this.authorsUpdated);
             this.props.stores.authors.addChangeListener(this.publishersUpdated);
+            $('select').material_select();
         },
         authorsUpdated:  function() {
             this.forceUpdate();
@@ -138,11 +140,11 @@ define([
                 var publisherIDs = this.state.selectedPublisherIDs;
                 var publishers = this.state.selectedPublishers;
                 var publisherID = e.target.getAttribute("data-id");
-                publisherIDs.push(publisherID);
+                publisherIDs = publisherID ;
                 var publisher = _.find(this.state.publishers, function(publisher) {
                     return (publisher.id+"") == publisherID;
-                })
-                publishers.push(publisher);
+                });
+                publishers = publisher
                 this.setState({
                     selectedPublisherIDs: publisherIDs,
                     selectedPublishers: publishers,
@@ -188,9 +190,12 @@ define([
                 })
             }
         },
+        componentDidUpdate: function() {
+            $('select').material_select('destroy');
+            $('select').material_select();
+        },
         render: function() {
             var self = this;
-
             return (
 
                 <div id="booksTab" className="row">
@@ -229,9 +234,19 @@ define([
                                              <input ref="title" id="title" type="text" className="validate" length="20"/>
                                              <label htmlFor="title">Title</label>
                                          </div>
-                                         <div className="input-field col s12 m6">
-                                             <input ref="genre" id="genre" type="text" className="validate"/>
-                                             <label htmlFor="genre">Genre</label>
+                                     </div>
+                                     <div className="row">
+                                         <div className="input-field col s12 m6 center-align">
+                                             <select size="4" style={{overflowY: 'scroll'}} id="genreSelect" ref="genreSelect"  multiple>
+                                                 <option value="" disabled>Genres</option>
+                                                 {
+                                                     _.map(this.props.stores.genres.getAll(), function(genre) {
+                                                         // var id = "genre_" + genre.name;
+                                                         return <option value={genre.id}>{genre.name}</option>
+                                                     })
+                                                 }
+                                             </select>
+                                             <label>Genres</label>
                                          </div>
                                      </div>
                                      <div className="row">
@@ -240,7 +255,7 @@ define([
                                              <label className="active" htmlFor="author">Author</label>
                                          </div>
                                          <div className="input-field col s12 m6">
-                                             <input onClick={this.slideToPublisherTab} ref="publisher" id="publisher" type="text" className="active validate" length="20" value={_.pluck(self.state.selectedPublishers, "name").join(",")}/>
+                                             <input onClick={this.slideToPublisherTab} ref="publisher" id="publisher" type="text" className="active validate" length="20" value={self.state.selectedPublishers ? self.state.selectedPublishers.name : ""}/>
                                              <label className="active" htmlFor="publisher">Publisher</label>
                                          </div>
                                      </div>
@@ -334,7 +349,7 @@ define([
                                                 _.map(this.state.publishers, function(publisher) {
                                                     var id = publisher.id;
                                                     var selected = false;
-                                                    if(self.state.selectedPublisherIDs.indexOf(publisher.id+"") >=0) {
+                                                    if(publisher.id == self.state.selectedPublisherIDs) {
                                                         selected = true;
                                                     }
 

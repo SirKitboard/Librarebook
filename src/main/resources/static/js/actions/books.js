@@ -67,7 +67,7 @@ define([
 
         addBook: function(data) {
             $.ajax({
-                url: "/api/items/books/",
+                url: "/api/items/books",
                 method: "POST",
                 data: data,
                 success: function(response) {
