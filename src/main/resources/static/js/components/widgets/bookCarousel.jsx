@@ -5,7 +5,7 @@ define([
 ], function(_, React, Book) {
 	return React.createClass({
 		render : function() {
-			// console.log(this.props.books);
+			console.log(this.props.books);
 			if(Array.isArray(this.props.books)) {
 				return (<div className="bookCarousel">
 					{

@@ -7,9 +7,10 @@ define([
             var hortizontalAds = ["Ad-lit_banner_0.png", "banner.PNG", "banner2.PNG", "cda_displayimage.jpg", "Inkbok Promotional Banner Ad.jpg"];
             var verticalAds = ["vertbanner1.png","vertbanner2.jpg","vertbanner3.png","vertbanner4.png"];
             if(this.props.orientation == "horizontal") {
-
+                var random = Math.floor(Math.random()*hortizontalAds.length);
+            } else {
+                var random = Math.floor(Math.random()*verticalAds.length);
             }
-            var random = Math.floor(Math.random()*hortizontalAds.length);
             return {
                 horizontalAds : hortizontalAds,
                 verticalAds: verticalAds,

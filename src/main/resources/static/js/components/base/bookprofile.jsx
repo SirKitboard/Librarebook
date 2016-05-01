@@ -25,24 +25,42 @@ define([
         componentWillMount: function () {
             var bookID = this.props.view.split("/")[2];
             var book = this.props.stores.books.getBookOrPull(bookID);
+            var recommended = this.props.stores.books.getRecommendedOrPull(bookID);
             if(book) {
                 this.setState({
                     book: book,
-                    loading: false
+                    loadingBook: false
+                });
+            } else {
+                this.setState({
+                    loadingBook: true
+                })
+            }
+            if (recommended) {
+                this.setState({
+                    recommended: recommended,
+                    loadingRecommended: false
                 })
             } else {
                 this.setState({
-                    loading: true
+                    loadingRecommended: true
                 })
             }
         },
         componentWillUpdate: function (nextProps, nextState) {
+            var bookID = this.props.view.split("/")[2];
             if(this.state.book == null) {
-                var bookID = this.props.view.split("/")[2];
                 var nextBook = nextProps.stores.books.getBook(bookID);
                 if(nextBook){
                     nextState.book = nextBook;
-                    nextState.loading = false;
+                    nextState.loadingBook = false;
+                }
+            }
+            if(this.state.recommended == null && this.state.book != null) {
+                var nextRecommended = nextProps.stores.books.getRecommended(bookID);
+                if (nextRecommended) {
+                    nextState.recommended = nextRecommended;
+                    nextState.loadingRecommended = false;
                 }
             }
         },
@@ -53,7 +71,7 @@ define([
             BookActions.rate(this.state.book.id, rating);
         },
         render: function() {
-            if (this.state.loading) {
+            if (this.state.loadingBook || this.state.loadingRecommended) {
                 return (
                     <p>Loading</p>
                 )
@@ -74,7 +92,7 @@ define([
                             <BookInfoComponent book={this.state.book} loggedIn={this.state.loggedIn}/>
                         </div>
                         <div className="col l6">
-                            <BookExtrasComponent book={this.state.book} loggedIn={this.state.loggedIn} id="bookExtras"/>
+                            <BookExtrasComponent book={this.state.book} loggedIn={this.state.loggedIn} recommended={this.state.recommended} id="bookExtras"/>
                         </div>
                         <div className="col l2">
                             <AdComponent orientation="vertical"/>

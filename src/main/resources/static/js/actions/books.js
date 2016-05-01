@@ -73,7 +73,10 @@ define([
                 success: function(response) {
                     AppDispatcher.dispatch({
                         actionType: Constants.ADD_BOOK,
-                        data:response
+                        data: {
+                            bookId: id,
+                            recommendations: response
+                        }
                     })
                 }
             })
@@ -276,6 +279,21 @@ define([
                     })
                 }
             })
+        },
+        getRecommended: function(id) {
+            $.ajax({
+                url: "/api/items/books/"+id+"/recommended",
+                method: "GET",
+                success: function(response) {
+                    AppDispatcher.dispatch({
+                        actionType: Constants.RECOMMEND,
+                        data: {
+                            bookId: id,
+                            recommendations: response
+                        }
+                    })
+                }
+            });
         }
     };
 });

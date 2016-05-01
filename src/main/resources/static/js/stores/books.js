@@ -12,6 +12,7 @@ define([
         
         this.books = {};
         this.recents = {};
+        this.recommended = {};
 
         this.registerDispatchListener(function(action) {
             var self = this;
@@ -64,6 +65,10 @@ define([
                     this.removeRating(action.data);
                     this.event.emit("change");
                     break;
+                case Constants.RECOMMEND:
+                    this.addRecommended(action.data);
+                    this.event.emit("change");
+                    break;
             }
 
         }.bind(this));
@@ -98,7 +103,7 @@ define([
             return null;
         }
     };
-    
+
     Store.prototype.getBook = function (id) {
         return this.books[id];
     };
@@ -204,6 +209,23 @@ define([
 
     Store.prototype.update = function(id) {
         this.books[id] = book;
+    };
+
+    Store.prototype.getRecommendedOrPull = function(id) {
+        if (this.recommended[id]) {
+            return this.recommended[id];
+        } else {
+            this.action.getRecommended(id);
+            return null;
+        }
+    };
+    
+    Store.prototype.addRecommended = function(data) {
+        this.recommended[data.bookId] = data.recommendations;
+    };
+    
+    Store.prototype.getRecommended = function(id) {
+        return this.recommended[id];
     };
 
     return Store;

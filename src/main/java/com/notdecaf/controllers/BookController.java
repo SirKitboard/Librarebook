@@ -1,9 +1,6 @@
 package com.notdecaf.controllers;
 
-import com.notdecaf.daos.AuthorDao;
-import com.notdecaf.daos.GenreDao;
-import com.notdecaf.daos.PublisherDao;
-import com.notdecaf.daos.UserDao;
+import com.notdecaf.daos.*;
 import com.notdecaf.helpers.*;
 import com.notdecaf.models.*;
 import com.sendgrid.SendGrid;
@@ -36,6 +33,9 @@ public class BookController implements BaseController<Book> {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private BookDao bookDao;
 
     public ResponseEntity<Book[]> all(HttpSession session) {
         Iterable<Book> books = BookFactory.findAll();
@@ -160,6 +160,21 @@ public class BookController implements BaseController<Book> {
             return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(book);
+    }
+
+    @RequestMapping(value = "/api/items/books/{id}/recommended", method = RequestMethod.GET)
+    public ResponseEntity<Book[]> getByGenre(HttpSession session, @PathVariable long id) {
+        Book book = BookFactory.getBookFromCache(id);
+        if (book == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        Genre[] genres = book.getGenres().toArray(new Genre[0]);
+        long[] ids = new long[genres.length];
+        for (int i=0; i<ids.length; i++) {
+            ids[i] = genres[i].getId();
+        }
+        List<Book> books= bookDao.findTop10ByGenres_IdInAndIdNot(ids, book.getId());
+        return ResponseEntity.ok(books.toArray(new Book[0]));
     }
 
     @RequestMapping(value = "/api/items/books", method = RequestMethod.POST)

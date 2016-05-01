@@ -18,7 +18,7 @@ import java.util.List;
 public class BookFactory {
     private static final int PAGE_SIZE = 20;
 
-    private static List<Book> lruBookCache = new ArrayList<Book>();
+    private static List<Book> lruBookCache = new ArrayList<Book>(1);
 
     private static BookDao bookDao;
 

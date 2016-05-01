@@ -1,8 +1,9 @@
 define([
     'underscore',
     'react',
-    'actions/books'
-], function(_, React, BookActions) {
+    'actions/books',
+    'jsx!components/widgets/bookCarousel'
+], function(_, React, BookActions, BookCarousel) {
     return React.createClass({
         componentDidMount: function() {
             $('ul.tabs').tabs();
@@ -16,7 +17,6 @@ define([
             if(this.props.book.coverImageUrl && this.props.book.coverImageUrl.length > 0) {
                 imageURL = this.props.book.coverImageUrl;
             }
-
             var ratings = this.props.book.ratings;
             var numRatings = ratings.length;
             var buttonMessage = "Rate Book";
@@ -36,6 +36,13 @@ define([
                         );
                 }
             }
+
+            var recommendedBooks =
+                (
+                    <div className="books">
+                        <BookCarousel setView={this.props.setView} books={this.props.recommended}/>
+                    </div>
+                );
             
             return (
                 <div>
@@ -67,6 +74,7 @@ define([
                             <hr/>
                             <div id="recommendations">
                                 <h5>Recommended Titles</h5>
+                                {recommendedBooks}
                             </div>
                         </div>
                     </div>

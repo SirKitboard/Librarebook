@@ -1,6 +1,7 @@
 package com.notdecaf.daos;
 
 import com.notdecaf.models.Book;
+import com.notdecaf.models.Genre;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +25,5 @@ public interface BookDao extends PagingAndSortingRepository<Book, Long> {
 //
     Page<Book> findByTitleContainsIgnoreCaseOrderByTitleAsc(Pageable pageable, String titlePart);
     Page<Book> findByTitleContainsIgnoreCaseOrderByTitleDesc(Pageable pageable, String titlePart);
+    List<Book> findTop10ByGenres_IdInAndIdNot(long [] ids, long bookId);
 }
