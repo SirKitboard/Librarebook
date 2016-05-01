@@ -5,7 +5,8 @@ define([
     'jsx!components/admindashboard/booksTab',
     'jsx!components/admindashboard/userstab',
     'jsx!components/admindashboard/publisherstab',
-    'actions/authors'
+    'actions/authors',
+    'actions/publishers'
 ], function(_,React, ReportsTab, BooksTab, UsersTab, PublishersTab, AuthorsActions) { //, BookInfoComponent, BookExtrasComponent, BookRecommendComponent) {
     return React.createClass({
         getInitialState: function() {

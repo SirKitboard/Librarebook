@@ -12,8 +12,10 @@ define([
     'actions/books',
     'stores/genres',
     'actions/genres',
-    'stores/authors'
-], function(_,React, NavbarCompnent, HomepageComponent, BookprofileComponent, SearchResultsComponent, UserProfileComponent, AdminDashboardComponent, FaqComponent, BooksStore, BooksActions, GenresStore, GenresActions, AuthorsStore) {
+    'stores/authors',
+    'stores/publishers'
+    
+], function(_,React, NavbarCompnent, HomepageComponent, BookprofileComponent, SearchResultsComponent, UserProfileComponent, AdminDashboardComponent, FaqComponent, BooksStore, BooksActions, GenresStore, GenresActions, AuthorsStore,PublishersStore) {
     return React.createClass({
         getInitialState: function () {
             var URLHash = window.location.hash.substring(1);
@@ -48,7 +50,8 @@ define([
             this.stores = {
                 books: new BooksStore(),
                 genres: new GenresStore(),
-                authors: new AuthorsStore()
+                authors: new AuthorsStore(),
+                publishers: new PublishersStore()
             };
             this.stores.books.addChangeListener(this.onStoreUpdate);
             this.stores.books.addChangeListener(this.onStoreUpdate);

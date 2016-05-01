@@ -4,8 +4,9 @@ define([
     'jsx!components/template/book',
     'jsx!components/bookprofile/bookinfo',
     'actions/books',
-    'actions/authors'
-], function(_,React, Book, BookInfo, BookActions, AuthorActions) { //, BookInfoComponent, BookExtrasComponent, BookRecommendComponent) {
+    'actions/authors',
+    'actions/publishers'
+], function(_,React, Book, BookInfo, BookActions, AuthorActions,PublisherActions) { //, BookInfoComponent, BookExtrasComponent, BookRecommendComponent) {
     return React.createClass({
         getInitialState: function() {
             var book = {
@@ -23,7 +24,10 @@ define([
                 selectedBook: 0,
                 authors: [],
                 selectedAuthors: [],
-                selectedAuthorIDs: []
+                selectedAuthorIDs: [],
+                publishers: [],
+                selectedPublishers: [],
+                selectedPublisherIDs: []
             }
         },
         
@@ -56,8 +60,12 @@ define([
         componentDidMount: function() {
             $('.modal-trigger').leanModal();
             this.props.stores.authors.addChangeListener(this.authorsUpdated);
+            this.props.stores.authors.addChangeListener(this.publishersUpdated);
         },
         authorsUpdated:  function() {
+            this.forceUpdate();
+        },
+        publishersUpdated: function(){
             this.forceUpdate();
         },
         slidetoMainTab: function() {
@@ -95,7 +103,7 @@ define([
                 left: '0px'
             });
         },
-        submitSearch : function(e) {
+        submitAuthorSearch : function(e) {
             if (e.target.value.length ==0) {
                 this.setState({
                     authors: []
@@ -105,10 +113,53 @@ define([
                 AuthorActions.pull(e.target.value, 0, this.setAuthors)
             }
         },
+        submitPublisherSearch : function(e){
+            if (e.target.value.length ==0) {
+                this.setState({
+                    publishers: []
+                })
+            }
+            else {
+                PublisherActions.pull(e.target.value, 0, this.setPublishers)
+            }
+        },
+        setPublishers: function(publishers){
+            this.setState({
+                publishers: publishers
+            })
+        },
         setAuthors: function(authors) {
             this.setState({
                 authors: authors
             })
+        },
+        publisherClicked: function(e){
+            if(e.target.checked) {
+                var publisherIDs = this.state.selectedPublisherIDs;
+                var publishers = this.state.selectedPublishers;
+                var publisherID = e.target.getAttribute("data-id");
+                publisherIDs.push(publisherID);
+                var publisher = _.find(this.state.publishers, function(publisher) {
+                    return (publisher.id+"") == publisherID;
+                })
+                publishers.push(publisher);
+                this.setState({
+                    selectedPublisherIDs: publisherIDs,
+                    selectedPublishers: publishers,
+
+                })
+            } else {
+                var publisherIDs = this.state.selectedPublisherIDs;
+                var publishers = this.state.selectedPublishers;
+                var index = publishers.indexOf(e.target.getAttribute("data-id"));
+                publishers.splice(index, 1);
+                publisherIDs.splice(index, 1);
+                this.setState({
+                    selectedPublishers: publishers,
+                    selectedPublisherIDs: publisherIDs
+                })
+            }
+
         },
         authorClicked: function(e) {
             if(e.target.checked) {
@@ -189,8 +240,8 @@ define([
                                              <label className="active" htmlFor="author">Author</label>
                                          </div>
                                          <div className="input-field col s12 m6">
-                                             <input onClick={this.slideToPublisherTab}ref="publisher" id="publisher" type="text" className="validate"/>
-                                             <label htmlFor="publisher">Publisher</label>
+                                             <input onClick={this.slideToPublisherTab} ref="publisher" id="publisher" type="text" className="active validate" length="20" value={_.pluck(self.state.selectedPublishers, "name").join(",")}/>
+                                             <label className="active" htmlFor="publisher">Publisher</label>
                                          </div>
                                      </div>
                                      <div className="row">
@@ -244,7 +295,7 @@ define([
                                      <h3>Author</h3>
                                      <p>Pick an author.</p>
                                       <div className="input-field">
-                                          <input id="searchForModal" type="search" placeholder="Search" autoComplete="off" onChange={this.submitSearch} required/>
+                                          <input id="searchForModal" type="search" autoComplete="off" onChange={this.submitAuthorSearch} required/>
                                           <label htmlFor="searchForModal">Search</label>
                                       </div>
                                       <div id="authorList">
@@ -274,13 +325,30 @@ define([
                                 <div id="publisherTab" className="tabcontent">
                                     <h3>Publisher</h3>
                                     <div className="input-field">
-                                        <div className="search-wrapper card">
-                                            <input id="search"></input>
-                                            <i className="material-icons">search</i>
-                                            <div className="search-results"></div>
-                                        </div>
-                                        <a onClick={this.slidetoMainTab}  className="waves-effect waves-light btn">done</a>
+                                        <input id="searchForModal" type="search" autoComplete="off" onChange={this.submitPublisherSearch} required/>
+                                        <label htmlFor="searchForModal">Search</label>
                                     </div>
+                                    <div id="publisherList">
+                                        <ul>
+                                            {
+                                                _.map(this.state.publishers, function(publisher) {
+                                                    var id = publisher.id;
+                                                    var selected = false;
+                                                    if(self.state.selectedPublisherIDs.indexOf(publisher.id+"") >=0) {
+                                                        selected = true;
+                                                    }
+
+                                                    return (
+                                                        <li>
+                                                            <input checked={selected} data-id={publisher.id} onChange={self.publisherClicked} type="checkbox" id={id} />
+                                                            <label htmlFor={id}>{publisher.name}</label>
+                                                        </li>
+                                                    )
+                                                })
+                                            }
+                                        </ul>
+                                    </div>
+                                    <a onClick={this.slidetoMainTab}  className="waves-effect waves-light btn">done</a>
                                 </div>
                             </div>
                         </div>

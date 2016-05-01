@@ -8,17 +8,16 @@ define([
         init: function(params) {
 
         },
-        pull : function() {
+        pull : function(query, page, success) {
             $.ajax({
                 url:"/api/publishers",
+                data: {
+                    string: query,
+                    page: page
+                },
                 method: "GET",
                 success: function(response) {
-                    _.each(response, function (publisher) {
-                        AppDispatcher.dispatch({
-                            actionType: Constants.ADD_PUBLISHER,
-                            data: publisher
-                        })
-                    });
+                    success(response);
                 }
             })
         },

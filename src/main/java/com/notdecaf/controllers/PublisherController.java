@@ -31,7 +31,7 @@ public class PublisherController implements BaseController<Publisher>{
     @Autowired
     private AddressDao addressDao;
 
-    @RequestMapping(value = "/api/publishers", method = RequestMethod.GET)
+
     public ResponseEntity<Publisher[]> all(HttpSession session) {
         Iterable<Publisher> publishers = publisherDao.findAll();
         List<Publisher> publisherList = new ArrayList<Publisher>();
@@ -39,6 +39,35 @@ public class PublisherController implements BaseController<Publisher>{
             publisherList.add(publisher);
         }
         return ResponseEntity.ok(publisherList.toArray(new Publisher[0]));
+    }
+
+
+    @RequestMapping(value = "/api/publishers", method = RequestMethod.GET)
+    public ResponseEntity<Publisher[]> search(HttpServletRequest req) {
+        Iterable<Publisher> publishers = publisherDao.findAll();
+        List<Publisher> publisherList = new ArrayList<Publisher>();
+        for (Publisher publisher : publishers) {
+            publisherList.add(publisher);
+        }
+        String query = req.getParameter("string");
+        List<Publisher> filteredList = new ArrayList<>();
+        for(Publisher publisher: publisherList) {
+            if(publisher.getName().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(publisher);
+            }
+        }
+
+        int page = 0;
+        if(req.getParameterMap().containsKey("page")) {
+            page = Integer.parseInt(req.getParameter("page"));
+        }
+        int start = page*20;
+        if(filteredList.size() == 0 || start > filteredList.size()) {
+            return new ResponseEntity<Publisher[]>(HttpStatus.NO_CONTENT);
+        }
+        int end = Math.min(start+20, filteredList.size());
+        filteredList = filteredList.subList(start, end);
+        return ResponseEntity.ok(filteredList.toArray(new Publisher[0]));
     }
 
     @RequestMapping(value = "/api/publishers/{id}", method = RequestMethod.GET)
