@@ -11,8 +11,9 @@ define([
     'stores/books',
     'actions/books',
     'stores/genres',
-    'actions/genres'
-], function(_,React, NavbarCompnent, HomepageComponent, BookprofileComponent, SearchResultsComponent, UserProfileComponent, AdminDashboardComponent, FaqComponent, BooksStore, BooksActions, GenresStore, GenresActions) {
+    'actions/genres',
+    'stores/authors'
+], function(_,React, NavbarCompnent, HomepageComponent, BookprofileComponent, SearchResultsComponent, UserProfileComponent, AdminDashboardComponent, FaqComponent, BooksStore, BooksActions, GenresStore, GenresActions, AuthorsStore) {
     return React.createClass({
         getInitialState: function () {
             var URLHash = window.location.hash.substring(1);
@@ -46,7 +47,8 @@ define([
             }
             this.stores = {
                 books: new BooksStore(),
-                genres: new GenresStore()
+                genres: new GenresStore(),
+                authors: new AuthorsStore()
             };
             this.stores.books.addChangeListener(this.onStoreUpdate);
             this.stores.books.addChangeListener(this.onStoreUpdate);
@@ -81,7 +83,7 @@ define([
                     break;
                 case 'adminDashboard':
                     showNavShadow = false;
-                    componentRendered = <AdminDashboardComponent setView={this.setView} view={this.state.view}/>
+                    componentRendered = <AdminDashboardComponent stores={this.stores} setView={this.setView} view={this.state.view}/>
                     break;
                 case 'bookProfile':
                     componentRendered = <BookprofileComponent stores={this.stores} setView={this.setView} view={this.state.view}/>

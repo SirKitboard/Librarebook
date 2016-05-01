@@ -8,17 +8,16 @@ define([
         init: function(params) {
 
         },
-        pull : function() {
+        pull : function(query, page, success) {
             $.ajax({
                 url:"/api/authors",
+                data: {
+                    string: query,
+                    page: page
+                },
                 method: "GET",
                 success: function(response) {
-                    _.each(response, function (author) {
-                        AppDispatcher.dispatch({
-                            actionType: Constants.ADD_AUTHOR,
-                            data: author
-                        })
-                    });
+                    success(response);
                 }
             })
         },

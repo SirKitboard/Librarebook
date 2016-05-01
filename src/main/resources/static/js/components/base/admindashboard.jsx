@@ -4,8 +4,9 @@ define([
     'jsx!components/admindashboard/reportsTab',
     'jsx!components/admindashboard/booksTab',
     'jsx!components/admindashboard/userstab',
-    'jsx!components/admindashboard/publisherstab'
-], function(_,React, ReportsTab, BooksTab, UsersTab, PublishersTab) { //, BookInfoComponent, BookExtrasComponent, BookRecommendComponent) {
+    'jsx!components/admindashboard/publisherstab',
+    'actions/authors'
+], function(_,React, ReportsTab, BooksTab, UsersTab, PublishersTab, AuthorsActions) { //, BookInfoComponent, BookExtrasComponent, BookRecommendComponent) {
     return React.createClass({
         getInitialState: function() {
             var tab = 0;
@@ -48,7 +49,7 @@ define([
                     tab = <ReportsTab/>
                     break;
                 case 1:
-                    tab = <BooksTab/>
+                    tab = <BooksTab stores={this.props.stores}/>
                     break;
                 case 2:
                     tab = <UsersTab/>

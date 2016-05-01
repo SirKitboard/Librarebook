@@ -17,6 +17,7 @@ define([
             switch (action.actionType) {
                 case Constants.ADD_AUTHOR:
                     this.addAuthor(action.data);
+                    this.event.emit("change");
                     break;
             }
         }.bind(this));

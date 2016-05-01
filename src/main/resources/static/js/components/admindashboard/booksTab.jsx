@@ -3,8 +3,9 @@ define([
     'react',
     'jsx!components/template/book',
     'jsx!components/bookprofile/bookinfo',
-    'actions/books'
-], function(_,React, Book, BookInfo, BookActions) { //, BookInfoComponent, BookExtrasComponent, BookRecommendComponent) {
+    'actions/books',
+    'actions/authors'
+], function(_,React, Book, BookInfo, BookActions, AuthorActions) { //, BookInfoComponent, BookExtrasComponent, BookRecommendComponent) {
     return React.createClass({
         getInitialState: function() {
             var book = {
@@ -19,9 +20,11 @@ define([
 
             return {
                 books : [book, book, book, book, book, book, book],
-                selectedBook: 0
+                selectedBook: 0,
+                authors: []
             }
         },
+        
         addBook : function() {
             var title = $("#title").val();
             var description = $("#description").val();
@@ -50,6 +53,10 @@ define([
 
         componentDidMount: function() {
             $('.modal-trigger').leanModal();
+            this.props.stores.authors.addChangeListener(this.authorsUpdated);
+        },
+        authorsUpdated:  function() {
+            this.forceUpdate();
         },
         slidetoMainTab: function() {
             $("#mainTab").animate({
@@ -84,6 +91,21 @@ define([
             $("#publisherTab").animate({
                 left: '0px'
             });
+        },
+        submitSearch : function(e) {
+            if (e.target.value.length ==0) {
+                this.setState({
+                    authors: []
+                })
+            }
+            else {
+                AuthorActions.pull(e.target.value, 0, this.setAuthors)
+            }
+        },
+        setAuthors: function(authors) {
+            this.setState({
+                authors: authors
+            })
         },
         render: function() {
             return (
@@ -189,33 +211,26 @@ define([
                                 <div id="authorTab" className="tabcontent">
                                      <h3>Author</h3>
                                      <p>Pick an author.</p>
-                                      <div className="search-wrapper card">
-                                          <input id="search"></input>
-                                          <i className="material-icons">search</i>
-                                          <div className="search-results"></div>
+                                      <div className="input-field">
+                                          <input id="searchForModal" type="search" placeholder="Search" autoComplete="off" onChange={this.submitSearch} required/>
+                                          <label htmlFor="searchForModal">Search</label>
                                       </div>
-                                    <form action="#">
-                                        <p>
-                                            <input type="checkbox" className="filled-in" id="filled-in-box" checked="checked" />
-                                            <label for="filled-in-box">Filled in</label>
-                                        </p>
-                                        <p>
-                                            <input type="checkbox" className="filled-in" id="filled-in-box" checked="checked" />
-                                            <label for="filled-in-box">Filled in</label>
-                                        </p>
-                                        <p>
-                                            <input type="checkbox" className="filled-in" id="filled-in-box" checked="checked" />
-                                            <label for="filled-in-box">Filled in</label>
-                                        </p>
-                                        <p>
-                                            <input type="checkbox" className="filled-in" id="filled-in-box" checked="checked" />
-                                            <label for="filled-in-box">Filled in</label>
-                                        </p>
-                                        <p>
-                                            <input type="checkbox" className="filled-in" id="filled-in-box" checked="checked" />
-                                            <label for="filled-in-box">Filled in</label>
-                                        </p>
-                                    </form>
+                                      <div id="authorList">
+                                          <ul>
+                                              {
+                                                  _.map(this.state.authors, function(author) {
+                                                      var id = author.id;
+                                                      return (
+                                                          <li>
+                                                              <input type="checkbox" id={id} />
+                                                              <label htmlFor={id}>{author.firstName} {author.lastName}</label>
+                                                          </li>
+                                                      )
+                                                  })
+
+                                              }
+                                          </ul>
+                                      </div>
 
                                      <a onClick={this.slidetoMainTab}  className="waves-effect waves-light btn">done</a>
                                 </div>
