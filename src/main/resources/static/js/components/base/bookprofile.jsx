@@ -58,6 +58,14 @@ define([
                 )
             }
             
+            var ratings = this.state.book.ratings;
+            if (ratings.length > 0 && this.state.loggedIn) {
+                var itemRating = _.find(ratings, function(rating) {return rating.user === window.currentUser.id;});
+                if (itemRating) {
+                    var rating = itemRating.rating;
+                }
+            }
+
             return (
                 <div className="padNav" id="profileContent">
                     <div className="row" id="bookProfileTop">
@@ -65,7 +73,7 @@ define([
                             <BookInfoComponent book={this.state.book} loggedIn={this.state.loggedIn}/>
                         </div>
                         <div className="col l8">
-                            <BookExtrasComponent book={this.state.book} id="bookExtras"/>
+                            <BookExtrasComponent book={this.state.book} loggedIn={this.state.loggedIn} id="bookExtras"/>
                         </div>
                     </div>
                     <div id="modalEditBook" className="modal">
@@ -83,23 +91,23 @@ define([
                             <div className="rating row">
                                 <form action="#" id="ratingForm">
                                     <span>
-                                        <input name="rating" type="radio" id="star1" />
+                                        <input name="rating" type="radio" id="star1" defaultChecked={rating === 1 ? "true" : ""}/>
                                         <label htmlFor="star1">1</label>
                                     </span>
                                     <span>
-                                        <input name="rating" type="radio" id="star2" />
+                                        <input name="rating" type="radio" id="star2" defaultChecked={rating === 2 ? "true" : ""}/>
                                         <label htmlFor="star2">2</label>
                                     </span>
                                     <span>
-                                        <input name="rating" type="radio" id="star3" />
+                                        <input name="rating" type="radio" id="star3" defaultChecked={rating === 3 ? "true" : ""}/>
                                         <label htmlFor="star3">3</label>
                                     </span>
                                     <span>
-                                        <input name="rating" type="radio" id="star4" />
+                                        <input name="rating" type="radio" id="star4" defaultChecked={rating === 4 ? "true" : ""}/>
                                         <label htmlFor="star4">4</label>
                                     </span>
                                     <span>
-                                        <input name="rating" type="radio" id="star5" />
+                                        <input name="rating" type="radio" id="star5" defaultChecked={rating === 5 ? "true" : ""}/>
                                         <label htmlFor="star5">5</label>
                                     </span>
                                 </form>
@@ -112,7 +120,8 @@ define([
                             </div>
                         </div>
                         <div className="modal-footer">
-                            <div className= "modal-action modal-close waves-effect waves-green btn-flat" onClick={this.rate}>Submit</div>
+                            <div className="modal-action modal-close waves-effect waves-green btn-flat" onClick={this.rate}>Submit</div>
+                            <div className="modal-action modal-close waves-effect waves-red btn-flat">Cancel</div>
                         </div>
                     </div>
                 </div>

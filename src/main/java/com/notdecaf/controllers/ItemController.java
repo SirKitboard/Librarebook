@@ -412,10 +412,10 @@ public class ItemController {
         }
 
         updateCache(item);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(userItemRating);
     }
 
-    @RequestMapping(value = "/api/items/{id}/removerating", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/items/{id}/removerating", method = RequestMethod.DELETE)
     public ResponseEntity removeRating(HttpServletRequest req, @PathVariable long id) {
         User user = (User) req.getSession().getAttribute("user");
         if(user == null) {

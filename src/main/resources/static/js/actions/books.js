@@ -259,8 +259,20 @@ define([
                         actionType: Constants.RATE,
                         data: {
                             bookId: id,
-                            rating: rating
+                            ratingItem: response
                         }
+                    })
+                }
+            })
+        },
+        deleteRating: function(id) {
+            $.ajax({
+                url: "/api/items/"+id+"/removerating",
+                method: "DELETE",
+                success: function(response) {
+                    AppDispatcher.dispatch({
+                        actionType: Constants.REMOVE_RATING,
+                        data: id
                     })
                 }
             })

@@ -60,6 +60,10 @@ define([
                     this.rate(action.data);
                     this.event.emit("change");
                     break;
+                case Constants.REMOVE_RATING:
+                    this.removeRating(action.data);
+                    this.event.emit("change");
+                    break;
             }
 
         }.bind(this));
@@ -155,7 +159,7 @@ define([
     Store.prototype.removeHold = function(id) {
         if (this.books[id]) {
             window.currentUser.holdItems = window.currentUser.holdItems.filter(function (item) {
-               item.id !== id;
+               return item.id !== id;
             });
         }
     };
@@ -175,7 +179,26 @@ define([
 
     Store.prototype.rate = function(data) {
         if (this.books[data.bookId]) {
-            this.books.rating = data.rating;
+            var book = this.books[data.bookId];
+            var exists = false;
+            for (var i=0; i<book.ratings.length; i++) {
+                if (book.ratings[i].user === window.currentUser.id) {
+                    book.ratings[i] = data.ratingItem;
+                    this.books[data.bookId] = book;
+                    exists = true;
+                }
+            }
+            if (!exists) {
+                this.books[data.bookId].ratings.push(data.ratingItem);
+            }
+        }
+    };
+
+    Store.prototype.removeRating = function(id) {
+        if (this.books[id]) {
+            this.books[id].ratings = this.books[id].ratings.filter(function (rating) {
+                return rating.user !== window.currentUser.id;
+            });
         }
     };
 
