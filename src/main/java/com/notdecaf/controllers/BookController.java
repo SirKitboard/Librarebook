@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -35,6 +34,7 @@ public class BookController implements BaseController<Book> {
     @Autowired
     private GenreDao genreDao;
 
+    @Autowired
     private UserDao userDao;
 
     public ResponseEntity<Book[]> all(HttpSession session) {
@@ -338,22 +338,6 @@ public class BookController implements BaseController<Book> {
             e.printStackTrace();
         }
         return ResponseEntity.badRequest().body(null);
-    }
-
-    @RequestMapping(value = "/api/items/books/{id}/wishlist", method = RequestMethod.POST)
-    public ResponseEntity addToWishList(HttpServletRequest request, @PathVariable long id) {
-        Book book = BookFactory.getBookFromCache(id);
-        if (book == null){
-            return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
-        }
-        User user = userDao.findOne(id);
-        if (user == null){
-            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
-        }
-
-        user.addToWishList(book);
-        userDao.save(user);
-        return ResponseEntity.ok(user);
     }
 
 }

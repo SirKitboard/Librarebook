@@ -230,6 +230,22 @@ define([
                     })
                 }
             })
-        }
+        },
+        toggleWishlist: function(id, success, error) {
+            $.ajax({
+                url: "/api/items/" + id + "/wishlist",
+                method: "POST",
+                success: function(response){
+                    if (typeof success == "function") {
+                        success("Success");
+                    }
+                },
+                error: function(result, status, err) {
+                    if (typeof error == "function") {
+                        error("Failed");
+                    }
+                }
+            })
+        },
     };
 });

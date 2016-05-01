@@ -1,7 +1,8 @@
 define([
     'underscore',
     'react',
-    'actions/books'
+    'actions/books',
+
 ], function(_, React, BookActions) {
     return React.createClass({
         getInitialState: function(){
@@ -21,6 +22,16 @@ define([
                 var checkedOutBy = book.checkedOutBy;
                 var isCheckedOut = _.find(checkedOutBy, function(item) { return item.user == id; });
                 if (isCheckedOut) {
+                    return true;
+                }
+            }
+            return false;
+        },
+        isWishlisted: function() {
+            var book = this.props.book;
+            var wishlist = window.currentUser.wishlist;
+            for (var i = 0, len = wishlist.length; i < len; i++) {
+                if (wishlist[i].id == book.id) {
                     return true;
                 }
             }
@@ -56,6 +67,15 @@ define([
         delete: function() {
             BookActions.delete(this.props.book.id);
         },
+        toggleWishlist: function() {
+            BookActions.toggleWishlist(this.props.book.id, this.showSuccessToast, this.showErrorToast);
+        },
+        showSuccessToast: function(message) {
+            Materialize.toast(message, 5000);
+        },
+        showErrorToast: function(message) {
+            Materialize.toast(message, 5000);
+        },
         componentDidMount : function() {
             $(".modal-trigger.editModalTrigger").leanModal();
             $(".modal-trigger.shareModalTrigger").leanModal();
@@ -70,7 +90,6 @@ define([
                         nextState.checkedOut = nextBook.checkedOut;
                     } else {
                         nextState.checkedOut = isCheckedOut;
-
                     }
                 }
             } else {
@@ -187,15 +206,6 @@ define([
                 margin: '10px'
             };
 
-            isWishlisted = function(book) {
-                var wishlist = window.currentUser.wishlist;
-                for (var i = 0, len=wishlist.length; i<len; i++) {
-                    if (wishlist[i].id == book.id){
-                        return true;
-                    }
-                }
-                return false;
-            };
             var sampleButton = null;
             if(this.props.book.samplePath) {
                 sampleButton = <li><a href={this.props.book.samplePath} target="_blank">Sample</a></li>
@@ -203,16 +213,16 @@ define([
 
             return (
                 <div id="bookInfo">
-                    <h2> {this.props.book.title} </h2>
-                    <h5>by {authorText}</h5>
-                    <p>{this.props.book.checkedOutOn}</p>
-                    <div className="row">
-                        <a><span style={likeStyle} onClick={this.toggleFavorite} className=""/></a>
+                        <h2> {this.props.book.title} </h2>
+                        <h5>by {authorText}</h5>
+                            <p>{this.props.book.checkedOutOn}</p>
+                            <div className="row">
+                            <a><span style={likeStyle} onClick={this.toggleFavorite} className=""/></a>
                         {this.props.book.favorited ? <a><span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like-filled"/></a> : <span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like"/> }
                         {this.props.loggedIn ? <a href="#modalEditBook" className="modal-trigger editModalTrigger"><i style={iconStyle} className="material-icons">edit</i></a> : null}
-                        <a href="#modalShare" className="modal-trigger shareModalTrigger "><i style={iconStyle} className="material-icons">share</i></a>
-                        {!this.props.loggedIn ? null : isWishlisted(this.props.book) ? <a><i className="material-icons">playlist_add</i></a> :
-                            <a><i className="material-icons">playlist_add</i></a>}
+                            <a href="#modalShare" className="modal-trigger shareModalTrigger "><i style={iconStyle} className="material-icons">share</i></a>
+                        {!this.props.loggedIn ? null : this.isWishlisted() ? <a><i onClick={this.toggleWishlist} className="material-icons">playlist_add_check</i></a> :
+                            <a><i onClick={this.toggleWishlist} className="material-icons">playlist_add</i></a>}
                         {card}
                     </div>
                     <a className="dropdown-button btn" id="actionsDropdown" data-activates='actionsDropdownList'>Actions</a>

@@ -288,10 +288,12 @@ public class User extends IDModel implements Cloneable{
 
     public void addToWishList(Item item){
         wishlist.add(item);
+        this.setWishlist(wishlist);
     }
 
     public void removeFromWishList(Item item){
         wishlist.remove(item);
+        this.setWishlist(wishlist);
     }
 
     public Set<Item> getNotInterested() {
