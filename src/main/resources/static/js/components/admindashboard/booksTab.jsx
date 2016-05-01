@@ -35,7 +35,7 @@ define([
             var title = $("#title").val();
             var description = $("#description").val();
 
-            var genre = $("#genre").val();
+            var genre = $("#genreSelect").val();
             var author = this.state.selectedAuthorIDs;
             var publisher = this.state.selectedPublisherIDs;
             var yearPublished = $("#yearPublished").val();
@@ -225,7 +225,7 @@ define([
                           <i className="large material-icons">add</i>
                        </a>
                     </div>
-                    <div id="addBookModal" className="modal">
+                    <div id="addBookModal" style={{width:'600px'}}className="modal">
                         <div className="modal-content">
                             <div className="tabs-manager">
                                 <div id="mainTab" className="tabcontent">
@@ -261,31 +261,31 @@ define([
                                      </div>
                                      <div className="row">
                                          <div className="input-field col s12">
-                                             <textarea id="description" ref="description" className="materialize-textarea"></textarea>
+                                             <textarea id="description" ref="description" className="materialize-textarea"/>
                                              <label htmlFor="description">Description</label>
                                          </div>
                                      </div>
                                      <div className="row">
                                          <div className="input-field col s12">
-                                             <textarea id="yearPublished" ref="yearPublished" className="materialize-textarea"></textarea>
+                                             <input id="yearPublished" ref="yearPublished"  className="validate" type="number" min="0"/>
                                              <label htmlFor="yearPublished">Year Published</label>
                                          </div>
                                      </div>
                                      <div className="row">
                                          <div className="input-field col s12">
-                                             <textarea id="totalLicenses" ref="totalLicenses" className="materialize-textarea"></textarea>
+                                             <input id="totalLicenses" ref="totalLicenses"  className="validate" type="number" min="0"/>
                                              <label htmlFor="totalLicenenses">Total Licenses </label>
                                          </div>
                                      </div>
                                      <div className="row">
                                          <div className="input-field col s12">
-                                             <textarea id="language" ref="language" className="materialize-textarea"></textarea>
+                                             <input id="language" ref="language" className="validate" type="text"/>
                                              <label htmlFor="language">Language</label>
                                          </div>
                                      </div>
                                      <div className="row">
                                          <div className="input-field col s12">
-                                             <textarea id="numPages" ref="numPages" className="materialize-textarea"></textarea>
+                                             <input id="numPages" ref="numPages" className="validate" type="number" min="0"/>
                                              <label htmlFor="numPages">Number Of Pages</label>
                                          </div>
                                      </div>

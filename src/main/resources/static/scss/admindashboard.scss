@@ -71,18 +71,37 @@
                 position: absolute;
                 top: 0px;
                 left: 0px;
+                height: 590px;
+                overflow-y: scroll;
+                overflow-x: hidden;
             }
 
             #authorTab{
                 position: absolute;
                 top: 0px;
                 left: 1100px;
+                height: 590px;
+                overflow-y: hidden;
+                overflow-x: hidden;
+                #authorList {
+                    height: 340px;
+                    overflow-y: scroll;
+                    margin-bottom: 10px;
+                }
             }
 
             #publisherTab{
                 position: absolute;
                 top: 0px;
                 left: 1650px;
+                height: 590px;
+                overflow-y: hidden;
+                overflow-x: hidden;
+                #publisherList {
+                    height: 340px;
+                    overflow-y: scroll;
+                    margin-bottom: 10px;
+                }
             }
 
         }

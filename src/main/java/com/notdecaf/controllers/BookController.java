@@ -181,8 +181,8 @@ public class BookController implements BaseController<Book> {
     public ResponseEntity<Book> create(HttpServletRequest request) {
         Map<String, String[]> requestMap = request.getParameterMap();
         if(!requestMap.containsKey("title")
-                || !requestMap.containsKey("genres")
-                || !requestMap.containsKey("authors")
+                || !requestMap.containsKey("genres[]")
+                || !requestMap.containsKey("authors[]")
                 || !requestMap.containsKey("publisher")
                 || !requestMap.containsKey("description")
                 || !requestMap.containsKey("yearPublished")
@@ -190,22 +190,21 @@ public class BookController implements BaseController<Book> {
                 || !requestMap.containsKey("language")
                 || !requestMap.containsKey("numPages"))
             return ResponseEntity.badRequest().body(null);
-        String[] genreNames = requestMap.get("genres");
-        String[] authorNames = requestMap.get("authors");
+        String[] genreIDs = requestMap.get("genres[]");
+        String[] authorIDs = requestMap.get("authors[]");
         Set<Author> authors = new HashSet<Author>();
         Set<Genre> genres = new HashSet<Genre>();
-        for(String nameStr: authorNames) {
-            String [] firstAndLastNames = nameStr.split(" ");
-            Author author = authorDao.findByFirstNameAndLastName(firstAndLastNames[0],firstAndLastNames[1]);
+        for(String id: authorIDs) {
+            Author author = authorDao.findOne(Long.parseLong(id));
             if (author == null) {
                 ResponseEntity.badRequest().body(null);
             } else {
                 authors.add(author);
             }
         }
-        for(String nameStr : genreNames){
+        for(String id : genreIDs){
             try {
-                Genre genre = genreDao.findByName(nameStr);
+                Genre genre = genreDao.findOne(Long.parseLong(id));
                 if(genre == null) {
                     throw new NumberFormatException();
                 }
@@ -214,7 +213,7 @@ public class BookController implements BaseController<Book> {
                 return ResponseEntity.badRequest().body(null);
             }
         }
-        Publisher publisher = publisherDao.findByName(request.getParameter("publisher") );
+        Publisher publisher = publisherDao.findOne(Long.parseLong(request.getParameter("publisher")));
         if(publisher == null) {
             return ResponseEntity.badRequest().body(null);
         }
@@ -225,7 +224,7 @@ public class BookController implements BaseController<Book> {
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("yearPublished")),
                 Integer.parseInt(request.getParameter("totalLicenses")),
-                Language.valueOf(request.getParameter("language")),
+                Language.valueOf(request.getParameter("language").toUpperCase()),
                 ItemStatus.Available,
                 Integer.parseInt(request.getParameter("numPages")));
         book.setDateAdded(new Date());

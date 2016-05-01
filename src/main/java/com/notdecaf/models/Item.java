@@ -10,7 +10,9 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -222,7 +224,11 @@ public abstract class Item extends IDModel{
 
     public int getAvailableLicenses() {
         // Calculate total licenses based on user checkout mapping
-        return this.totalLicenses - checkedOutBy.size();
+        try {
+            return this.totalLicenses - checkedOutBy.size();
+        } catch (Exception e) {
+            return this.totalLicenses;
+        }
     }
 
     public Series getSeries() {
@@ -311,6 +317,10 @@ public abstract class Item extends IDModel{
         this.totalLicenses = totalLicenses;
         this.language = language;
         this.status = status;
+        this.ratings = new HashSet<>();
+        this.checkedOutBy = new HashSet<>();
+        this.checkoutHistory = new HashSet<>();
+        this.favoritedBy = new HashSet<>();
     }
 
 }

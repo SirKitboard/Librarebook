@@ -74,7 +74,7 @@ define([
                     AppDispatcher.dispatch({
                         actionType: Constants.ADD_BOOK,
                         data: {
-                            bookId: id,
+                            bookId: response,
                             recommendations: response
                         }
                     })

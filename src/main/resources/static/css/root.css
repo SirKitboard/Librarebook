@@ -256,15 +256,32 @@ html, body {
   #adminPanel #booksTab #addBookModal #mainTab {
     position: absolute;
     top: 0px;
-    left: 0px; }
+    left: 0px;
+    height: 590px;
+    overflow-y: scroll;
+    overflow-x: hidden; }
   #adminPanel #booksTab #addBookModal #authorTab {
     position: absolute;
     top: 0px;
-    left: 1100px; }
+    left: 1100px;
+    height: 590px;
+    overflow-y: scroll;
+    overflow-x: hidden; }
+    #adminPanel #booksTab #addBookModal #authorTab #authorList {
+      height: 340px;
+      overflow-y: scroll;
+      margin-bottom: 10px; }
   #adminPanel #booksTab #addBookModal #publisherTab {
     position: absolute;
     top: 0px;
-    left: 1650px; }
+    left: 1650px;
+    height: 590px;
+    overflow-y: scroll;
+    overflow-x: hidden; }
+    #adminPanel #booksTab #addBookModal #publisherTab #publisherList {
+      height: 340px;
+      overflow-y: scroll;
+      margin-bottom: 10px; }
 #adminPanel #usersTab {
   height: calc(100% - 135px);
   margin: 0; }
