@@ -43,7 +43,7 @@ define([
                     </div>
                 )
             }
-            var popularSection = <Section books={this.state.popular} title='Popular Books' id="popular"/>;
+            var popularSection = <Section books={this.props.stores.books.getBestSellers()} title='Popular Books' id="popular"/>;
             var newReleasesSection = <Section setView={this.props.setView} books={this.props.stores.books.getRecents()} title='New Releases' id="new"/>;
 
             // var
