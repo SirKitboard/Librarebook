@@ -3,6 +3,8 @@ package com.notdecaf.controllers;
 import com.notdecaf.daos.*;
 import com.notdecaf.helpers.*;
 import com.notdecaf.models.*;
+import com.sendgrid.SendGrid;
+import com.sendgrid.SendGridException;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -315,6 +317,26 @@ public class ItemController {
                     } else {
                         HoldManager.notifyHoldAvailable(nextUser, item);
                     }
+                }
+            }
+
+            Set<User> wishlistedUsers = item.getWishlistedBy();
+            if (!wishlistedUsers.isEmpty()){
+                try{
+                    SendGrid sendgrid = new SendGrid(PropertiesManager.getProperty("sendgrid.api-key"));
+                    SendGrid.Email email = new SendGrid.Email();
+
+                    for(User u : wishlistedUsers){
+//                        String userEmail = user.getEmail();
+                        email.addTo(u.getEmail());
+                        email.setFrom("noreply@librarebook.com");
+                        email.setSubject("A wishlisted item is now available.");
+                        email.setText(item.getTitle() + " " + item.getDescription());
+
+                        SendGrid.Response response = sendgrid.send(email);
+                    }
+                } catch (SendGridException e) {
+                    e.printStackTrace();
                 }
             }
 

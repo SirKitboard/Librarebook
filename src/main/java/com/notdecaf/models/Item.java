@@ -56,6 +56,10 @@ public abstract class Item extends IDModel{
     @ManyToMany(mappedBy = "favorites")
     private Set<User> favoritedBy;
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "wishlist")
+    private Set<User> wishlistedBy;
+
     @ManyToOne
     private Publisher publisher;
 
@@ -136,6 +140,7 @@ public abstract class Item extends IDModel{
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "item")
     private Set<HoldItem> holdsBy;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "item")
     public Set<UserCheckedOutItem> getCheckedOutBy() {
         return checkedOutBy;
     }
@@ -242,6 +247,10 @@ public abstract class Item extends IDModel{
 
     public void setLanguage(Language language) {
         this.language = language;
+    }
+
+    public Set<User> getWishlistedBy() {
+        return wishlistedBy;
     }
 
     public String getStatus() {
@@ -351,6 +360,7 @@ public abstract class Item extends IDModel{
         this.checkedOutBy = new HashSet<>();
         this.checkoutHistory = new HashSet<>();
         this.favoritedBy = new HashSet<>();
+        this.wishlistedBy = new HashSet<>();
     }
 
 }
