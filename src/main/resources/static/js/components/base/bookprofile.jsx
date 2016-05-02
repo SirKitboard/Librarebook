@@ -197,7 +197,6 @@ define([
         rate: function() {
             var radioId = $('input[name=rating]:checked', '#ratingForm').attr("id");
             var rating = $("label[for=" + radioId + "]","#ratingForm").text();
-            console.log(rating);
             BookActions.rate(this.state.book.id, rating);
         },
         editBook : function() {
@@ -296,12 +295,6 @@ define([
                                         <label htmlFor="star5">5</label>
                                     </span>
                                 </form>
-                            </div>
-                            <div classNames="row">
-                                <div className="input-field col s12">
-                                    <textarea id="textarea1" className="materialize-textarea"></textarea>
-                                    <label htmlFor="textarea1">Review</label>
-                                </div>
                             </div>
                         </div>
                         <div className="modal-footer">

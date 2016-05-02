@@ -35,31 +35,58 @@ define([
             return false;
         },
         toggleFavorite : function() {
-            var self = this;
-            var book = this.props.book;
-            BookActions.toggleFavorite(this.props.book);
+            if (!this.props.loggedIn) {
+                $('#modalLogin').openModal();
+            } else {
+                var self = this;
+                var book = this.props.book;
+                BookActions.toggleFavorite(this.props.book);
+            }
         },
         checkout: function() {
-            BookActions.checkout(this.props.book.id);
+            if (!this.props.loggedIn) {
+                $('#modalLogin').openModal();
+            } else {
+                BookActions.checkout(this.props.book.id);
+            }
         },
         return: function() {
-            BookActions.return(this.props.book.id);
+            if (!this.props.loggedIn) {
+                $('#modalLogin').openModal();
+            } else {
+                BookActions.return(this.props.book.id);
+            }
         },
         purchase: function() {
-            BookActions.purchase(this.props.book.id, this.props.book.isbn);
+            if (!this.props.loggedIn) {
+                $('#modalLogin').openModal();
+            } else {
+                BookActions.purchase(this.props.book.id, this.props.book.isbn);
+            }
         },
         toggleRenew: function() {
-            BookActions.toggleRenew(this.props.book.id);
+            if (!this.props.loggedIn) {
+                $('#modalLogin').openModal();
+            } else {
+                BookActions.toggleRenew(this.props.book.id);
+            }
         },
         renew: function () {
             BookActions.renew(this.props.book.id);
         },
         addHold: function() {
-            BookActions.addHold(this.props.book.id);
+            if (!this.props.loggedIn) {
+                $('#modalLogin').openModal();
+            } else {
+                BookActions.addHold(this.props.book.id);
+            }
         },
         removeHold: function() {
-            BookActions.removeHold(this.props.book.id);
-            console.log("clicked");
+            if (!this.props.loggedIn) {
+                $('#modalLogin').openModal();
+            } else {
+                BookActions.removeHold(this.props.book.id);
+            }
         },
         delete: function() {
             BookActions.delete(this.props.book.id);

@@ -43,7 +43,12 @@ define([
                         <BookCarousel setView={this.props.setView} books={this.props.recommended}/>
                     </div>
                 );
-            
+            var modalLink;
+            if (this.props.loggedIn) {
+                modalLink = "#modalReview";
+            } else {
+                modalLink = "#modalLogin";
+            }
             return (
                 <div>
                     <div className="row tab-row">
@@ -67,7 +72,7 @@ define([
                                 </div>
                                 <div id="ratingsRight" className="col s9">
                                     {userReview}
-                                    <a href="#modalReview" className="modal-trigger ratingModalTrigger btn">{buttonMessage}</a>
+                                    <a href={modalLink} className="modal-trigger ratingModalTrigger btn">{buttonMessage}</a>
                                     {deleteRatingButton}
                                 </div>
                             </div>
