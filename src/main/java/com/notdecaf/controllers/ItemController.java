@@ -2,6 +2,7 @@ package com.notdecaf.controllers;
 
 import com.notdecaf.daos.*;
 import com.notdecaf.helpers.BookFactory;
+import com.notdecaf.helpers.CheckoutManager;
 import com.notdecaf.helpers.ItemFactory;
 import com.notdecaf.helpers.SetHelper;
 import com.notdecaf.models.*;
@@ -16,6 +17,7 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -266,6 +268,7 @@ public class ItemController {
         user.addCheckedOutItem(userCheckedOutItem);
         item.addCheckedOutItem(userCheckedOutItem);
 
+        CheckoutManager.addCheckedOutItem(userCheckedOutItem);
         updateCache(item);
         return ResponseEntity.ok(userCheckedOutItem);
     }
