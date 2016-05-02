@@ -208,6 +208,7 @@ define([
                                 <label>Select global search preference</label>
                                 <div className="input-field col s12">
                                 <select id="maturitySelect">
+                                    {/*I touched your code, muahahaha*/}
                                     <option value="">Choose your option</option>
                                     <option value="1">Kids</option>
                                     <option value="2">Young Adults</option>
