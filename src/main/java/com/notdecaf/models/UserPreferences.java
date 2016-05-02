@@ -84,5 +84,6 @@ public class UserPreferences {
         this.status = UserStatus.Active;
         this.emailPreference = EmailPreference.HEAVY;
         this.autorenew = true;
+        this.checkoutLength = 7;
     }
 }

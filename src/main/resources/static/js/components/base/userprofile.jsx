@@ -98,8 +98,7 @@ define([
                     </div>
                 </div>
             );
-            console.log(this.state.random);
-            console.log(this.props.stores.books.getRecommended(this.state.random));
+            var recommended = this.props.stores.books.getRecommended(this.state.random);
             return (
                 <div className="container" style={{width:'90%', maxWidth:'none', marginTop: '80px'}}>
                     <div className="profile-card z-depth-1">
@@ -124,7 +123,7 @@ define([
                         </li>
                          <li>
                              <div className="collapsible-header"><i className="material-icons">people</i>Recommended Books</div>
-                             <div className="collapsible-body">{this.props.stores.books.getRecommended(this.state.random).length != 0 ? <BookCarousel books={this.props.stores.books.getRecommended(this.state.random)}/>: <h5 style={{margin:'20px'}}>No items</h5>}</div>
+                             <div className="collapsible-body">{recommended.length != 0 ? <BookCarousel books={this.props.stores.books.getRecommended(this.state.random)}/>: <h5 style={{margin:'20px'}}>No items</h5>}</div>
                          </li>
                          <li>
                              <div className="collapsible-header"><i className="material-icons">add_shopping_cart</i>Books you requested more stock for</div>

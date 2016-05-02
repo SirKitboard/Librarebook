@@ -208,10 +208,15 @@ define([
         }
     };
 
-    Store.prototype.getCheckedOutbooks = function() {
+    Store.prototype.getCheckedOutbooks = function(checkedOutItems) {
         var books = [];
+        if (checkedOutItems) {
+            var source = checkedOutItems;
+        } else {
+            var source = window.currentUser.currentlyCheckedOutItems;
+        }
         var self = this;
-        _.each(window.currentUser.currentlyCheckedOutItems, function(item) {
+        _.each(source, function(item) {
             if(self.books[item.item]) {
                 books.push(self.books[item.item])
             } else {
@@ -304,7 +309,11 @@ define([
     };
     
     Store.prototype.getRecommended = function(id) {
-        return this.recommended[id];
+        if (this.recommended[id]) {
+            return this.recommended[id];
+        } else {
+            return [];
+        }
     };
 
     Store.prototype.addUserRecommended = function(book) {
