@@ -1,13 +1,10 @@
 package com.notdecaf.daos;
 
+import com.notdecaf.helpers.ItemStatus;
 import com.notdecaf.models.Book;
-import com.notdecaf.models.Genre;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -28,4 +25,12 @@ public interface BookDao extends PagingAndSortingRepository<Book, Long> {
     List<Book> findTop10ByGenres_IdInAndIdNot(long [] ids, long bookId);
 
     List<Book> findByIdIn(List<Long> ids);
+    Page<Book> findByTitleIgnoreCaseAndStatusContains(Pageable pageable, String titlePart, ItemStatus status);
+    Page<Book> findByTitleIgnoreCaseAndStatusContainsOrderByAuthors_FirstNameAsc(Pageable pageable, String titlePart, ItemStatus status);
+    Page<Book> findByTitleIgnoreCaseAndStatusContainsOrderByAuthors_FirstNameDesc(Pageable pageable, String titlePart, ItemStatus status);
+    Page<Book> findByTitleIgnoreCaseAndStatusContainsOrderByPublisher_NameAsc(Pageable pageable, String titlePart, ItemStatus status);
+    Page<Book> findByTitleIgnoreCaseAndStatusContainsOrderByPublisher_NameDesc(Pageable pageable, String titlePart, ItemStatus status);
+
+    Page<Book> findByTitleIgnoreCaseAndStatusContainsOrderByTitleAsc(Pageable pageable, String titlePart, ItemStatus status);
+    Page<Book> findByTitleIgnoreCaseAndStatusContainsOrderByTitleDesc(Pageable pageable, String titlePart, ItemStatus status);
 }
