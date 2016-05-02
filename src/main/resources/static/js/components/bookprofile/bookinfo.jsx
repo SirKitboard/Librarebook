@@ -2,14 +2,11 @@ define([
     'underscore',
     'react',
     'actions/books',
-
 ], function(_, React, BookActions) {
     return React.createClass({
         getInitialState: function(){
             // var liked = this.props.book.favorited;
             checkedOut = this.isCheckedOut(this.props.book);
-            $(".modal-trigger.edit-modal").leanModal();
-            $(".modal-trigger.share-modal").leanModal();
             return {
                 'checkedOut': checkedOut
             }
@@ -207,8 +204,12 @@ define([
             };
 
             var sampleButton = null;
+            var editButton = null;
             if(this.props.book.samplePath) {
                 sampleButton = <li><a href={this.props.book.samplePath} target="_blank">Sample</a></li>
+            }
+            if(window.currentUser && window.currentUser.userType == "admin") {
+                editButton = <li><a href="#editBookModal" className="modal-trigger editModalTrigger">Edit</a></li>
             }
 
             return (
@@ -219,7 +220,6 @@ define([
                             <div className="row">
                             <a><span style={likeStyle} onClick={this.toggleFavorite} className=""/></a>
                         {this.props.book.favorited ? <a><span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like-filled"/></a> : <span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like"/> }
-                        {this.props.loggedIn ? <a href="#modalEditBook" className="modal-trigger editModalTrigger"><i style={iconStyle} className="material-icons">edit</i></a> : null}
                             <a href="#modalShare" className="modal-trigger shareModalTrigger "><i style={iconStyle} className="material-icons">share</i></a>
                         {!this.props.loggedIn ? null : this.isWishlisted() ? <a><i onClick={this.toggleWishlist} className="material-icons">playlist_add_check</i></a> :
                             <a><i onClick={this.toggleWishlist} className="material-icons">playlist_add</i></a>}
@@ -258,6 +258,7 @@ define([
                         {downloadButton}
                         {sampleButton}
                         {addToCart}
+                        {editButton}
                     </ul>
                 </div>
             )

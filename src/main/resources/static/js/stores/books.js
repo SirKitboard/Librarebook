@@ -216,10 +216,6 @@ define([
         }
     };
 
-    Store.prototype.update = function(id) {
-        this.books[id] = book;
-    };
-
     Store.prototype.getRecommendedOrPull = function(id) {
         if (this.recommended[id]) {
             return this.recommended[id];

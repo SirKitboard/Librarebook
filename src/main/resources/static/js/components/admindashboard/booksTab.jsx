@@ -60,15 +60,7 @@ define([
 
         componentDidMount: function() {
             $('.modal-trigger').leanModal();
-            this.props.stores.authors.addChangeListener(this.authorsUpdated);
-            this.props.stores.authors.addChangeListener(this.publishersUpdated);
             $('select').material_select();
-        },
-        authorsUpdated:  function() {
-            this.forceUpdate();
-        },
-        publishersUpdated: function(){
-            this.forceUpdate();
         },
         slidetoMainTab: function() {
             $("#mainTab").animate({
@@ -231,7 +223,7 @@ define([
                                 <div id="mainTab" className="tabcontent">
                                      <div className="row">
                                          <div className="input-field col s12">
-                                             <input ref="title" id="title" type="text" className="validate" length="20"/>
+                                             <input ref="title" id="title" type="text" className="validate"/>
                                              <label htmlFor="title">Title</label>
                                          </div>
                                      </div>

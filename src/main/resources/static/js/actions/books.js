@@ -73,11 +73,22 @@ define([
                 success: function(response) {
                     AppDispatcher.dispatch({
                         actionType: Constants.ADD_BOOK,
-                        data: {
-                            bookId: response,
-                            recommendations: response
-                        }
+                        data: response
                     })
+                }
+            })
+        },
+        editBook: function(data, id, success) {
+            $.ajax({
+                url: "/api/items/books/"+id,
+                method: "PUT",
+                data: data,
+                success: function(response) {
+                    AppDispatcher.dispatch({
+                        actionType: Constants.ADD_BOOK,
+                        data: response
+                    })
+                    success(response);
                 }
             })
         },

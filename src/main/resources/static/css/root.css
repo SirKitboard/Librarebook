@@ -265,7 +265,7 @@ html, body {
     top: 0px;
     left: 1100px;
     height: 590px;
-    overflow-y: scroll;
+    overflow-y: hidden;
     overflow-x: hidden; }
     #adminPanel #booksTab #addBookModal #authorTab #authorList {
       height: 340px;
@@ -276,7 +276,7 @@ html, body {
     top: 0px;
     left: 1650px;
     height: 590px;
-    overflow-y: scroll;
+    overflow-y: hidden;
     overflow-x: hidden; }
     #adminPanel #booksTab #addBookModal #publisherTab #publisherList {
       height: 340px;
@@ -421,6 +421,43 @@ html, body {
           position: relative; } }
     #profileContent #bookProfileTop .row .col.s12 {
       width: 101%; }
+  #profileContent #editBookModal .tabs-manager {
+    width: 550px;
+    height: 600px;
+    overflow-x: hidden;
+    position: relative; }
+  #profileContent #editBookModal .tabcontent {
+    width: 550px;
+    padding: 20px 10px; }
+  #profileContent #editBookModal #mainTab {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 590px;
+    overflow-y: scroll;
+    overflow-x: hidden; }
+  #profileContent #editBookModal #authorTab {
+    position: absolute;
+    top: 0px;
+    left: 1100px;
+    height: 590px;
+    overflow-y: hidden;
+    overflow-x: hidden; }
+    #profileContent #editBookModal #authorTab #authorList {
+      height: 340px;
+      overflow-y: scroll;
+      margin-bottom: 10px; }
+  #profileContent #editBookModal #publisherTab {
+    position: absolute;
+    top: 0px;
+    left: 1650px;
+    height: 590px;
+    overflow-y: hidden;
+    overflow-x: hidden; }
+    #profileContent #editBookModal #publisherTab #publisherList {
+      height: 340px;
+      overflow-y: scroll;
+      margin-bottom: 10px; }
   #profileContent #bookInfo {
     height: 100%;
     padding: 10px;
