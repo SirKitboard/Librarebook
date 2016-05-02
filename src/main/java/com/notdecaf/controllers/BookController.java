@@ -37,6 +37,9 @@ public class BookController implements BaseController<Book> {
     @Autowired
     private BookDao bookDao;
 
+    @Autowired
+    private UserCheckoutHistoryDao checkoutHistoryDao;
+
     public ResponseEntity<Book[]> all(HttpSession session) {
         Iterable<Book> books = BookFactory.findAll();
         List<Book> bookList = new ArrayList<Book>();
@@ -357,5 +360,16 @@ public class BookController implements BaseController<Book> {
             e.printStackTrace();
         }
         return ResponseEntity.badRequest().body(null);
+    }
+
+    @RequestMapping(value = "/api/items/books/best", method = RequestMethod.GET)
+    public ResponseEntity bestSellers(HttpServletRequest req) {
+        List<UserCheckoutHistory> checkoutList = checkoutHistoryDao.findBestSellers();
+        List<Long> bookIDs = new ArrayList<>();
+        for(UserCheckoutHistory item: checkoutList) {
+            bookIDs.add(item.getItem());
+        }
+        List<Book> bookList = bookDao.findByIdIn(bookIDs);
+        return ResponseEntity.ok(bookList);
     }
 }

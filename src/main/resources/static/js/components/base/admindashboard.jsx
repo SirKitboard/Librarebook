@@ -1,13 +1,13 @@
 define([
     'underscore',
     'react',
-    'jsx!components/admindashboard/reportsTab',
+    'jsx!components/admindashboard/recommendationsTab',
     'jsx!components/admindashboard/booksTab',
     'jsx!components/admindashboard/userstab',
     'jsx!components/admindashboard/publisherstab',
     'actions/authors',
     'actions/publishers'
-], function(_,React, ReportsTab, BooksTab, UsersTab, PublishersTab, AuthorsActions) { //, BookInfoComponent, BookExtrasComponent, BookRecommendComponent) {
+], function(_,React, RecommendationsTab, BooksTab, UsersTab, PublishersTab, AuthorsActions) { //, BookInfoComponent, BookExtrasComponent, BookRecommendComponent) {
     return React.createClass({
         getInitialState: function() {
             var tab = 0;
@@ -47,7 +47,7 @@ define([
             var tab = null;
             switch(this.state.selectedTab) {
                 case 0:
-                    tab = <ReportsTab/>
+                    tab = <RecommendationsTab stores={this.props.stores}/>
                     break;
                 case 1:
                     tab = <BooksTab stores={this.props.stores}/>

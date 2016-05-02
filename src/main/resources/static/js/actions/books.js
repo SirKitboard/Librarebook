@@ -381,6 +381,20 @@ define([
                     })
                 }
             })
+        },
+        pullBestSellers: function() {
+            $.ajax({
+                url: "/api/items/books/best",
+                method: "GET",
+                success: function(res) {
+                    _.each(res, function(item) {
+                        AppDispatcher.dispatch({
+                            actionType: Constants.ADD_BEST_SELLER,
+                            data: item
+                        })
+                    })
+                }
+            })
         }
     };
 });

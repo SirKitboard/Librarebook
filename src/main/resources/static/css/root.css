@@ -236,49 +236,52 @@ html, body {
     background-image: url(http://www.placehold.it/400x400);
     background-size: contain;
     background-clip: content-box; }
-#adminPanel #booksTab .bookList {
-  overflow-y: scroll;
-  height: 100%; }
-#adminPanel #booksTab .bookDetails {
-  height: 100%;
-  overflow-y: scroll; }
-#adminPanel #booksTab #addBookModal .tabs-manager {
-  width: 550px;
-  height: 600px;
-  overflow-x: hidden;
-  position: relative; }
-#adminPanel #booksTab #addBookModal .tabcontent {
-  width: 550px;
-  padding: 20px 10px; }
-#adminPanel #booksTab #addBookModal #mainTab {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  height: 590px;
-  overflow-y: scroll;
-  overflow-x: hidden; }
-#adminPanel #booksTab #addBookModal #authorTab {
-  position: absolute;
-  top: 0px;
-  left: 1100px;
-  height: 590px;
-  overflow-y: hidden;
-  overflow-x: hidden; }
-  #adminPanel #booksTab #addBookModal #authorTab #authorList {
-    height: 340px;
+#adminPanel #booksTab {
+  height: calc(100% - 135px);
+  margin: 0; }
+  #adminPanel #booksTab .bookList {
     overflow-y: scroll;
-    margin-bottom: 10px; }
-#adminPanel #booksTab #addBookModal #publisherTab {
-  position: absolute;
-  top: 0px;
-  left: 1650px;
-  height: 590px;
-  overflow-y: hidden;
-  overflow-x: hidden; }
-  #adminPanel #booksTab #addBookModal #publisherTab #publisherList {
-    height: 340px;
+    height: 100%; }
+  #adminPanel #booksTab .bookDetails {
+    height: 100%;
+    overflow-y: scroll; }
+  #adminPanel #booksTab #addBookModal .tabs-manager {
+    width: 550px;
+    height: 600px;
+    overflow-x: hidden;
+    position: relative; }
+  #adminPanel #booksTab #addBookModal .tabcontent {
+    width: 550px;
+    padding: 20px 10px; }
+  #adminPanel #booksTab #addBookModal #mainTab {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 590px;
     overflow-y: scroll;
-    margin-bottom: 10px; }
+    overflow-x: hidden; }
+  #adminPanel #booksTab #addBookModal #authorTab {
+    position: absolute;
+    top: 0px;
+    left: 1100px;
+    height: 590px;
+    overflow-y: hidden;
+    overflow-x: hidden; }
+    #adminPanel #booksTab #addBookModal #authorTab #authorList {
+      height: 340px;
+      overflow-y: scroll;
+      margin-bottom: 10px; }
+  #adminPanel #booksTab #addBookModal #publisherTab {
+    position: absolute;
+    top: 0px;
+    left: 1650px;
+    height: 590px;
+    overflow-y: hidden;
+    overflow-x: hidden; }
+    #adminPanel #booksTab #addBookModal #publisherTab #publisherList {
+      height: 340px;
+      overflow-y: scroll;
+      margin-bottom: 10px; }
 #adminPanel #usersTab {
   height: calc(100% - 135px);
   margin: 0; }

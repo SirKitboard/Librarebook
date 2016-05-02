@@ -58,6 +58,7 @@ define([
             this.stores.books.addChangeListener(this.onStoreUpdate);
             this.stores.books.addChangeListener(this.onStoreUpdate);
             BooksActions.pullRecents();
+            BooksActions.pullBestSellers();
             GenresActions.pull();
         },
         onStoreUpdate: function() {

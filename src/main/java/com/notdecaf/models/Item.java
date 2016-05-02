@@ -149,6 +149,10 @@ public abstract class Item extends IDModel{
         this.checkoutHistory = checkoutHistory;
     }
 
+    public int getNumSales() {
+        return this.checkoutHistory.size() + this.checkedOutBy.size();
+    }
+
     public Set<Author> getAuthors() {
         return authors;
     }

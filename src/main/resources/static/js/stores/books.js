@@ -16,6 +16,7 @@ define([
         this.userRecommendedExisting = {};
         this.userRecommendedNew = {};
         this.currentlyPulling = {};
+        this.bestSellers = {};
 
         this.registerDispatchListener(function(action) {
             var self = this;
@@ -78,6 +79,10 @@ define([
                     break;
                 case Constants.REMOVE_USER_RECOMMENDATION:
                     this.removeUserRecommended(action.data);
+                    this.event.emit("change");
+                    break;
+                case Constants.ADD_BEST_SELLER:
+                    this.addBestSeller(action.data);
                     this.event.emit("change");
                     break;
             }
@@ -324,6 +329,15 @@ define([
             existing: this.userRecommendedExisting,
             newBooks: this.userRecommendedNew
         }
+    }
+
+    Store.prototype.addBestSeller = function(book) {
+        this.bestSellers[book.id] = book;
+        this.addBook(book);
+    }
+
+    Store.prototype.getBestSellers = function() {
+        return _.sortBy(_.map(this.bestSellers, function(book) {return book}), 'numSales').reverse();
     }
 
     return Store;

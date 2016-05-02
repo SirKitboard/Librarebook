@@ -9,28 +9,25 @@ define([
 ], function(_,React, Book, BookInfo, BookActions, AuthorActions,PublisherActions) { //, BookInfoComponent, BookExtrasComponent, BookRecommendComponent) {
     return React.createClass({
         getInitialState: function() {
-            var book = {
-                "title": "Hello World",
-                "author": "John Smith",
-                "isbn": 12345678910,
-                "available": "Available",
-                "year": 1994,
-                "publisher": "John Doe"
+            var self = this;
+            if(this.props.stores.books.getBestSellers().length != 0) {
+                var book = _.find(this.props.stores.books.getBestSellers(), function(book) {return book.id == 0});
+                debugger;
+                if(!book) {
+                    var selectedBook = this.props.stores.books.getBestSellers()[0].id;
+                    var selectedBookObject = this.props.stores.books.getBestSellers()[0];
+                }
             }
-            BookActions.getUserRecommended();
-
             return {
-                books : [book, book, book, book, book, book, book],
                 selectedBook: 0,
                 authors: [],
                 selectedAuthors: [],
                 selectedAuthorIDs: [],
                 publishers: [],
-                selectedPublishers: null,
-                selectedPublisherIDs: null
+                selectedPublishers: selectedBook,
+                selectedPublisherIDs: selectedBookObject
             }
         },
-        
         addBook : function() {
             var title = $("#title").val();
             var description = $("#description").val();
@@ -57,10 +54,38 @@ define([
 
             BookActions.addBook(data);
         },
-
+        setBook: function(e) {
+            var target = e.target;
+            while(!target.classList.contains("cart-book")) {
+                target = target.parentNode;
+            }
+            var id = parseInt(target.getAttribute("data-id"));
+            console.log(id);
+            var book = _.find(this.props.stores.books.getBestSellers(), function(book){return book.id == id});
+            console.log(book);
+            this.setState({
+                selectedBook: parseInt(id),
+                selectedBookObject : book
+            })
+        },
         componentDidMount: function() {
             $('.modal-trigger.addBookModal').leanModal();
             $('select').material_select();
+        },
+        componentWillUpdate: function(nextProps, nextState) {
+            var self = this;
+            if(!nextState.selectedBookObject) {
+                if (this.props.stores.books.getBestSellers().length != 0) {
+                    var book = _.find(this.props.stores.books.getBestSellers(), function (book) {
+                        return book.id == nextState.selectedBook
+                    })
+                    if (!book) {
+                        nextState.selectedBook = this.props.stores.books.getBestSellers()[0].id;
+                        nextState.selectedBookObject = this.props.stores.books.getBestSellers()[0];
+                    }
+
+                }
+            }
         },
         slidetoMainTab: function() {
             $("#mainTab").animate({
@@ -185,7 +210,9 @@ define([
         componentDidUpdate: function() {
             $('select').material_select('destroy');
             $('select').material_select();
+            var self = this;
         },
+
         approveRecommnedation: function(e) {
             var target = e.target;
             if(target.tagName != "A") {
@@ -206,49 +233,29 @@ define([
             var self = this;
             return (
 
-                <div id="booksTab" className="container row">
-                    <ul className="collection with-header">
-                        <li className="collection-header"><h4>Need more stock</h4></li>
-                        {
-                            _.map(this.props.stores.books.getUserRecommended().existing, function(item) {
-                                var book = self.props.stores.books.getBookOrPull(item.item);
-                                if(!book) {
-                                    return null;
-                                }
-                                var imageURL = "http://placehold.it/100x1000";
-                                if(book.coverImageUrl && book.coverImageUrl.length > 0) {
-                                    imageURL = book.coverImageUrl;
-                                }
-                                return (
-                                    <li className="collection-item avatar">
-                                        <img src={imageURL} alt="" className="circle"/>
-                                        <span className="title">{book.title}</span>
-                                        <p>
-                                            {
-                                                _.pluck(book.authors, 'name').join("<br/>")
-                                            }
-                                        </p>
-                                        <a onClick={self.approveRecommnedation} data-id={item.id} className="secondary-content green-text"><i className="material-icons">check</i></a>
-                                        <a onClick={self.rejectRecommendation} data-id={item.id} style={{top: '45px'}}className="secondary-content red-text"><i className="material-icons">close</i></a>
-                                    </li>
-                                )
-                            })
-                        }
-                    </ul>
-                    <ul className="collection with-header">
-                        <li className="collection-header"><h4>Not in Library</h4></li>
-                        {
-                            _.map(this.props.stores.books.getUserRecommended().newBooks, function(item) {
-                                return (
-                                    <li className="collection-item">
-                                        {item.bookName} by {item.authorName}
-                                        <a onClick={self.approveRecommnedation} data-id={item.id} className="secondary-content green-text"><i data-id={item.id} className="material-icons">check</i></a>
-                                        <a onClick={self.rejectRecommendation} data-id={item.id} style={{right: '45px'}}className="secondary-content red-text"><i data-id={item.id} className="material-icons">close</i></a>
-                                    </li>
-                                )
-                            })
-                        }
-                    </ul>
+                <div id="booksTab" className="row">
+                    <div className="col s12 m3 bookList">
+                        <h4>Best Sellers</h4>
+                        <div className="input-field">
+                            <i className="material-icons prefix">search</i>
+                            <input id="search" type="text" className="validate"/>
+                            <label htmlFor="search">Search</label>
+                        </div>
+                        <ul>
+                            {
+                                _.map(this.props.stores.books.getBestSellers(), function (book) {
+                                    return (
+                                        <li>
+                                            <Book setUser={self.setBook} id={book.id} book={book}/>
+                                        </li>
+                                    )
+                                })
+                            }
+                        </ul>
+                    </div>
+                    <div className="col s12 m9 BookDetails">
+                        {this.state.selectedBookObject ? <BookInfo book={this.state.selectedBookObject}/> : null}
+                    </div>
                     <div className="fixed-action-btn">
                         <a className="btn-floating btn-large red modal-trigger addBookModal" href="#addBookModal">
                             <i className="large material-icons">add</i>
