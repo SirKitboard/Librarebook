@@ -35,7 +35,7 @@ define([
         },
         render: function() {
             if(this.state.loggedIn) {
-                var recommendedSection = <Section books={this.props.stores.books.getRecommended(this.state.random)} title='Recommended Books' id="Recommended"/>
+                var recommendedSection = <Section setView={this.props.setView} books={this.props.stores.books.getRecommended(this.state.random)} title='Recommended Books' id="Recommended"/>
                 var recommendParalax = (
                     <div className="parallax-container">
                         <div className="parallax"><img src="http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-332800.jpg"/></div>
@@ -49,7 +49,7 @@ define([
                     </div>
                 )
             }
-            var popularSection = <Section books={this.props.stores.books.getBestSellers()} title='Popular Books' id="popular"/>;
+            var popularSection = <Section setView={this.props.setView} books={this.props.stores.books.getBestSellers()} title='Popular Books' id="popular"/>;
             var newReleasesSection = <Section setView={this.props.setView} books={this.props.stores.books.getRecents()} title='New Releases' id="new"/>;
 
             // var
