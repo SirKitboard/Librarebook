@@ -137,7 +137,8 @@ define([
                     }
                 }
             }
-
+            var downloadButton = null;
+            var card = null;
             var purchaseButton = (<li><a onClick={this.purchase}>Purchase</a></li>);
             if (this.state.checkedOut) {
                 var checkedOutItem = _.find(book.checkedOutBy, function(item) { return item.user == user.id; });
@@ -172,59 +173,44 @@ define([
                 }
             }
 
-
             var available = book.availableLicenses;
-
-            if (book.status == "Banned"){
-                var card =
-                    (<div className="card red z-depth-1" id="bookAvailable">
+            if (available > 0) {
+                card =
+                    (<div className="card green" id="bookAvailable">
                         <div className="card-content white-text">
-                            <p className="center-align">Banned</p>
+                            <p className="center-align">Available</p>
                         </div>
                     </div>);
-                var disabled = "disabled";
-            }
-            else {
-                if (available > 0) {
-                    var card =
-                        (<div className="card green" id="bookAvailable">
-                            <div className="card-content white-text">
-                                <p className="center-align">Available</p>
-                            </div>
-                        </div>);
-                    var disabled = "";
+                var disabled = "";
 
-                    if (!this.state.checkedOut) {
-                        var instantCheckout = (<li><a onClick={this.checkout}>Checkout</a></li>);
-                        var addToCart = (<li><a>Add to cart</a></li>);
+                if (!this.state.checkedOut) {
+                    var instantCheckout = (<li><a onClick={this.checkout}>Checkout</a></li>);
+                    var addToCart = (<li><a>Add to cart</a></li>);
+                }
+            } else {
+                card =
+                    (<div className="card red z-depth-1" id="bookAvailable">
+                        <div className="card-content white-text">
+                            <p className="center-align">Unavailable</p>
+                        </div>
+                    </div>);
+                if (!this.state.checkedOut) {
+                    var reserved;
+                    var waitlistButton;
+                    if (user) {
+                        var reserved = _.find(user.holdItems, function (hold) {
+                            return hold.item == book.id;
+                        });
                     }
-                } else {
-                    var card =
-                        (<div className="card red z-depth-1" id="bookAvailable">
-                            <div className="card-content white-text">
-                                <p className="center-align">Unavailable</p>
-                            </div>
-                        </div>);
-                    if (!this.state.checkedOut) {
-                        var reserved;
-                        var waitlistButton;
-                        if (user) {
-                            var reserved = _.find(user.holdItems, function (hold) {
-                                return hold.item == book.id;
-                            });
-                        }
-                        if (reserved) {
-                            waitlistButton = (<li><a onClick={this.removeHold}>Remove Hold</a></li>);
-                        } else {
-                            waitlistButton = (<li><a onClick={this.addHold}>Place Hold</a></li>);
-                        }
-                        var recommendButton = (<li onClick={this.recommendBook}><a>Recommend</a></li>);
-                        var disabled = "disabled";
+                    if (reserved) {
+                        waitlistButton = (<li><a onClick={this.removeHold}>Remove Hold</a></li>);
+                    } else {
+                        waitlistButton = (<li><a onClick={this.addHold}>Place Hold</a></li>);
                     }
+                    var recommendButton = (<li onClick={this.recommendBook}><a>Recommend</a></li>);
+                    var disabled = "disabled";
                 }
             }
-
-            console.log(renewCheckbox);
 
             var likeStyle = {
                 color: 'red',
@@ -247,6 +233,16 @@ define([
                 editButton = <li><a href="#editBookModal" className="modal-trigger editModalTrigger">Edit</a></li>
             }
 
+            if (book.status == "Banned"){
+                card =
+                    (<div className="card red z-depth-1" id="bookAvailable">
+                        <div className="card-content white-text">
+                            <p className="center-align">Banned</p>
+                        </div>
+                    </div>);
+                disabled = "disabled";
+            }
+
 
             return (
                 <div id="bookInfo">
@@ -261,7 +257,11 @@ define([
                         {!this.props.loggedIn ? null : this.isWishlisted() ? <a><i onClick={this.toggleWishlist} className="material-icons">playlist_add_check</i></a> :
                             <a><i onClick={this.toggleWishlist} className="material-icons">playlist_add</i></a>}
                         {card}
-                    </div> : null}
+                    </div> :
+                        <div className="row">
+                            {card}
+                        </div>
+                    }
                     <a className="dropdown-button btn" id="actionsDropdown" data-activates='actionsDropdownList'>Actions</a>
                     {renewCheckbox}
                     <p>ISBN: {this.props.book.isbn}</p>

@@ -210,9 +210,8 @@ define([
             var totalLicenses = $("#totalLicenses").val();
             var language = $("#language").val();
             var numPages = $("#numPages").val();
-            var status = ($("#bannedCheckbox").val() == true ? "Banned" : "Available");
-            debugger;
-
+            var status = (this.refs.bannedCheckbox.checked ? "Banned" : "Available");
+            
             var data = {
                 title: title,
                 genres: genre,
@@ -338,7 +337,7 @@ define([
                                             <label>Genres</label>
                                         </div>
                                         <div className="col s12 m6 center-align">
-                                            <input type="checkbox" id="bannedCheckbox" defaultChecked={this.state.book.status == "Banned"}/>
+                                            <input type="checkbox" ref="bannedCheckbox" id="bannedCheckbox" defaultChecked={this.state.book.status == "Banned"}/>
                                             <label htmlFor="bannedCheckbox">Banned</label>
                                         </div>
                                     </div>
