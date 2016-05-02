@@ -171,41 +171,52 @@ define([
 
 
             var available = book.availableLicenses;
-            if (available > 0) {
-                var card =
-                    (<div className="card green" id="bookAvailable">
-                        <div className="card-content white-text">
-                            <p className="center-align">Available</p>
-                        </div>
-                    </div>);
-                var disabled = "";
-
-                if (!this.state.checkedOut) {
-                    var instantCheckout = (<li><a onClick={this.checkout}>Checkout</a></li>);
-                    var addToCart = (<li><a>Add to cart</a></li>);
-                }
-            }else {
+            if (book.status == "Banned"){
                 var card =
                     (<div className="card red z-depth-1" id="bookAvailable">
                         <div className="card-content white-text">
-                            <p className="center-align">Unavailable</p>
+                            <p className="center-align">Banned</p>
                         </div>
                     </div>);
-                if (!this.state.checkedOut) {
-                    var reserved;
-                    var waitlistButton;
-                    if (user) {
-                        var reserved = _.find(user.holdItems, function(hold) {
-                            return hold.item == book.id;
-                        });
+                var disabled = "disabled";
+            }
+            else {
+                if (available > 0) {
+                    var card =
+                        (<div className="card green" id="bookAvailable">
+                            <div className="card-content white-text">
+                                <p className="center-align">Available</p>
+                            </div>
+                        </div>);
+                    var disabled = "";
+
+                    if (!this.state.checkedOut) {
+                        var instantCheckout = (<li><a onClick={this.checkout}>Checkout</a></li>);
+                        var addToCart = (<li><a>Add to cart</a></li>);
                     }
-                    if (reserved) {
-                        waitlistButton = (<li><a onClick={this.removeHold}>Remove Hold</a></li>);
-                    } else {
-                        waitlistButton = (<li><a onClick={this.addHold}>Place Hold</a></li>);
+                } else {
+                    var card =
+                        (<div className="card red z-depth-1" id="bookAvailable">
+                            <div className="card-content white-text">
+                                <p className="center-align">Unavailable</p>
+                            </div>
+                        </div>);
+                    if (!this.state.checkedOut) {
+                        var reserved;
+                        var waitlistButton;
+                        if (user) {
+                            var reserved = _.find(user.holdItems, function (hold) {
+                                return hold.item == book.id;
+                            });
+                        }
+                        if (reserved) {
+                            waitlistButton = (<li><a onClick={this.removeHold}>Remove Hold</a></li>);
+                        } else {
+                            waitlistButton = (<li><a onClick={this.addHold}>Place Hold</a></li>);
+                        }
+                        var recommendButton = (<li onClick={this.recommendBook}><a>Recommend</a></li>);
+                        var disabled = "disabled";
                     }
-                    var recommendButton = (<li onClick={this.recommendBook}><a>Recommend</a></li>);
-                    var disabled = "disabled";
                 }
             }
 
@@ -234,17 +245,18 @@ define([
 
             return (
                 <div id="bookInfo">
-                        <h2> {this.props.book.title} </h2>
-                        <h5>by {authorText}</h5>
-                            <p>{this.props.book.checkedOutOn}</p>
-                            <div className="row">
-                            <a><span style={likeStyle} onClick={this.toggleFavorite} className=""/></a>
+                    <h2> {this.props.book.title} </h2>
+                    <h5>by {authorText}</h5>
+                    <p>{this.props.book.checkedOutOn}</p>
+                    {this.props.book.status != "Banned" ?
+                    <div className="row">
+                        <a><span style={likeStyle} onClick={this.toggleFavorite} className=""/></a>
                         {this.props.book.favorited ? <a><span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like-filled"/></a> : <span style={likeStyle} onClick={this.toggleFavorite} className="icons8-like"/> }
                             <a href="#modalShare" className="modal-trigger shareModalTrigger "><i style={iconStyle} className="material-icons">share</i></a>
                         {!this.props.loggedIn ? null : this.isWishlisted() ? <a><i onClick={this.toggleWishlist} className="material-icons">playlist_add_check</i></a> :
                             <a><i onClick={this.toggleWishlist} className="material-icons">playlist_add</i></a>}
                         {card}
-                    </div>
+                    </div> : null}
                     <a className="dropdown-button btn" id="actionsDropdown" data-activates='actionsDropdownList'>Actions</a>
                     {renewCheckbox}
                     <p>ISBN: {this.props.book.isbn}</p>
@@ -269,17 +281,23 @@ define([
                         {checkoutInfo}
                         {returnInfo}
                     </div>
-                    <ul id='actionsDropdownList' className='dropdown-content'>
-                        {returnButton}
-                        {instantCheckout}
-                        {recommendButton}
-                        {waitlistButton}
-                        {purchaseButton}
-                        {downloadButton}
-                        {sampleButton}
-                        {addToCart}
-                        {editButton}
-                    </ul>
+                    {this.props.book.status != "Banned" ?
+                        <ul id='actionsDropdownList' className='dropdown-content'>
+                            {returnButton}
+                            {instantCheckout}
+                            {recommendButton}
+                            {waitlistButton}
+                            {purchaseButton}
+                            {downloadButton}
+                            {sampleButton}
+                            {addToCart}
+                            {editButton}
+                        </ul>
+                        :
+                        <ul id='actionsDropdownList' className='dropdown-content'>
+                            {editButton}
+                        </ul>
+                    }
                 </div>
             )
         }

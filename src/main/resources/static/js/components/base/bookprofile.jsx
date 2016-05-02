@@ -209,6 +209,8 @@ define([
             var totalLicenses = $("#totalLicenses").val();
             var language = $("#language").val();
             var numPages = $("#numPages").val();
+            var status = (!$("#bannedCheckbox").val()) ? "Available" : "Banned";
+
 
             var data = {
                 title: title,
@@ -219,12 +221,14 @@ define([
                 yearPublished: yearPublished,
                 totalLicenses: totalLicenses,
                 language: language,
-                numPages: numPages
+                numPages: numPages,
+                status: status,
             };
 
             BookActions.editBook(data, this.state.book.id, this.updateBook);
         },
         updateBook: function(book) {
+            console.log(this.state.book)
             this.setState({
                 book: book,
                 selectedAuthors: book.authors,
@@ -232,8 +236,8 @@ define([
                 selectedPublisher: book.publisher,
                 loadingBook: false
             })
-        }
-        ,componentDidUpdate: function() {
+        },
+        componentDidUpdate: function() {
             $('select').material_select('destroy');
             $('select').material_select();
         },
@@ -330,6 +334,10 @@ define([
                                                 }
                                             </select>
                                             <label>Genres</label>
+                                        </div>
+                                        <div className="col s12 m6 center-align">
+                                            <input type="checkbox" id="bannedCheckbox" defaultChecked={this.state.book.status == "Banned"}/>
+                                            <label htmlFor="bannedCheckbox">Banned</label>
                                         </div>
                                     </div>
                                     <div className="row">

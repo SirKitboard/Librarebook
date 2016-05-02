@@ -14,13 +14,11 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
@@ -473,5 +471,24 @@ public class ItemController {
         if (item instanceof Book) {
             BookFactory.update((Book) item);
         }
+    }
+
+    @RequestMapping(value = "/api/items/{id}/ban", method = RequestMethod.POST)
+    public ResponseEntity ban(HttpServletRequest request, @PathVariable long id){
+        Admin admin = (Admin) request.getSession().getAttribute("user");
+        if (admin == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        if (!admin.getUserType().equals("admin")){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        Item item = ItemFactory.getItemFromCache(id);
+        if (item == null){
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        item.setStatus(ItemStatus.Banned);
+        itemDao.save(item);
+        return ResponseEntity.ok(null);
     }
 }

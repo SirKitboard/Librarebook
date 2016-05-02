@@ -162,6 +162,7 @@ define([
                     language: $(refs.language).val(),
                     status: $(refs.status).val(),
                     numPages: $(refs.numPages).val(),
+                    status: $(refs.status).val(),
                 },
                 success: function (response) {
     

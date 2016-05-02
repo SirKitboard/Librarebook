@@ -301,6 +301,9 @@ public class BookController implements BaseController<Book> {
         if (request.getParameter("numPages") != null){
             book.setNumPages(Integer.parseInt(request.getParameter("numPages")));
         }
+        if (request.getParameter("status") != null){
+            book.setStatus(ItemStatus.valueOf(request.getParameter("status")));
+        }
         BookFactory.save(book);
         return ResponseEntity.ok(book);
     }
