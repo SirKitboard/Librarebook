@@ -61,8 +61,11 @@ define([
                     country: $(refs.country).val(),
                     phone: $(refs.phone).val(),
                 },
-                success: function() {
-                    toaster("Sign up successful");
+                success: function(response) {
+                    AppDispatcher.dispatch({
+                        actionType: Constants.ADD_USERS,
+                        data: [response]
+                    })
                 },
                 error: function(xhr, status, errorThrown) {
                     if(JSON.parse(xhr.responseText).id) {
@@ -106,6 +109,18 @@ define([
                     }
                 }
             })
+        },
+        delete: function (id) {
+            $.ajax({
+                url: "/api/users/"+id,
+                method: "DELETE",
+                success: function(response) {
+                    AppDispatcher.dispatch({
+                        actionType: Constants.DELETE_USER,
+                        data: id
+                    })
+                }
+            });
         }
     };
 });

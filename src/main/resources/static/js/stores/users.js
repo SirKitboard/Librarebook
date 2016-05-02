@@ -19,6 +19,9 @@ define([
                 case Constants.ADD_USERS:
                     this.addUsers(action.data);
                     break;
+                case Constants.DELETE_USER:
+                    this.deleteUser(action.data);
+                    break;
             }
         }.bind(this));
 
@@ -67,6 +70,18 @@ define([
                 this.users[i] = updatedUser;
             }
         }
+    };
+
+    Store.prototype.deleteUser = function (id) {
+        var newUsers = [];
+        for (var i=0; i<this.users.length; i++) {
+            if (this.users[i].id != id) {
+                newUsers.push(this.users[i]);
+            }
+        }
+        console.log(newUsers);
+        this.users = newUsers;
+        this.event.emit("change");
     };
 
     return Store;

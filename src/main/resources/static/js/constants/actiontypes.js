@@ -21,8 +21,9 @@ define([
         RECOMMEND: 16,
         ADD_USER_RECOMMENDED: 17,
         REMOVE_USER_RECOMMENDATION: 18,
-        ADD_USERS: 10,
-        ADD_BEST_SELLER: 19
+        ADD_USERS: 19,
+        ADD_BEST_SELLER: 20,
+        DELETE_USER: 21
     };
 
     return Constants
