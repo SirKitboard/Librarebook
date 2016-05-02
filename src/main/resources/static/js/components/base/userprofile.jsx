@@ -85,10 +85,10 @@ define([
                           <div className="collapsible-header"><i className="material-icons">rate_review</i>Books you have reviewed</div>
                           <div className="collapsible-body"><BookCarousel books={this.state.books}/></div>
                         </li>
-                        <li>
-                          <div className="collapsible-header"><i className="material-icons">library_books</i>Books you are currently enjoying</div>
-                          <div className="collapsible-body"><BookCarousel books={this.state.books}/></div>
-                        </li>
+                         <li>
+                             <div className="collapsible-header"><i className="material-icons">lock</i>Books you have reserved</div>
+                             <div className="collapsible-body">{window.currentUser.holdItems.length != 0 ? <BookCarousel books={this.props.stores.books.getHeldBooks()} />: <h5 style={{margin:'20px'}}>No items</h5>}</div>
+                         </li>
                          <li>
                              <div className="collapsible-header"><i className="material-icons">library_books</i>Books you've favorited</div>
                              <div className="collapsible-body"><BookCarousel books={window.currentUser.favorites}/></div>

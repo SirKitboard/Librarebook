@@ -310,7 +310,7 @@ define([
                         <a href="#" data-activates="mobile-demo" className="blue-grey-text text-darken-1 button-collapse"><i className="material-icons">menu</i></a>
                         {this.state.loggedIn ? <a style={{padding:'0 5px'}} className="right blue-grey-text text-darken-1 shopping-cart-icon" onClick={this.toggleCart}><i className="material-icons">shopping_cart</i></a> : null}
                         <ul id="nav-mobile" className="right hide-on-med-and-down">
-                            {!this.state.loggedIn ? <li><a className="blue-grey-text text-darken-1" onClick={this.gotoFAQ}>FAQ</a><a  href="#modalLogin" className="blue-grey-text text-darken-1 modal-trigger login-modal">Login</a></li> : <li> <a className="blue-grey-text text-darken-1 dropdown-button" href="#!" data-activates="dropdown1"> Welcome Name<i className="material-icons right">arrow_drop_down</i></a></li>}
+                            {!this.state.loggedIn ? <li><a className="blue-grey-text text-darken-1" onClick={this.gotoFAQ}>FAQ</a><a  href="#modalLogin" className="blue-grey-text text-darken-1 modal-trigger login-modal">Login</a></li> : <li> <a className="blue-grey-text text-darken-1 dropdown-button" href="#!" data-activates="dropdown1"> Welcome<i className="material-icons right">arrow_drop_down</i></a></li>}
                         </ul>
                         <div onFocus={this.showDetails} className="nav-search">
                             <div className="input-field">
