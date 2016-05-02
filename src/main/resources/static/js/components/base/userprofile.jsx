@@ -26,6 +26,9 @@ define([
             var self = this;
             $('.collapsible').collapsible({});
             $('.modal-trigger.profile-modal').leanModal();
+            $('#maturitySelect').material_select();
+            $('#durationSelect').material_select();
+
         },
         editingComplete : function() {
             $("#modalEditUser").closeModal();
@@ -51,7 +54,7 @@ define([
 
                                     <a href="#modalEditUser" className="modal-trigger profile-modal waves-effect waves-light btn">Update Profile</a>
                                     <br/>
-                                    <a className="waves-effect waves-light btn">Search Preferences</a>
+                                    <a href="#preferencesModal" className="modal-trigger profile-modal waves-effect waves-light btn">Preferences</a>
                                 </div>
 
                             </div>
@@ -136,6 +139,27 @@ define([
                              </div>
                          </div>
                      </div>
+                    <div id="preferencesModal" className="modal">
+                        <div className="modal-content container">
+                            <div className="col s12">
+                                <label>Select global search preference</label>
+                                <div className="input-field col s12">
+                                <select id="maturitySelect">
+                                    <option value="">Choose your option</option>
+                                    <option value="1">Kids</option>
+                                    <option value="2">Young Adults</option>
+                                    <option value="3">Adults</option>
+                                </select>
+
+                                </div>
+                                <button className="btn waves-effect waves-light" id='submitPreferences' type="submit" name="action">Submit
+                                    <i className="material-icons right">send</i>
+                                </button>
+
+
+                            </div>
+                        </div>
+                    </div>
                     <UpdateUserProfile onCloseEditModal={this.editingComplete} user={window.currentUser}/>
                 </div>
             );

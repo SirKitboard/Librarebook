@@ -34,6 +34,17 @@ public abstract class Item extends IDModel{
     @NotNull
     private String title;
 
+    public int getMaturity() {
+        return maturity;
+    }
+
+    public void setMaturity(int maturity) {
+        this.maturity = maturity;
+    }
+
+    @NotNull
+    private int maturity;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name="items_genres", joinColumns={@JoinColumn(referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(referencedColumnName = "id")})
     private Set<Genre> genres;
