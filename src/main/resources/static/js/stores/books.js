@@ -214,7 +214,22 @@ define([
             }
         });
         return books;
-    }
+    };
+
+    Store.prototype.getCheckoutHistory = function() {
+        var books = [];
+        var self = this;
+        var ids = _.pluck(window.currentUser.checkoutHistory,'item');
+        ids = _.uniq(ids);
+        _.each(ids, function(itemId) {
+            if (self.books[itemId]) {
+                books.push(self.books[itemId]);
+            } else {
+                self.action.getBook(itemId);
+            }
+        });
+        return books;
+    };
 
     Store.prototype.getHeldBooks = function() {
         var books = [];

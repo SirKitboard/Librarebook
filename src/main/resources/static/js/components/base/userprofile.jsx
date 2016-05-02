@@ -71,7 +71,6 @@ define([
             );
             console.log(this.state.random);
             console.log(this.props.stores.books.getRecommended(this.state.random));
-
             return (
                 <div className="container" style={{width:'90%', maxWidth:'none', marginTop: '80px'}}>
                     <div className="profile-card z-depth-1">
@@ -88,7 +87,7 @@ define([
                          </li>
                         <li>
                           <div className="collapsible-header"><i className="material-icons">lock</i>Books you have borrowed in the past</div>
-                            <div className="collapsible-body">{window.currentUser.checkoutHistory.length != 0 ? <BookCarousel setView={this.props.setView}books={window.currentUser.checkoutHistory} />: <h5 style={{margin:'20px'}}>No items</h5>}</div>
+                            <div className="collapsible-body">{window.currentUser.checkoutHistory.length != 0 ? <BookCarousel setView={this.props.setView}books={this.props.stores.books.getCheckoutHistory()} />: <h5 style={{margin:'20px'}}>No items</h5>}</div>
                         </li>
                         <li>
                           <div className="collapsible-header"><i className="material-icons">rate_review</i>Books you have rated</div>
