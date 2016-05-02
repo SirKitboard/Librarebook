@@ -65,7 +65,8 @@ public class UserController implements BaseController<User> {
                     || !requestMap.containsKey("zipcode")
                     || !requestMap.containsKey("city")
                     || !requestMap.containsKey("state")
-                    || !requestMap.containsKey("country"))
+                    || !requestMap.containsKey("country")
+                    || !requestMap.containsKey("phone"))
                 return ResponseEntity.badRequest().body(null);
 
             User found = userDao.findByEmail(request.getParameter("email"));
@@ -81,7 +82,7 @@ public class UserController implements BaseController<User> {
                     request.getParameter("email"),
                     request.getParameter("gender"),
                     request.getParameter("password"),
-                    address);
+                    address, request.getParameter("phone"));
 
             addressDao.save(address);
             user = userDao.save(user);

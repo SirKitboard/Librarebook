@@ -1,12 +1,10 @@
 package com.notdecaf.controllers;
 
-import com.notdecaf.controllers.BaseController;
 import com.notdecaf.daos.AddressDao;
 import com.notdecaf.daos.AdminDao;
 import com.notdecaf.helpers.PasswordStorage;
 import com.notdecaf.models.Address;
 import com.notdecaf.models.Admin;
-import com.notdecaf.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -79,7 +77,7 @@ public class AdminController implements BaseController<Admin>{
                     request.getParameter("email"),
                     request.getParameter("gender"),
                     request.getParameter("password"),
-                    address);
+                    address, request.getParameter("phone"));
             addressDao.save(address);
             adminDao.save(admin);
             return ResponseEntity.ok(admin);

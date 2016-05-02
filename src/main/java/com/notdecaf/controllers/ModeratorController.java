@@ -78,7 +78,7 @@ public class ModeratorController implements BaseController<Moderator>{
                     request.getParameter("email"),
                     request.getParameter("gender"),
                     request.getParameter("password"),
-                    address);
+                    address, request.getParameter("phone"));
             addressDao.save(address);
             moderatorDao.save(moderator);
             return ResponseEntity.ok(moderator);

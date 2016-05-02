@@ -43,7 +43,6 @@ define([
         signup: function(refs, toaster) {
             var dob = new Date($(refs.dob).val());
             dob = dateFormat(dob, "yy/mm/dd");
-            debugger;
             $.ajax({
                 url: 'api/users',
                 method: 'POST',
@@ -59,6 +58,7 @@ define([
                     zipcode: $(refs.zipCode).val(),
                     state: $(refs.state).val(),
                     country: $(refs.country).val(),
+                    phone: $(refs.phone).val(),
                 },
                 success: function() {
                     toaster("Sign up successful");
