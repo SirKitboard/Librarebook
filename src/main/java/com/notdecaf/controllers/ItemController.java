@@ -487,7 +487,7 @@ public class ItemController {
             return ResponseEntity.badRequest().body(null);
         }
 
-        item.setStatus(ItemStatus.Banned);
+        item.setStatus(ItemStatus.Banned.toString());
         itemDao.save(item);
         return ResponseEntity.ok(null);
     }

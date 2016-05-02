@@ -78,6 +78,14 @@ public class BookFactory {
         return bookList;
     }
 
+    public static List<Book> findByTitleAndStatus(String title, int page, String status) {
+        int start = page*PAGE_SIZE;
+        int end = start + PAGE_SIZE;
+        Page<Book> books = bookDao.findByTitleContainsIgnoreCaseAndStatus(new PageRequest(page, PAGE_SIZE), "%"+title+"%", status);
+        List<Book> bookList = books.getContent();
+        return bookList;
+    }
+
     public static List<Book> findByTitle(String title, int page, String sort, boolean ascending) {
         int start = page*PAGE_SIZE;
         int end = start + PAGE_SIZE;
@@ -146,6 +154,76 @@ public class BookFactory {
 
         return bookList;
     }
+
+    public static List<Book> findByTitleAndStatus(String title, int page, String sort, boolean ascending, String status) {
+        int start = page*PAGE_SIZE;
+        int end = start + PAGE_SIZE;
+        Page<Book> books = null;
+        List<Book> bookList = null;
+        switch (sort) {
+            case "author":
+                if(ascending) {
+                    books = bookDao.findByTitleContainsIgnoreCaseAndStatusOrderByAuthors_FirstNameAsc(new PageRequest(page, PAGE_SIZE), title, status);
+                } else {
+                    books = bookDao.findByTitleContainsIgnoreCaseAndStatusOrderByAuthors_FirstNameDesc(new PageRequest(page, PAGE_SIZE), title, status);
+                }
+                bookList = books.getContent();
+                break;
+            case "publisher":
+                if(ascending) {
+                    books = bookDao.findByTitleContainsIgnoreCaseAndStatusOrderByPublisher_NameAsc(new PageRequest(page, PAGE_SIZE), title, status);
+                } else {
+                    books = bookDao.findByTitleContainsIgnoreCaseAndStatusOrderByPublisher_NameDesc(new PageRequest(page, PAGE_SIZE), title, status);
+                }
+                bookList = books.getContent();
+                break;
+            case "title":
+                if(ascending) {
+                    books = bookDao.findByTitleContainsIgnoreCaseAndStatusOrderByTitleAsc(new PageRequest(page, PAGE_SIZE), title, status);
+                } else {
+                    books = bookDao.findByTitleContainsIgnoreCaseAndStatusOrderByTitleDesc(new PageRequest(page, PAGE_SIZE), title, status);
+                }
+                bookList = books.getContent();
+                break;
+            case "favorites":
+                books = bookDao.findByTitleContainsIgnoreCase(null, title);
+                bookList = books.getContent();
+                if(ascending) {
+                    bookList.sort(new Comparator<Book>() {
+                        @Override
+                        public int compare(Book o1, Book o2) {
+                            if(o1.getFavoritedBy().size() > o2.getFavoritedBy().size()) {
+                                return -1;
+                            } else if(o1.getFavoritedBy().size() == o2.getFavoritedBy().size()) {
+                                return 0;
+                            } else {
+                                return 1;
+                            }
+                        }
+                    });
+                } else {
+                    bookList.sort(new Comparator<Book>() {
+                        @Override
+                        public int compare(Book o1, Book o2) {
+                            if(o1.getFavoritedBy().size() > o2.getFavoritedBy().size()) {
+                                return 1;
+                            } else if(o1.getFavoritedBy().size() == o2.getFavoritedBy().size()) {
+                                return 0;
+                            } else {
+                                return -1;
+                            }
+                        }
+                    });
+                }
+                bookList = bookList.subList(page*PAGE_SIZE, page*PAGE_SIZE+page);
+            default:
+                books = bookDao.findByTitleContainsIgnoreCaseAndStatus(new PageRequest(page, PAGE_SIZE), title, status);
+                bookList = books.getContent();
+        }
+
+        return bookList;
+    }
+
 //    private static linearSearchBook
 
     public static void update(Book book) {

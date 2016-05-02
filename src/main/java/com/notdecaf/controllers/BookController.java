@@ -59,8 +59,12 @@ public class BookController implements BaseController<Book> {
             if(req.getParameter("page") != null) {
                 page = Integer.parseInt(req.getParameter("page"));
             }
-
-            bookList = BookFactory.findByTitle(req.getParameter("string"), page);
+            if (user == null || !user.getUserType().equals("admin")){
+                bookList = BookFactory.findByTitleAndStatus(req.getParameter("string"), page, ItemStatus.Available.toString());
+            }
+            else{
+                bookList = BookFactory.findByTitle(req.getParameter("string"), page);
+            }
         } else if(requestMap.containsKey("string") && requestMap.containsKey("sort")) {
             boolean ascending = true;
             if(requestMap.containsKey("ord")) {
@@ -71,7 +75,12 @@ public class BookController implements BaseController<Book> {
                 page = Integer.parseInt(req.getParameter("page"));
             }
 
-            bookList = BookFactory.findByTitle(req.getParameter("string"), page, req.getParameter("sort"), ascending);
+            if (user == null || (!(user.getUserType().equals("admin")) && user.getUserType().equals("user"))){
+                bookList = BookFactory.findByTitleAndStatus(req.getParameter("string"), page, req.getParameter("sort"), ascending, ItemStatus.Available.toString());
+            }
+            else{
+                bookList = BookFactory.findByTitle(req.getParameter("string"), page, req.getParameter("sort"), ascending);
+            }
 
         } else {
             Iterable<Book> books = BookFactory.findAll();
@@ -320,7 +329,7 @@ public class BookController implements BaseController<Book> {
             book.setMaturity(Integer.parseInt(request.getParameter("maturity")));
         }
         if (request.getParameter("status") != null){
-            book.setStatus(ItemStatus.valueOf(request.getParameter("status")));
+            book.setStatus(ItemStatus.valueOf(request.getParameter("status")).toString());
         }
         BookFactory.save(book);
         return ResponseEntity.ok(book);

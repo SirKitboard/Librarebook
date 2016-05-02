@@ -10,7 +10,6 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -85,10 +84,10 @@ public abstract class Item extends IDModel{
     private int totalLicenses;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "enum('Available','Banned')")
     private Language language;
 
-    @Enumerated(EnumType.STRING)
-    private ItemStatus status;
+    private String status;
 
     private String coverImageUrl;
 
@@ -245,11 +244,11 @@ public abstract class Item extends IDModel{
         this.language = language;
     }
 
-    public ItemStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(ItemStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -347,7 +346,7 @@ public abstract class Item extends IDModel{
         this.yearPublished = yearPublished;
         this.totalLicenses = totalLicenses;
         this.language = language;
-        this.status = status;
+        this.status = status.toString();
         this.ratings = new HashSet<>();
         this.checkedOutBy = new HashSet<>();
         this.checkoutHistory = new HashSet<>();

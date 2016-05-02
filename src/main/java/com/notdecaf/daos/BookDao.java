@@ -1,6 +1,5 @@
 package com.notdecaf.daos;
 
-import com.notdecaf.helpers.ItemStatus;
 import com.notdecaf.models.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,12 +24,12 @@ public interface BookDao extends PagingAndSortingRepository<Book, Long> {
     List<Book> findTop10ByGenres_IdInAndIdNot(long [] ids, long bookId);
 
     List<Book> findByIdIn(List<Long> ids);
-    Page<Book> findByTitleIgnoreCaseAndStatusContains(Pageable pageable, String titlePart, ItemStatus status);
-    Page<Book> findByTitleIgnoreCaseAndStatusContainsOrderByAuthors_FirstNameAsc(Pageable pageable, String titlePart, ItemStatus status);
-    Page<Book> findByTitleIgnoreCaseAndStatusContainsOrderByAuthors_FirstNameDesc(Pageable pageable, String titlePart, ItemStatus status);
-    Page<Book> findByTitleIgnoreCaseAndStatusContainsOrderByPublisher_NameAsc(Pageable pageable, String titlePart, ItemStatus status);
-    Page<Book> findByTitleIgnoreCaseAndStatusContainsOrderByPublisher_NameDesc(Pageable pageable, String titlePart, ItemStatus status);
+    Page<Book> findByTitleContainsIgnoreCaseAndStatus(Pageable pageable, String titlePart, String status);
+    Page<Book> findByTitleContainsIgnoreCaseAndStatusOrderByAuthors_FirstNameAsc(Pageable pageable, String titlePart, String status);
+    Page<Book> findByTitleContainsIgnoreCaseAndStatusOrderByAuthors_FirstNameDesc(Pageable pageable, String titlePart, String status);
+    Page<Book> findByTitleContainsIgnoreCaseAndStatusOrderByPublisher_NameAsc(Pageable pageable, String titlePart, String status);
+    Page<Book> findByTitleContainsIgnoreCaseAndStatusOrderByPublisher_NameDesc(Pageable pageable, String titlePart, String status);
 
-    Page<Book> findByTitleIgnoreCaseAndStatusContainsOrderByTitleAsc(Pageable pageable, String titlePart, ItemStatus status);
-    Page<Book> findByTitleIgnoreCaseAndStatusContainsOrderByTitleDesc(Pageable pageable, String titlePart, ItemStatus status);
+    Page<Book> findByTitleContainsIgnoreCaseAndStatusOrderByTitleAsc(Pageable pageable, String titlePart, String status);
+    Page<Book> findByTitleContainsIgnoreCaseAndStatusOrderByTitleDesc(Pageable pageable, String titlePart, String status);
 }

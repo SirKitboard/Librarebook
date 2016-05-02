@@ -211,7 +211,7 @@ define([
             var language = $("#language").val();
             var numPages = $("#numPages").val();
             var status = (this.refs.bannedCheckbox.checked ? "Banned" : "Available");
-            
+
             var data = {
                 title: title,
                 genres: genre,
