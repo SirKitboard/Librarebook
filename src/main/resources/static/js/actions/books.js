@@ -308,17 +308,22 @@ define([
                 }
             })
         },
-        recommendNewBook: function(data) {
+        recommendNewBook: function(data, success) {
             $.ajax({
                 url: "/api/items/books/recommended",
                 method: "POST",
                 data: data,
                 success: function () {
                     window.currentUser.recommendedBooks.push({
-                        item: id,
+                        item: 0,
+                        bookName: data.book,
+                        authorName: data.author,
                         user: window.currentUser.id,
                         status: 0
                     });
+                    if(typeof success == "function") {
+                        success();
+                    }
                     Materialize.toast("Book recommended", 4000);
                 }
             })

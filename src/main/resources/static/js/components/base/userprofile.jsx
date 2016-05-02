@@ -5,8 +5,8 @@ define([
     'jsx!components/widgets/recommendationCarousel',
     'jsx!components/userprofile/updateUserProfile',
     'jsx!components/widgets/adContainer',
-    'stores/books'
-], function(_, React,BookCarousel, RecomCarousel, UpdateUserProfile, AdComponent, BooksStore) {
+    'actions/books'
+], function(_, React,BookCarousel, RecomCarousel, UpdateUserProfile, AdComponent, BookActions) {
     return React.createClass({
         getInitialState : function() {
             var array = window.currentUser.checkoutHistory.concat(window.currentUser.currentlyCheckedOutItems);
@@ -25,6 +25,13 @@ define([
                 newRecommended: _.filter(window.currentUser.recommendedBooks, function(book) {return book.item == 0})
             }
         },
+        updateRecommendations: function() {
+            $("#newRecommendationModal").closeModal();
+            this.setState({
+                existingRecommended: _.filter(window.currentUser.recommendedBooks, function(book) {return book.item != 0}),
+                newRecommended: _.filter(window.currentUser.recommendedBooks, function(book) {return book.item == 0})
+            })
+        },
         componentDidMount : function() {
             var self = this;
             $('.collapsible').collapsible({});
@@ -36,6 +43,14 @@ define([
         editingComplete : function() {
             $("#modalEditUser").closeModal();
             this.forceUpdate();
+        },
+        createRecommendation: function() {
+            var data = {
+                book: this.refs.bookName.value,
+                author: this.refs.authorName.value
+            }
+            var self = this;
+            BookActions.recommendNewBook(data, this.updateRecommendations)
         },
         render: function() {
             var profileInfo = "";
@@ -106,11 +121,32 @@ define([
                          </li>
                          <li>
                              <div className="collapsible-header"><i className="material-icons">rate_review</i>Books you requested more stock for</div>
-                             <div className="collapsible-body">{this.state.existingRecommended ? <RecomCarousel books={this.state.existingRecommended} stores={this.props.stores}/>: <h5 style={{margin:'20px'}}>No items</h5>}</div>
+                             <div className="collapsible-body">{this.state.existingRecommended.length > 0 ? <RecomCarousel books={this.state.existingRecommended} stores={this.props.stores}/>: <h5 style={{margin:'20px'}}>No items</h5>}</div>
                          </li>
                          <li>
                              <div className="collapsible-header"><i className="material-icons">rate_review</i>Books you Recommended</div>
-                             <div className="collapsible-body">{this.state.existingRecommended ? <ul></ul>: <h5 style={{margin:'20px'}}>No items</h5>}</div>
+                             <div className="collapsible-body">{this.state.newRecommended.length > 0 ? (
+                                 <div style={{position: 'relative'}}className="container">
+                                     <ul className="collection">
+                                     {
+                                         _.map(this.state.newRecommended, function(item) {
+                                             var status = null;
+                                             if(item.status == 1) {
+                                                 status = <span className="secondary-content green-text"><i data-id={item.id} className="material-icons">check</i></span>
+                                             }
+                                             if(item.status == -1) {
+                                                 status = <span className="secondary-content red-text"><i data-id={item.id} className="material-icons">close</i></span>
+                                             }
+                                             return (<li className="collection-item">
+                                                 {item.bookName} by {item.authorName}
+                                                 {status}
+                                             </li>)
+                                         })
+                                     }
+                                     </ul>
+                                     <a href="#newRecommendationModal" style={{position:'absolute', right:'-15px', bottom:'4px'}} className="btn waves-effect waves-light modal-trigger profile-modal"><i className="material-icons">add</i></a>
+                                 </div>
+                             ): <h5 style={{margin:'20px'}}>No items<a href="#newRecommendationModal" className="btn right waves-effect waves-light modal-trigger profile-modal"><i className="material-icons">add</i></a></h5>}</div>
                          </li>
                          <li>
                              <div className="collapsible-header"><i className="material-icons">lock</i>Books you have reserved</div>
@@ -129,6 +165,23 @@ define([
                         <a className="btn-floating btn-large red modal-trigger profile-modal" href="#confirmationModal">
                             <i className="large material-icons">not_interested</i>
                         </a>
+                    </div>
+                    <div id="newRecommendationModal" className="modal">
+                        <div className="modal-content container">
+                            <div className="row">
+                                <div className="input-field col s6">
+                                    <input ref="bookName" id="bookName" type="text" className="validate"/>
+                                    <label htmlFor="bookName">Book Title</label>
+                                </div>
+                                <div className="input-field col s6">
+                                    <input ref="authorName" id="authorName" type="text" className="validate"/>
+                                    <label htmlFor="authorName">Author</label>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <a onClick={this.createRecommendation} className="btn waves-effect waves-light col s6 offset-s3">Submit</a>
+                            </div>
+                        </div>
                     </div>
                      <div id="confirmationModal" className="modal">
                          <div className="modal-content container">
