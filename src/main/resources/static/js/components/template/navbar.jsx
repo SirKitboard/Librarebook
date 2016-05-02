@@ -3,15 +3,12 @@ define([
     "react",
     'jsx!components/template/shoppingcart',
     'react-dom',
-    'actions/user',
-    'jsx!components/widgets/policy'
-], function(_, React, ShoppingCartComponent, ReactDOM, UserActions, PolicyComponent) {
+    'actions/user'
+], function(_, React, ShoppingCartComponent, ReactDOM, UserActions) {
     return React.createClass({
         getInitialState: function(){
             // debugger;
-            var loggedIn = false;
-            var signupForm = false;
-            var agreed = false;
+            var loggedIn = false
             if(window.currentUser) {
                 loggedIn = true;
             }
@@ -25,9 +22,7 @@ define([
                 'loggedIn': loggedIn,
                 'books': books,
                 cartOpen: false,
-                showSearchDetails: false,
-                signupForm : false,
-                agreed : false,
+                showSearchDetails: false
             }
         },
         componentDidMount : function() {
@@ -39,7 +34,7 @@ define([
             }
             $(".modal-trigger.login-modal").leanModal();
             $(document).ready(function(){
-                $('ul.tabs.login').tabs();
+              $('ul.tabs.login').tabs();
             });
             $('.datepicker').pickadate({
                 selectMonths: true, // Creates a dropdown to control month
@@ -77,18 +72,11 @@ define([
             UserActions.logout();
         },
         signup: function() {
-            if (!this.state.agreed){
-                Materialize.toast("You need to agree to the terms and conditions to continue.", 1000);
-            }
-            else if(this.validateInput({
+            if(this.validateInput({
                     target : null
                 })) {
-                UserActions.signup(this.refs, this.signupFeedback);
+                UserActions.signup(this.refs);
             }
-
-        },
-        signupFeedback: function(message) {
-            Materialize.toast(message, 5000);
         },
         validateInput: function(e) {
             var target = e.target;
@@ -167,13 +155,6 @@ define([
                 })
             }
         },
-        toggleCheck: function() {
-            this.setState({
-                agreed: !this.state.agreed
-            }, function() {
-                console.log(this.state);
-            }.bind(this));
-        },
         parameterize: function(params){
             var ret = [];
             for (var property in params) {
@@ -182,17 +163,6 @@ define([
                 }
             }
             return ret.join("&");
-        },
-        nextStep: function() {
-            if (this.state.agreed){
-                this.setState({
-                    signupForm: true
-                });
-            }
-            else {
-                Materialize.toast("You need to agree to the terms and conditions to continue.", 5000);
-            }
-
         },
         submitSearch : function(e) {
             var params = {}
@@ -305,11 +275,11 @@ define([
             )
             if(this.state.loggedIn) {
                 var navItems = (<ul id="dropdown1" className="dropdown-content">
-                    <li><a onClick={this.gotoProfile}>Profile</a></li>
-                    <li><a onClick={this.gotoAdminDashboard}>Admin Dashboard</a></li>
-                    <li><a onClick={this.gotoFAQ}>FAQ</a></li>
-                    <li><a onClick={this.logout}>Logout</a></li>
-                </ul>);
+                      <li><a onClick={this.gotoProfile}>Profile</a></li>
+                      <li><a onClick={this.gotoAdminDashboard}>Admin Dashboard</a></li>
+                      <li><a onClick={this.gotoFAQ}>FAQ</a></li>
+                      <li><a onClick={this.logout}>Logout</a></li>
+                    </ul>);
                 var mobileItems = (
                     <ul className="side-nav" id="mobile-demo">
                         <li><a onClick={this.gotoProfile}>Profile</a></li>
@@ -335,22 +305,22 @@ define([
                 <div className="nav-wrapper-outer">
                     {navItems}
                     <nav style={style}>
-                        <div className="white blue-grey-text text-darken-1 nav-wrapper">
-                            <a href="#" onClick={this.gotoHome} className="left blue-grey-text text-darken-1 brand-logo hide-on-med-and-down">Logo</a>
-                            <a href="#" data-activates="mobile-demo" className="blue-grey-text text-darken-1 button-collapse"><i className="material-icons">menu</i></a>
-                            {this.state.loggedIn ? <a style={{padding:'0 5px'}} className="right blue-grey-text text-darken-1 shopping-cart-icon" onClick={this.toggleCart}><i className="material-icons">shopping_cart</i></a> : null}
-                            <ul id="nav-mobile" className="right hide-on-med-and-down">
-                                {!this.state.loggedIn ? <li><a className="blue-grey-text text-darken-1" onClick={this.gotoFAQ}>FAQ</a><a  href="#modalLogin" className="blue-grey-text text-darken-1 modal-trigger login-modal">Login</a></li> : <li> <a className="blue-grey-text text-darken-1 dropdown-button" href="#!" data-activates="dropdown1"> Welcome<i className="material-icons right">arrow_drop_down</i></a></li>}
-                            </ul>
-                            <div onFocus={this.showDetails} className="nav-search">
-                                <div className="input-field">
-                                    <input id="search" type="search" placeholder="Search" autoComplete="off" onKeyDown={this.submitSearch} required/>
-                                    <label htmlFor="search"><i className="grey-text material-icons">search</i></label>
-                                    <i className="grey-text material-icons">close</i>
-                                </div>
+                    <div className="white blue-grey-text text-darken-1 nav-wrapper">
+                        <a href="#" onClick={this.gotoHome} className="left blue-grey-text text-darken-1 brand-logo hide-on-med-and-down">Logo</a>
+                        <a href="#" data-activates="mobile-demo" className="blue-grey-text text-darken-1 button-collapse"><i className="material-icons">menu</i></a>
+                        {this.state.loggedIn ? <a style={{padding:'0 5px'}} className="right blue-grey-text text-darken-1 shopping-cart-icon" onClick={this.toggleCart}><i className="material-icons">shopping_cart</i></a> : null}
+                        <ul id="nav-mobile" className="right hide-on-med-and-down">
+                            {!this.state.loggedIn ? <li><a className="blue-grey-text text-darken-1" onClick={this.gotoFAQ}>FAQ</a><a  href="#modalLogin" className="blue-grey-text text-darken-1 modal-trigger login-modal">Login</a></li> : <li> <a className="blue-grey-text text-darken-1 dropdown-button" href="#!" data-activates="dropdown1"> Welcome<i className="material-icons right">arrow_drop_down</i></a></li>}
+                        </ul>
+                        <div onFocus={this.showDetails} className="nav-search">
+                            <div className="input-field">
+                                <input id="search" type="search" placeholder="Search" autoComplete="off" onKeyDown={this.submitSearch} required/>
+                                <label htmlFor="search"><i className="grey-text material-icons">search</i></label>
+                                <i className="grey-text material-icons">close</i>
                             </div>
-                            {mobileItems}
                         </div>
+                        {mobileItems}
+                    </div>
                     </nav>
                     {searchDetails}
                     <div id="modalLogin" className="modal">
@@ -375,10 +345,10 @@ define([
                                         </div>
                                         <div className="col s12 buttons">
                                             <button onClick={this.login} className="btn waves-effect waves-light" id='login' type="submit" name="action">Submit
-                                                <i className="material-icons right">send</i>
+                                              <i className="material-icons right">send</i>
                                             </button>
                                             <button className="btn waves-effect waves-light modal-action modal-close">Close
-                                                <i className="material-icons right">clear</i>
+                                              <i className="material-icons right">clear</i>
                                             </button>
                                         </div>
                                         <div className="col s12">
@@ -387,106 +357,95 @@ define([
                                     </div>
                                 </div>
                                 <div id="signupTab" className="col s12 signup">
-                                    <div>
-                                        <div className="row contact header">
-                                            <span>User Info </span>
-                                            <i className="material-icons">info_outline</i>
+                                    <div className="row contact header">
+                                        <span>User Info </span>
+                                        <i className="material-icons">info_outline</i>
+                                    </div>
+                                    <div className="row">
+                                        <div className="input-field col s12 m6">
+                                            <input ref="first_name" id="first_name" type="text" className="validate"/>
+                                            <label htmlFor="first_name">First Name</label>
                                         </div>
-                                        <div className="row">
-                                            <div className="input-field col s12 m6">
-                                                <input ref="first_name" id="first_name" type="text" className="validate"/>
-                                                <label htmlFor="first_name">First Name</label>
-                                            </div>
-                                            <div className="input-field col s12 m6">
-                                                <input ref="last_name" id="last_name" type="text" className="validate"/>
-                                                <label htmlFor="last_name">Last Name</label>
-                                            </div>
-                                        </div>
-
-                                        <div className="row">
-                                            <div className="input-field col s12">
-                                                <input ref="email" id="email" type="email" className="validate"/>
-                                                <label htmlFor="email">Email</label>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="input-field col s12">
-                                                <input onChange={this.validateInput} ref="phone" id="phone" type="tel" className="validate"/>
-                                                <label data-error="Number must match format +x(xxx)-xxx-xxxx" htmlFor="phone">Phone</label>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="input-field col s6">
-                                                <input ref="dob" id="dob" type="date" className="datepicker"/>
-                                                <label htmlFor="dob">Date Of Birth</label>
-                                            </div>
-                                            <div className="input-field col s6">
-                                                <input ref="gender" id="gender" type="text" className="validate"/>
-                                                <label htmlFor="gender">Gender</label>
-                                            </div>
-                                        </div>
-
-                                        <div className="row account header">
-                                            <span>Account Info&nbsp;</span>
-                                            <i className="material-icons">vpn_key</i>
-                                        </div>
-                                        <div className="row">
-                                            <div className="input-field col s12 m6">
-                                                <input onChange={this.validateInput} ref="password" type="password" id="password"/>
-                                                <label data-error="Password cannot be null" htmlFor="password">Password</label>
-                                            </div>
-                                            <div className="input-field col s12 m6">
-                                                <input onChange={this.validateInput} ref="password_r" id="password_r" type="password"/>
-                                                <label  data-error="Passwords dont match" data-success='Passwords match!'  htmlFor="password_r">Repeat Password</label>
-                                            </div>
-                                        </div>
-
-                                        <div className="row address header">
-                                            <span>Address Info </span>
-                                            <i className="material-icons">home</i>
-                                        </div>
-                                        <div className="row">
-                                            <div className="input-field col s12">
-                                                <input ref="address" id="address" type="text" className="validate"/>
-                                                <label htmlFor="address">Address</label>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="input-field col s6">
-                                                <input ref="city" id="city" type="text" className="validate"/>
-                                                <label htmlFor="city">City</label>
-                                            </div>
-                                            <div className="input-field col s12 m6">
-                                                <input ref="state" id="state" type="text" className="validate"/>
-                                                <label htmlFor="state">State</label>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="input-field col s12 m6">
-                                                <input ref='zipCode' id="zipCode" type="number" min="0" max="999999" className="validate"/>
-                                                <label htmlFor="zipCode">ZipCode</label>
-                                            </div>
-                                            <div className="input-field col s12 m6">
-                                                <input ref="country" id="country" type="text" className="validate"/>
-                                                <label htmlFor="country">Country</label>
-                                            </div>
+                                        <div className="input-field col s12 m6">
+                                            <input ref="last_name" id="last_name" type="text" className="validate"/>
+                                            <label htmlFor="last_name">Last Name</label>
                                         </div>
                                     </div>
-                                    <div>
-                                        <PolicyComponent />
-                                        <form action="#">
-                                            <p>
-                                                <input type="checkbox" id="accept" onClick={this.toggleCheck}/>
-                                                <label htmlFor="accept">I accept the terms and conditions.</label>
-                                            </p>
-                                        </form>
+
+                                    <div className="row">
+                                        <div className="input-field col s12">
+                                            <input ref="email" id="email" type="email" className="validate"/>
+                                            <label htmlFor="email">Email</label>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="input-field col s12">
+                                            <input onChange={this.validateInput} ref="phone" id="phone" type="tel" className="validate"/>
+                                            <label data-error="Number must match format +x(xxx)-xxx-xxxx" htmlFor="phone">Phone</label>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="input-field col s6">
+                                            <input ref="dob" id="dob" type="date" className="datepicker"/>
+                                            <label htmlFor="dob">Date Of Birth</label>
+                                        </div>
+                                        <div className="input-field col s6">
+                                            <input ref="gender" id="gender" type="text" className="validate"/>
+                                            <label htmlFor="gender">Gender</label>
+                                        </div>
+                                    </div>
+
+                                    <div className="row account header">
+                                        <span>Account Info&nbsp;</span>
+                                        <i className="material-icons">vpn_key</i>
+                                    </div>
+                                    <div className="row">
+                                        <div className="input-field col s12 m6">
+                                            <input onChange={this.validateInput} ref="password" type="password" id="password"/>
+                                            <label data-error="Password cannot be null" htmlFor="password">Password</label>
+                                        </div>
+                                        <div className="input-field col s12 m6">
+                                            <input onChange={this.validateInput} ref="password_r" id="password_r" type="password"/>
+                                            <label  data-error="Passwords dont match" data-success='Passwords match!'  htmlFor="password_r">Repeat Password</label>
+                                        </div>
+                                    </div>
+
+                                    <div className="row address header">
+                                        <span>Address Info </span>
+                                        <i className="material-icons">home</i>
+                                    </div>
+                                    <div className="row">
+                                        <div className="input-field col s12">
+                                            <input ref="address" id="address" type="text" className="validate"/>
+                                            <label htmlFor="address">Address</label>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="input-field col s6">
+                                            <input ref="city" id="city" type="text" className="validate"/>
+                                            <label htmlFor="city">City</label>
+                                        </div>
+                                        <div className="input-field col s12 m6">
+                                            <input ref="state" id="state" type="text" className="validate"/>
+                                            <label htmlFor="state">State</label>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="input-field col s12 m6">
+                                            <input ref='zipCode' id="zipCode" type="number" min="0" max="999999" className="validate"/>
+                                            <label htmlFor="zipCode">ZipCode</label>
+                                        </div>
+                                        <div className="input-field col s12 m6">
+                                            <input ref="country" id="country" type="text" className="validate"/>
+                                            <label htmlFor="country">Country</label>
+                                        </div>
                                     </div>
                                     <div className="row col s12 buttons">
                                         <button onClick={this.signup} className="btn waves-effect waves-light" id='login' type="submit" name="action">Signup
-                                            <i className="material-icons right">send</i>
+                                          <i className="material-icons right">send</i>
                                         </button>
                                         <button className="btn waves-effect waves-light modal-action modal-close">Close
-                                            <i className="material-icons right">clear</i>
+                                          <i className="material-icons right">clear</i>
                                         </button>
                                     </div>
                                 </div>

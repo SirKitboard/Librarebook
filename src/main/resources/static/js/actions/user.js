@@ -40,10 +40,9 @@ define([
                 }
             })
         },
-        signup: function(refs, toaster) {
+        signup: function(refs) {
             var dob = new Date($(refs.dob).val());
             dob = dateFormat(dob, "yy/mm/dd");
-            debugger;
             $.ajax({
                 url: 'api/users',
                 method: 'POST',
@@ -61,7 +60,7 @@ define([
                     country: $(refs.country).val(),
                 },
                 success: function() {
-                    toaster("Sign up successful");
+
                 },
                 error: function(xhr, status, errorThrown) {
                     if(JSON.parse(xhr.responseText).id) {
