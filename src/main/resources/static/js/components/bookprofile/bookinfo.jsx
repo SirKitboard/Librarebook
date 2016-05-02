@@ -235,7 +235,8 @@ define([
 
             var sampleButton = null;
             var editButton = null;
-            if(this.props.book.samplePath) {
+            console.log(this.props.book.samplePath);
+            if(this.props.book.samplePath.length > 0) {
                 sampleButton = <li><a href={this.props.book.samplePath} target="_blank">Sample</a></li>
             }
             if(window.currentUser && window.currentUser.userType == "admin") {

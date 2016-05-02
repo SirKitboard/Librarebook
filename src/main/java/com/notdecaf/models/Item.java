@@ -98,7 +98,10 @@ public abstract class Item extends IDModel{
     private String samplePath;
 
     public String getSamplePath() {
-        return PDF.getSamplePDFPath(this.samplePath);
+        if(this.samplePath != null && this.samplePath.length() > 0) {
+            return PDF.getSamplePDFPath(this.samplePath);
+        }
+        else return "";
     }
 
     public void setSamplePath(String samplePath) {
