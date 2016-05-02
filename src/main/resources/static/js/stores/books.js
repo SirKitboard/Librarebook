@@ -140,10 +140,13 @@ define([
         if (this.books[id]) {
             this.books[id].checkedOut = false;
             this.books[id].checkedOutBy = this.books[id].checkedOutBy.filter(function (item) {
-               return item.user == window.currentUser.id;
+               return item.user != window.currentUser.id;
             });
             window.currentUser.currentlyCheckedOutItems = window.currentUser.currentlyCheckedOutItems.filter(function(checkout) {
-               return checkout.item == id;
+                if (!checkout) {
+                    return false;
+                }
+                return checkout.item != id;
             });
             this.books[id].availableLicenses++;
         }
