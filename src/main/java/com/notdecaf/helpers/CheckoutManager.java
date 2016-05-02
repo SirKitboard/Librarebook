@@ -30,6 +30,8 @@ public class CheckoutManager {
     @Autowired
     UserDao userDao;
 
+    public CheckoutManager() {}
+
     @Scheduled(cron="*/5 * * * * ?")
     public void checkItemDue() {
         checkedOutItems.addAll(queuedItems);
@@ -40,8 +42,12 @@ public class CheckoutManager {
             while (itemIterator.hasNext()) {
                 UserCheckedOutItem checkedOutItem= itemIterator.next();
                 if (currentDate.after(checkedOutItem.getDueDate())) {
-                    returnItem(checkedOutItem);
-                    itemIterator.remove();
+                    if (checkedOutItem.getWillRenew()) {
+                        renewItem(checkedOutItem);
+                    } else {
+                        returnItem(checkedOutItem);
+                        itemIterator.remove();
+                    }
                 }
             }
         }
@@ -56,6 +62,30 @@ public class CheckoutManager {
         itemDao.save(item);
         userDao.save(user);
         checkedOutItemDao.delete(checkedOutItem);
+        ItemFactory.update(item);
+        if (item instanceof Book) {
+            BookFactory.update((Book) item);
+        }
+    }
+
+    private void renewItem(UserCheckedOutItem checkedOutItem) {
+        Item item = ItemFactory.getItemFromCache(checkedOutItem.getItem());
+        User user = userDao.findOne(checkedOutItem.getUser());
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(checkedOutItem.getDueDate());
+        calendar.add(Calendar.DATE, 7);
+        Date newDueDate = new Date(calendar.getTimeInMillis());
+
+        checkedOutItem.setDueDate(newDueDate);
+        checkedOutItem.setRenewed(true);
+        checkedOutItem.setRenew(false);
+        checkedOutItemDao.save(checkedOutItem);
+
+        item.updateCheckedOutItem(checkedOutItem);
+        user.updateCheckedOutItem(checkedOutItem);
+        itemDao.save(item);
+        userDao.save(user);
         ItemFactory.update(item);
         if (item instanceof Book) {
             BookFactory.update((Book) item);
