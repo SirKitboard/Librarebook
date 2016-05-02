@@ -155,6 +155,10 @@ public class User extends IDModel implements Cloneable{
         this.flags = flags;
     }
 
+    public String getUserType() {
+        return "user";
+    }
+
     public boolean verifyCredentials(String password) {
         try {
             return PasswordStorage.verifyPassword(password, new String(hashedPassword));

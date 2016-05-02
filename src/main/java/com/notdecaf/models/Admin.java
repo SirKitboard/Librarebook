@@ -11,11 +11,15 @@ import java.util.Date;
  */
 @Entity
 @DiscriminatorValue("admin")
-public class Admin extends Moderator {
+public class Admin extends User {
     public Admin(String firstName, String lastName, Date dob, String email, String gender, String password, Address address) throws PasswordStorage.CannotPerformOperationException {
         super(firstName, lastName, dob, email, gender, password, address);
     }
 
     public Admin() {
+    }
+
+    public String getUserType() {
+        return "admin";
     }
 }
