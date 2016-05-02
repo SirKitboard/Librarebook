@@ -17,7 +17,7 @@ import java.util.Set;
 @DiscriminatorValue("user")
 @Table(name = "users")
 
-public class User implements Cloneable{
+public class User extends IDModel implements Cloneable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
