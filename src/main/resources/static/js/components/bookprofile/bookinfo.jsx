@@ -280,7 +280,7 @@ define([
                     </span>
                     <hr />
                     <span>
-                        <p className="left-align">Rating</p><p className="right-align"></p>
+                        <p className="left-align">Rating</p><p className="right-align">{this.props.book.rating.toFixed(1)}</p>
                     </span>
                     <div>
                         {checkoutInfo}

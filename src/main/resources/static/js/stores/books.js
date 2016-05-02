@@ -274,8 +274,8 @@ define([
         if (this.books[data.bookId]) {
             var exists = false;
             for (var i=0; i<this.books[data.bookId].ratings.length; i++) {
-                if (book.ratings[i].user === window.currentUser.id) {
-                    this.book.ratings[i] = data.ratingItem;
+                if (this.books[data.bookId].ratings[i].user === window.currentUser.id) {
+                    this.books[data.bookId].ratings[i] = data.ratingItem;
                     window.currentUser.ratings[i] = data.ratingItem;
                     exists = true;
                 }
@@ -285,6 +285,7 @@ define([
                 window.currentUser.ratings.push(data.ratingItem);
             }
         }
+        this.event.emit("change");
     };
 
     Store.prototype.removeRating = function(id) {
