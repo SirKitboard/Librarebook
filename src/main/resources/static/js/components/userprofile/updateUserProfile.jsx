@@ -37,9 +37,7 @@ define([
                 }
             })
         },
-        // userUpdated: function() {
-        //     self.props.onCloseEditModal();
-        // },
+       
         onPhoneChange: function() {
             $("#phone").removeClass("invalid");
         },

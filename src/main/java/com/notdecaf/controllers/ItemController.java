@@ -257,7 +257,11 @@ public class ItemController {
         if (checkedOutItemDao.findByItemIdAndUserId(item.getId(),user.getId()) != null) {
             return ResponseEntity.badRequest().body(null);
         }
-        UserCheckedOutItem userCheckedOutItem = new UserCheckedOutItem(user,item, 7);
+        int checkoutLength = 7;
+        if(user.getPreferences() != null) {
+            checkoutLength = user.getPreferences().getCheckoutLength();
+        }
+        UserCheckedOutItem userCheckedOutItem = new UserCheckedOutItem(user,item, checkoutLength);
         checkedOutItemDao.save(userCheckedOutItem);
 
         user.addCheckedOutItem(userCheckedOutItem);

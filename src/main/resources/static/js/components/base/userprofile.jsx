@@ -122,10 +122,6 @@ define([
                           <div className="collapsible-header"><i className="material-icons">rate_review</i>Books you have rated</div>
                             <div className="collapsible-body">{window.currentUser.ratings.length != 0 ? <BookCarousel setView={this.props.setView}books={this.props.stores.books.getRatedBooks()} />: <h5 style={{margin:'20px'}}>No items</h5>}</div>
                         </li>
-                        <li>
-                          <div className="collapsible-header"><i className="material-icons">rate_review</i>Books you have reviewed</div>
-                          <div className="collapsible-body"><BookCarousel books={this.state.books}/></div>
-                        </li>
                          <li>
                              <div className="collapsible-header"><i className="material-icons">rate_review</i>Recommended Books</div>
                              <div className="collapsible-body">{this.props.stores.books.getRecommended(this.state.random) != 0 ? <BookCarousel books={this.props.stores.books.getRecommended(this.state.random)}/>: <h5 style={{margin:'20px'}}>No items</h5>}</div>
@@ -212,22 +208,21 @@ define([
                         <div className="modal-content container">
                             <div className="col s12">
                                 <div className="input-field col 6">
-                                    <select id="maturitySelect">
-                                        {/*I touched your code, muahahaha*/}
-                                        <option disaled value="">Choose your option</option>
+                                    <select id="maturitySelect" defaultValue={window.currentUser.preferences ?  window.currentUser.preferences.maxMaturity + "" : ""}>
+                                        <option disabled value="">Choose your option</option>
                                         <option value="0">Kids</option>
                                         <option value="1">Young Adults</option>
-                                        <option value="2">Adults</option>
+                                        <option  value="2">Adults</option>
                                     </select>
                                     <label htmlFor="maturitySelect">Select global search preference</label>
                                 </div>
                                 <br></br>
                                 <div className="input-field col 6">
-                                    <select id="durationSelect">
+                                    <select id="durationSelect" defaultValue={window.currentUser.preferences ?  window.currentUser.preferences.checkoutLength + "" : ""}>
                                         <option disabled value="">Choose your option</option>
-                                        <option value="1">3 days</option>
-                                        <option value="2">5 days</option>
-                                        <option value="3">7 days</option>
+                                        <option  value="3">3 days</option>
+                                        <option  value="5">5 days</option>
+                                        <option  value="7">7 days</option>
                                     </select>
                                     <label htmlFor="durationSelect">Select lending period preference</label>
                                 </div>

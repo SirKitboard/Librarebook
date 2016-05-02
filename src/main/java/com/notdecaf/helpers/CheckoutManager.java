@@ -77,7 +77,11 @@ public class CheckoutManager {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(checkedOutItem.getDueDate());
-        calendar.add(Calendar.DATE, 7);
+        int checkoutLength = 7;
+        if(user.getPreferences() != null) {
+            checkoutLength = user.getPreferences().getCheckoutLength();
+        }
+        calendar.add(Calendar.DATE, checkoutLength);
         Date newDueDate = new Date(calendar.getTimeInMillis());
 
         checkedOutItem.setDueDate(newDueDate);
