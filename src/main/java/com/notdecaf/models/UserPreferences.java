@@ -23,6 +23,16 @@ public class UserPreferences {
 
     private boolean autorenew;
 
+    private int maxMaturity;
+
+    public int getMaxMaturity() {
+        return maxMaturity;
+    }
+
+    public void setMaxMaturity(int maxMaturity) {
+        this.maxMaturity = maxMaturity;
+    }
+
     public void setUserID(long userID) {
         this.userID = userID;
     }

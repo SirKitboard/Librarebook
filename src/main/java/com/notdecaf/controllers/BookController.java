@@ -52,6 +52,7 @@ public class BookController implements BaseController<Book> {
     @RequestMapping(value = "/api/items/books", method = RequestMethod.GET)
     public ResponseEntity<Book[]> search(HttpServletRequest req) {
         List<Book> bookList = new ArrayList<Book>();
+        User user = (User) req.getSession().getAttribute("user");
         Map<String, String[]> requestMap = req.getParameterMap();
         if(requestMap.containsKey("string") && !requestMap.containsKey("sort")) {
             int page = 0;
@@ -148,6 +149,12 @@ public class BookController implements BaseController<Book> {
                 }
             }
 
+            if(user != null) {
+                if(book.getMaturity() > user.getPreferences().getMaxMaturity()) {
+                    continue;
+                }
+            }
+
             filteredList.add(book);
         }
         if(filteredList.size() == 0) {
@@ -233,6 +240,9 @@ public class BookController implements BaseController<Book> {
                 Integer.parseInt(request.getParameter("numPages")));
 
         book.setDateAdded(new Date());
+        if(requestMap.containsKey("maturity")) {
+            book.setMaturity(Integer.parseInt(request.getParameter("maturity")));
+        }
         BookFactory.save(book);
         return ResponseEntity.ok(book);
     }

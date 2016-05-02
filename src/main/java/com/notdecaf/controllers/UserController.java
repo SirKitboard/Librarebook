@@ -143,6 +143,20 @@ public class UserController implements BaseController<User> {
                 addressDao.save(address);
                 user.setAddress(address);
             }
+            if(requestMap.containsKey("maxMaturity") || requestMap.containsKey("duration")) {
+                UserPreferences userPreferences = user.getPreferences();
+                if(userPreferences == null) {
+                    userPreferences = new UserPreferences(user);
+                    user.setPreferences(userPreferences);
+                    userDao.save(user);
+                }
+                if(requestMap.containsKey("maxMaturity")) {
+                    user.getPreferences().setMaxMaturity(Integer.parseInt(request.getParameter("maxMaturity")));
+                }
+                if(requestMap.containsKey("duration")) {
+                    user.getPreferences().setCheckoutLength(Integer.parseInt(request.getParameter("duration")));
+                }
+            }
             userDao.save(user);
             if(((User)request.getSession().getAttribute("user")).getId() == user.getId()) {
                 request.getSession().setAttribute("user", user);

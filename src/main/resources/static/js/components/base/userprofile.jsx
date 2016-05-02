@@ -5,8 +5,9 @@ define([
     'jsx!components/widgets/recommendationCarousel',
     'jsx!components/userprofile/updateUserProfile',
     'jsx!components/widgets/adContainer',
-    'actions/books'
-], function(_, React,BookCarousel, RecomCarousel, UpdateUserProfile, AdComponent, BookActions) {
+    'actions/books',
+    'actions/user'
+], function(_, React,BookCarousel, RecomCarousel, UpdateUserProfile, AdComponent, BookActions, UserActions) {
     return React.createClass({
         getInitialState : function() {
             var array = window.currentUser.checkoutHistory.concat(window.currentUser.currentlyCheckedOutItems);
@@ -52,24 +53,15 @@ define([
             var self = this;
             BookActions.recommendNewBook(data, this.updateRecommendations)
         },
-        submitMaturityPreference: function(){
-
-            var e = this.getElementById("maturitySelect");
-            var strUser = e.options[e.selectedIndex].value;
-          if(strUser ==1){
-
-          }
-            else if(strUser==2){
-
-          }
-            else if (strUser==3){
-
-          }
-            else{
-
-          }
-
-
+        setPreferences: function() {
+            var maturity = $("#maturitySelect").val();
+            var durationSelect = $("#durationSelect").val();
+            
+            var data = {
+                maxMaturity: maturity,
+                duration: durationSelect
+            }
+            UserActions.update(window.currentUser.id, data, null);
         },
         render: function() {
             var profileInfo = "";
@@ -219,35 +211,29 @@ define([
                     <div id="preferencesModal" className="modal">
                         <div className="modal-content container">
                             <div className="col s12">
-                                <label>Select global search preference</label>
                                 <div className="input-field col 6">
-                                <select id="maturitySelect">
-                                    {/*I touched your code, muahahaha*/}
-                                    <option value="">Choose your option</option>
-                                    <option value="0">Kids</option>
-                                    <option value="1">Young Adults</option>
-                                    <option value="2">Adults</option>
-                                </select>
-
+                                    <select id="maturitySelect">
+                                        {/*I touched your code, muahahaha*/}
+                                        <option disaled value="">Choose your option</option>
+                                        <option value="0">Kids</option>
+                                        <option value="1">Young Adults</option>
+                                        <option value="2">Adults</option>
+                                    </select>
+                                    <label htmlFor="maturitySelect">Select global search preference</label>
                                 </div>
                                 <br></br>
-                                <label>Select lending period preference</label>
                                 <div className="input-field col 6">
-
                                     <select id="durationSelect">
-
-                                        <option value="">Choose your option</option>
+                                        <option disabled value="">Choose your option</option>
                                         <option value="1">3 days</option>
                                         <option value="2">5 days</option>
                                         <option value="3">7 days</option>
                                     </select>
-
+                                    <label htmlFor="durationSelect">Select lending period preference</label>
                                 </div>
-                                <button className="btn waves-effect waves-light" id='submitPreferences' type="submit" name="action">Submit
+                                <button onClick={this.setPreferences} className="btn waves-effect waves-light" id='submitPreferences' type="submit" name="action">Submit
                                     <i className="material-icons right">send</i>
                                 </button>
-
-
                             </div>
                         </div>
                     </div>

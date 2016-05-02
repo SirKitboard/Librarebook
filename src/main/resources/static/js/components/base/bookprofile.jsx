@@ -364,6 +364,7 @@ define([
                                         </div>
                                     </div>
                                     <div className="row">
+                                        <label htmlFor="maturitySelect">Maturity Rating</label>
                                         <div className="input-field col s12">
                                             <select id="maturitySelect">
                                                 <option disabled value="">Choose your option</option>
@@ -371,7 +372,7 @@ define([
                                                 <option selected={this.state.book.maturity == 1} value="1">Young Adults</option>
                                                 <option selected={this.state.book.maturity == 2} value="2">Adults</option>
                                             </select>
-                                            <label htmlFor="maturitySelect"/>
+
                                         </div>
                                     </div>
                                     <div className="row">

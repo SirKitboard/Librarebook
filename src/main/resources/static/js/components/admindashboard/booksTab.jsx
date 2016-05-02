@@ -39,6 +39,7 @@ define([
             var totalLicenses = $("#totalLicenses").val();
             var language = $("#language").val();
             var numPages = $("#numPages").val();
+            var maturity = $("#maturitySelect").val();
 
             var data = {
                 title: title,
@@ -49,7 +50,8 @@ define([
                 yearPublished: yearPublished,
                 totalLicenses: totalLicenses,
                 language: language,
-                numPages: numPages
+                numPages: numPages,
+                maturity: maturity
             };
 
             BookActions.addBook(data);
@@ -325,7 +327,20 @@ define([
                                              <label htmlFor="numPages">Number Of Pages</label>
                                          </div>
                                      </div>
-                                     <div className="row">
+                                    <div className="row">
+                                        <div className="input-field col s12 m6 center-align">
+                                            <select id="maturitySelect">
+                                                {/*I touched your code, muahahaha*/}
+                                                <option value="">Choose an option</option>
+                                                <option value="0">Kids</option>
+                                                <option value="1">Young Adults</option>
+                                                <option value="2">Adults</option>
+                                            </select>
+                                            <label htmlFor="maturitySelect">Maturity</label>
+                                        </div>
+                                    </div>
+
+                                    <div className="row">
                                          <div className="file-field input-field">
                                              <div className="btn">
                                                  <span>PDF</span>

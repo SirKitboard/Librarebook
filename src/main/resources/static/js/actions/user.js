@@ -94,6 +94,18 @@ define([
                     })
                 }
             });
+        },
+        update: function(id, data, success) {
+            $.ajax({
+                url:"/api/users/"+window.currentUser.id,
+                method: "PUT",
+                data: data,
+                success : function(response) {
+                    if(typeof success == "function") {
+                        success(response);
+                    }
+                }
+            })
         }
     };
 });
