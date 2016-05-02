@@ -52,6 +52,25 @@ define([
             var self = this;
             BookActions.recommendNewBook(data, this.updateRecommendations)
         },
+        submitMaturityPreference: function(){
+
+            var e = this.getElementById("maturitySelect");
+            var strUser = e.options[e.selectedIndex].value;
+          if(strUser ==1){
+
+          }
+            else if(strUser==2){
+
+          }
+            else if (strUser==3){
+
+          }
+            else{
+
+          }
+
+
+        },
         render: function() {
             var profileInfo = "";
             var imageURL = "http://placehold.it/200x200"
@@ -161,11 +180,6 @@ define([
                              <div className="collapsible-body"><BookCarousel setView={this.props.setView}books={window.currentUser.wishlist}/></div>
                          </li>
                     </ul>
-                    <div className="fixed-action-btn">
-                        <a className="btn-floating btn-large red modal-trigger profile-modal" href="#confirmationModal">
-                            <i className="large material-icons">not_interested</i>
-                        </a>
-                    </div>
                     <div id="newRecommendationModal" className="modal">
                         <div className="modal-content container">
                             <div className="row">
@@ -206,14 +220,27 @@ define([
                         <div className="modal-content container">
                             <div className="col s12">
                                 <label>Select global search preference</label>
-                                <div className="input-field col s12">
+                                <div className="input-field col 6">
                                 <select id="maturitySelect">
                                     {/*I touched your code, muahahaha*/}
                                     <option value="">Choose your option</option>
-                                    <option value="1">Kids</option>
-                                    <option value="2">Young Adults</option>
-                                    <option value="3">Adults</option>
+                                    <option value="0">Kids</option>
+                                    <option value="1">Young Adults</option>
+                                    <option value="2">Adults</option>
                                 </select>
+
+                                </div>
+                                <br></br>
+                                <label>Select lending period preference</label>
+                                <div className="input-field col 6">
+
+                                    <select id="durationSelect">
+
+                                        <option value="">Choose your option</option>
+                                        <option value="1">3 days</option>
+                                        <option value="2">5 days</option>
+                                        <option value="3">7 days</option>
+                                    </select>
 
                                 </div>
                                 <button className="btn waves-effect waves-light" id='submitPreferences' type="submit" name="action">Submit

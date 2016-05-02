@@ -204,6 +204,7 @@ define([
             var description = $("#description").val();
             var genre = $("#genreSelect").val();
             var author = this.state.selectedAuthorIDs;
+            var maturity = $("#maturitySelect").val();
             var publisher = this.state.selectedPublisher.id;
             var yearPublished = $("#yearPublished").val();
             var totalLicenses = $("#totalLicenses").val();
@@ -211,11 +212,11 @@ define([
             var numPages = $("#numPages").val();
             var status = (!$("#bannedCheckbox").val()) ? "Available" : "Banned";
 
-
             var data = {
                 title: title,
                 genres: genre,
                 authors: author,
+                maturity: maturity,
                 publisher: publisher,
                 description: description,
                 yearPublished: yearPublished,
@@ -360,6 +361,17 @@ define([
                                         <div className="input-field col s12">
                                             <input placeholder="" id="yearPublished" ref="yearPublished"  className="validate" type="number" min="0" defaultValue={this.state.book.yearPublished}/>
                                             <label className="active"  htmlFor="yearPublished">Year Published</label>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="input-field col s12">
+                                            <select id="maturitySelect">
+                                                <option disabled value="">Choose your option</option>
+                                                <option selected={this.state.book.maturity == 0} value="0">Kids</option>
+                                                <option selected={this.state.book.maturity == 1} value="1">Young Adults</option>
+                                                <option selected={this.state.book.maturity == 2} value="2">Adults</option>
+                                            </select>
+                                            <label htmlFor="maturitySelect"/>
                                         </div>
                                     </div>
                                     <div className="row">

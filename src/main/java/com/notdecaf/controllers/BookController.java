@@ -184,6 +184,7 @@ public class BookController implements BaseController<Book> {
                 || !requestMap.containsKey("genres[]")
                 || !requestMap.containsKey("authors[]")
                 || !requestMap.containsKey("publisher")
+                || !requestMap.containsKey("maturity")
                 || !requestMap.containsKey("description")
                 || !requestMap.containsKey("yearPublished")
                 || !requestMap.containsKey("totalLicenses")
@@ -227,6 +228,7 @@ public class BookController implements BaseController<Book> {
                 Language.valueOf(request.getParameter("language").toUpperCase()),
                 ItemStatus.Available,
                 Integer.parseInt(request.getParameter("numPages")));
+
         book.setDateAdded(new Date());
         BookFactory.save(book);
         return ResponseEntity.ok(book);
@@ -300,6 +302,9 @@ public class BookController implements BaseController<Book> {
         }
         if (request.getParameter("numPages") != null){
             book.setNumPages(Integer.parseInt(request.getParameter("numPages")));
+        }
+        if (request.getParameter("maturity") != null){
+            book.setMaturity(Integer.parseInt(request.getParameter("maturity")));
         }
         if (request.getParameter("status") != null){
             book.setStatus(ItemStatus.valueOf(request.getParameter("status")));
