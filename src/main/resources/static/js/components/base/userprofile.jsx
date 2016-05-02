@@ -75,19 +75,19 @@ define([
                      <ul className="collapsible" data-collapsible="accordion">
                          <li>
                              <div className="collapsible-header"><i className="material-icons">lock</i>Books you have currently checked out </div>
-                             <div className="collapsible-body">{window.currentUser.currentlyCheckedOutItems.length != 0 ? <BookCarousel books={this.props.stores.books.getCheckedOutbooks()}/>: <h5 style={{margin:'20px'}}>No checked out items</h5>}</div>
+                             <div className="collapsible-body">{window.currentUser.currentlyCheckedOutItems.length != 0 ? <BookCarousel setView={this.props.setView}books={this.props.stores.books.getCheckedOutbooks()}/>: <h5 style={{margin:'20px'}}>No checked out items</h5>}</div>
                          </li>
                         <li>
                           <div className="collapsible-header"><i className="material-icons">lock</i>Books you have borrowed in the past</div>
-                            <div className="collapsible-body">{window.currentUser.checkoutHistory.length != 0 ? <BookCarousel books={window.currentUser.checkoutHistory} />: <h5 style={{margin:'20px'}}>No items</h5>}</div>
+                            <div className="collapsible-body">{window.currentUser.checkoutHistory.length != 0 ? <BookCarousel setView={this.props.setView}books={window.currentUser.checkoutHistory} />: <h5 style={{margin:'20px'}}>No items</h5>}</div>
                         </li>
                         <li>
-                          <div className="collapsible-header"><i className="material-icons">rate_review</i>Books you have reviewed</div>
-                          <div className="collapsible-body"><BookCarousel books={this.state.books}/></div>
+                          <div className="collapsible-header"><i className="material-icons">rate_review</i>Books you have rated</div>
+                            <div className="collapsible-body">{window.currentUser.ratings.length != 0 ? <BookCarousel setView={this.props.setView}books={this.props.stores.books.getRatedBooks()} />: <h5 style={{margin:'20px'}}>No items</h5>}</div>
                         </li>
                          <li>
                              <div className="collapsible-header"><i className="material-icons">lock</i>Books you have reserved</div>
-                             <div className="collapsible-body">{window.currentUser.holdItems.length != 0 ? <BookCarousel books={this.props.stores.books.getHeldBooks()} />: <h5 style={{margin:'20px'}}>No items</h5>}</div>
+                             <div className="collapsible-body">{window.currentUser.holdItems.length != 0 ? <BookCarousel setView={this.props.setView}books={this.props.stores.books.getHeldBooks()} />: <h5 style={{margin:'20px'}}>No items</h5>}</div>
                          </li>
                          <li>
                              <div className="collapsible-header"><i className="material-icons">library_books</i>Books you've favorited</div>
@@ -95,7 +95,7 @@ define([
                          </li>
                          <li>
                              <div className="collapsible-header"><i className="material-icons">library_books</i>Books you've wished for</div>
-                             <div className="collapsible-body"><BookCarousel books={window.currentUser.wishlist}/></div>
+                             <div className="collapsible-body"><BookCarousel setView={this.props.setView}books={window.currentUser.wishlist}/></div>
                          </li>
                     </ul>
                     <div className="fixed-action-btn">

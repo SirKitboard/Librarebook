@@ -6,20 +6,20 @@ define([
 	return React.createClass({
 		render : function() {
 			console.log(this.props.books);
+			var self = this;
 			if(Array.isArray(this.props.books)) {
 				return (<div className="bookCarousel">
 					{
 						_.map(this.props.books, function(book) {
 							return (
 								<div style={{display:'inline-block'}}>
-									<Book book={book}/>
+									<Book setView={self.props.setView} book={book}/>
 								</div>
 							)
 						})
 					}
 				</div>)
 			}
-			var self = this;
 			return (
 				<div className="bookCarousel">
 					{

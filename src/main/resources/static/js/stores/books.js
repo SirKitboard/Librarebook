@@ -204,6 +204,19 @@ define([
         return books;
     }
 
+    Store.prototype.getRatedBooks = function(){
+        var books = [];
+        var self = this;
+        _.each(window.currentUser.ratings, function(item){
+            if(self.books[item.item]) {
+                books.push(self.books[item.item])
+            } else {
+                self.action.getBook(item.item);
+            }
+
+        });
+        return books;
+    }
     Store.prototype.rate = function(data) {
         if (this.books[data.bookId]) {
             var book = this.books[data.bookId];
