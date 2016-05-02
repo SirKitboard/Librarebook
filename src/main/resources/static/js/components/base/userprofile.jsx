@@ -3,19 +3,23 @@ define([
     'react',
     'jsx!components/widgets/bookCarousel',
     'jsx!components/userprofile/updateUserProfile',
-    'jsx!components/widgets/adContainer'
-], function(_, React,BookCarousel,UpdateUserProfile, AdComponent) {
+    'jsx!components/widgets/adContainer',
+    'stores/books'
+], function(_, React,BookCarousel,UpdateUserProfile, AdComponent, BooksStore) {
     return React.createClass({
         getInitialState : function() {
-
-             var book = {
+            var array = window.currentUser.checkoutHistory.concat(window.currentUser.currentlyCheckedOutItems);
+            var random = Math.floor(Math.random() * array.length);
+            this.props.stores.books.getRecommendedOrPull(array[random].item);
+            var book = {
                 title: null,
                 description: null,
                 authors : []
             }
             books = [book, book, book, book, book, book]
             return {
-                books: books
+                books: books,
+                random: array[random].item
             }
         },
         componentDidMount : function() {
@@ -62,6 +66,8 @@ define([
                     </div>
                 </div>
             );
+            console.log(this.state.random);
+            console.log(this.props.stores.books.getRecommended(this.state.random));
 
             return (
                 <div className="container" style={{width:'90%', maxWidth:'none', marginTop: '80px'}}>
@@ -74,7 +80,7 @@ define([
                     <h5>User History</h5>
                      <ul className="collapsible" data-collapsible="accordion">
                          <li>
-                             <div className="collapsible-header"><i className="material-icons">lock</i>Books you have currently checked out </div>
+                             <div className="collapsible-header"><i className="material-icons">lock</i>Books you are currently enjoying</div>
                              <div className="collapsible-body">{window.currentUser.currentlyCheckedOutItems.length != 0 ? <BookCarousel setView={this.props.setView}books={this.props.stores.books.getCheckedOutbooks()}/>: <h5 style={{margin:'20px'}}>No checked out items</h5>}</div>
                          </li>
                         <li>
@@ -85,6 +91,14 @@ define([
                           <div className="collapsible-header"><i className="material-icons">rate_review</i>Books you have rated</div>
                             <div className="collapsible-body">{window.currentUser.ratings.length != 0 ? <BookCarousel setView={this.props.setView}books={this.props.stores.books.getRatedBooks()} />: <h5 style={{margin:'20px'}}>No items</h5>}</div>
                         </li>
+                        <li>
+                          <div className="collapsible-header"><i className="material-icons">rate_review</i>Books you have reviewed</div>
+                          <div className="collapsible-body"><BookCarousel books={this.state.books}/></div>
+                        </li>
+                         <li>
+                             <div className="collapsible-header"><i className="material-icons">rate_review</i>Recommended Books</div>
+                             <div className="collapsible-body">{this.props.stores.books.getRecommended(this.state.random) != 0 ? <BookCarousel books={this.props.stores.books.getRecommended(this.state.random)}/>: <h5 style={{margin:'20px'}}>No items</h5>}</div>
+                         </li>
                          <li>
                              <div className="collapsible-header"><i className="material-icons">lock</i>Books you have reserved</div>
                              <div className="collapsible-body">{window.currentUser.holdItems.length != 0 ? <BookCarousel setView={this.props.setView}books={this.props.stores.books.getHeldBooks()} />: <h5 style={{margin:'20px'}}>No items</h5>}</div>
