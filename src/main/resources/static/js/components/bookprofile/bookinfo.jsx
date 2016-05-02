@@ -25,9 +25,11 @@ define([
         isWishlisted: function() {
             var book = this.props.book;
             var wishlist = window.currentUser.wishlist;
-            for (var i = 0, len = wishlist.length; i < len; i++) {
-                if (wishlist[i].id == book.id) {
-                    return true;
+            if (wishlist) {
+                for (var i = 0, len = wishlist.length; i < len; i++) {
+                    if (wishlist[i].id == book.id) {
+                        return true;
+                    }
                 }
             }
             return false;

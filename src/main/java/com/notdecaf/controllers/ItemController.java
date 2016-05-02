@@ -294,6 +294,7 @@ public class ItemController {
 
             item.removeCheckedOutItem(prevCheckedOutItem);
             user.removeCheckedOutItem(prevCheckedOutItem);
+            CheckoutManager.removeCheckedOutItem(prevCheckedOutItem);
             itemDao.save(item);
             checkedOutItemDao.delete(prevCheckedOutItem);
 

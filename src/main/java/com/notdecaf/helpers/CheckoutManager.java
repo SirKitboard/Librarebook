@@ -18,9 +18,6 @@ import java.util.*;
  */
 @Service
 public class CheckoutManager {
-    private static List<UserCheckedOutItem> checkedOutItems = new ArrayList<UserCheckedOutItem>();
-    private static List<UserCheckedOutItem> queuedItems = new ArrayList<UserCheckedOutItem>();
-
     @Autowired
     UserCheckedOutItemDao checkedOutItemDao;
 
@@ -30,12 +27,18 @@ public class CheckoutManager {
     @Autowired
     UserDao userDao;
 
+    private static List<UserCheckedOutItem> checkedOutItems = new ArrayList<UserCheckedOutItem>();
+    private static List<UserCheckedOutItem> queuedItems = new ArrayList<UserCheckedOutItem>();
+    private static List<UserCheckedOutItem> returnedItems = new ArrayList<UserCheckedOutItem>();
+
     public CheckoutManager() {}
 
     @Scheduled(cron="*/5 * * * * ?")
     public void checkItemDue() {
         checkedOutItems.addAll(queuedItems);
+        checkedOutItems.removeAll(returnedItems);
         queuedItems.clear();
+        returnedItems.clear();
         if (checkedOutItems.size() > 0) {
             Date currentDate = new Date();
             Iterator<UserCheckedOutItem> itemIterator = checkedOutItems.iterator();
@@ -94,5 +97,9 @@ public class CheckoutManager {
 
     public static void addCheckedOutItem(UserCheckedOutItem item) {
         queuedItems.add(item);
+    }
+
+    public static void removeCheckedOutItem(UserCheckedOutItem item) {
+        returnedItems.add(item);
     }
 }

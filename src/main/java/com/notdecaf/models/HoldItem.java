@@ -24,6 +24,8 @@ public class HoldItem extends IDModel{
     @NotNull
     private Date dateHeld;
 
+    private Date dateAvailable;
+
     public HoldItem() {
     }
 
@@ -63,5 +65,13 @@ public class HoldItem extends IDModel{
 
     public void setDateHeld(Date dateHeld) {
         this.dateHeld = dateHeld;
+    }
+
+    public Date getDateAvailable() {
+        return dateAvailable;
+    }
+
+    public void setDateAvailable(Date dateAvailable) {
+        this.dateAvailable = dateAvailable;
     }
 }
