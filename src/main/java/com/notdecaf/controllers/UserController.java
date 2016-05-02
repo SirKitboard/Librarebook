@@ -84,6 +84,9 @@ public class UserController implements BaseController<User> {
                     address);
 
             addressDao.save(address);
+            user = userDao.save(user);
+            UserPreferences preferences = new UserPreferences(user);
+            user.setPreferences(preferences);
             userDao.save(user);
             return ResponseEntity.ok(user);
         } catch (PasswordStorage.CannotPerformOperationException e) {

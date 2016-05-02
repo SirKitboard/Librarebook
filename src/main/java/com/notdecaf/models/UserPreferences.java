@@ -53,6 +53,11 @@ public class UserPreferences {
     }
 
     public UserPreferences() {
-    }
 
+    }
+    public UserPreferences(User user) {
+        this.userID = user.getId();
+        this.status = UserStatus.Active;
+        this.emailPreference = EmailPreference.HEAVY;
+    }
 }

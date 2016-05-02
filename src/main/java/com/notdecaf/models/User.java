@@ -17,7 +17,7 @@ import java.util.Set;
 @DiscriminatorValue("user")
 @Table(name = "users")
 
-public class User extends IDModel implements Cloneable{
+public class User implements Cloneable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -54,17 +54,17 @@ public class User extends IDModel implements Cloneable{
     @JoinTable(name = "users_favorites", joinColumns = {@JoinColumn(name = "userID", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn(name = "bookID", referencedColumnName = "id")})
     private Set<Item> favorites;
 
-//    @JsonBackReference
+    @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "user_shoppingcartitem", joinColumns = {@JoinColumn(name= "userID", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn (name ="itemID", referencedColumnName = "id")})
     private Set <Item> shoppingCart;
 
-//    @JsonBackReference
+    @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "user_wishlist", joinColumns = {@JoinColumn(name= "userID", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn (name ="itemID", referencedColumnName = "id")})
     private Set <Item> wishlist;
 
-//    @JsonBackReference
+    @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "user_notinterested", joinColumns = {@JoinColumn(name= "userID", referencedColumnName = "id")}, inverseJoinColumns = {@JoinColumn (name ="itemID", referencedColumnName = "id")})
     private Set <Item> notInterested;
@@ -110,7 +110,6 @@ public class User extends IDModel implements Cloneable{
         this.checkoutHistory = new HashSet<UserCheckoutHistory>();
         this.ratings = new HashSet<UserItemRating>();
         this.reviewRatings = new HashSet<UserReviewRating>();
-        this.preferences = new UserPreferences();
         this.flags = new HashSet<Item>();
         this.holdItems = new HashSet<HoldItem>();
     }
