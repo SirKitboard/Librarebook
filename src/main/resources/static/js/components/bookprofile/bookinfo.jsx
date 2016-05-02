@@ -120,6 +120,9 @@ define([
                 nextState.checkedOut = false;
             }
         },
+        recommendBook: function() {
+            BookActions.recommendExistingBook(this.props.book.id)
+        },
         render: function() {
             var book = this.props.book;
             var user = window.currentUser;
@@ -201,7 +204,7 @@ define([
                     } else {
                         waitlistButton = (<li><a onClick={this.addHold}>Place Hold</a></li>);
                     }
-                    var recommendButton = (<li><a>Recommend</a></li>);
+                    var recommendButton = (<li onClick={this.recommendBook}><a>Recommend</a></li>);
                     var disabled = "disabled";
                 }
             }
@@ -227,6 +230,7 @@ define([
             if(window.currentUser && window.currentUser.userType == "admin") {
                 editButton = <li><a href="#editBookModal" className="modal-trigger editModalTrigger">Edit</a></li>
             }
+
 
             return (
                 <div id="bookInfo">

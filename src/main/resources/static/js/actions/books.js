@@ -294,6 +294,35 @@ define([
                 }
             })
         },
+        recommendExistingBook: function(id) {
+            $.ajax({
+                url: "/api/items/books/"+id+"/recommend",
+                method: "POST",
+                success: function () {
+                    window.currentUser.recommendedBooks.push({
+                        item: id,
+                        user: window.currentUser.id,
+                        status: 0
+                    });
+                    Materialize.toast("Book recommended", 4000);
+                }
+            })
+        },
+        recommendNewBook: function(data) {
+            $.ajax({
+                url: "/api/items/books/recommended",
+                method: "POST",
+                data: data,
+                success: function () {
+                    window.currentUser.recommendedBooks.push({
+                        item: id,
+                        user: window.currentUser.id,
+                        status: 0
+                    });
+                    Materialize.toast("Book recommended", 4000);
+                }
+            })
+        },
         getRecommended: function(id) {
             $.ajax({
                 url: "/api/items/books/"+id+"/recommended",

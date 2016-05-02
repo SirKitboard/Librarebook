@@ -2,10 +2,11 @@ define([
     'underscore',
     'react',
     'jsx!components/widgets/bookCarousel',
+    'jsx!components/widgets/recommendationCarousel',
     'jsx!components/userprofile/updateUserProfile',
     'jsx!components/widgets/adContainer',
     'stores/books'
-], function(_, React,BookCarousel,UpdateUserProfile, AdComponent, BooksStore) {
+], function(_, React,BookCarousel, RecomCarousel, UpdateUserProfile, AdComponent, BooksStore) {
     return React.createClass({
         getInitialState : function() {
             var array = window.currentUser.checkoutHistory.concat(window.currentUser.currentlyCheckedOutItems);
@@ -19,7 +20,9 @@ define([
             books = [book, book, book, book, book, book]
             return {
                 books: books,
-                random: array[random].item
+                random: array[random].item,
+                existingRecommended: _.filter(window.currentUser.recommendedBooks, function(book) {return book.item != 0}),
+                newRecommended: _.filter(window.currentUser.recommendedBooks, function(book) {return book.item == 0})
             }
         },
         componentDidMount : function() {
@@ -100,6 +103,14 @@ define([
                          <li>
                              <div className="collapsible-header"><i className="material-icons">rate_review</i>Recommended Books</div>
                              <div className="collapsible-body">{this.props.stores.books.getRecommended(this.state.random) != 0 ? <BookCarousel books={this.props.stores.books.getRecommended(this.state.random)}/>: <h5 style={{margin:'20px'}}>No items</h5>}</div>
+                         </li>
+                         <li>
+                             <div className="collapsible-header"><i className="material-icons">rate_review</i>Books you requested more stock for</div>
+                             <div className="collapsible-body">{this.state.existingRecommended ? <RecomCarousel books={this.state.existingRecommended} stores={this.props.stores}/>: <h5 style={{margin:'20px'}}>No items</h5>}</div>
+                         </li>
+                         <li>
+                             <div className="collapsible-header"><i className="material-icons">rate_review</i>Books you Recommended</div>
+                             <div className="collapsible-body">{this.state.existingRecommended ? <ul></ul>: <h5 style={{margin:'20px'}}>No items</h5>}</div>
                          </li>
                          <li>
                              <div className="collapsible-header"><i className="material-icons">lock</i>Books you have reserved</div>
