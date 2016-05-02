@@ -241,11 +241,11 @@ public class BookController implements BaseController<Book> {
         if (request.getParameter("title") != null){
             book.setTitle(request.getParameter("title"));
         }
-        if (request.getParameter("genres") != null){
+        if (request.getParameter("genres[]") != null){
             Set<Genre> genres = new HashSet<Genre>();
             try {
                 Map<String, String[]> requestMap = request.getParameterMap();
-                String[] genreIDs = requestMap.get("genres");
+                String[] genreIDs = requestMap.get("genres[]");
                 for (String idstr : genreIDs) {
                     long genreID = Long.parseLong(idstr);
                     Genre genre = genreDao.findOne(genreID);
@@ -258,11 +258,11 @@ public class BookController implements BaseController<Book> {
                 return ResponseEntity.badRequest().body(null);
             }
         }
-        if (request.getParameter("authors") != null){
+        if (request.getParameter("authors[]") != null){
             Set<Author> authors = new HashSet<Author>();
             try {
                 Map<String, String[]> requestMap = request.getParameterMap();
-                String[] authorIDs = requestMap.get("authors");
+                String[] authorIDs = requestMap.get("authors[]");
                 for (String idstr : authorIDs) {
                     long authorID = Long.parseLong(idstr);
                     Author author = authorDao.findOne(authorID);
@@ -297,9 +297,6 @@ public class BookController implements BaseController<Book> {
         }
         if (request.getParameter("language") != null){
             book.setLanguage(Language.valueOf(request.getParameter("language")));
-        }
-        if (request.getParameter("status") != null){
-            book.setStatus(ItemStatus.valueOf(request.getParameter("status")));
         }
         if (request.getParameter("numPages") != null){
             book.setNumPages(Integer.parseInt(request.getParameter("numPages")));
