@@ -17,7 +17,7 @@ define([
                 "year": 1994,
                 "publisher": "John Doe"
             }
-
+            BookActions.getUserRecommended();
 
             return {
                 books : [book, book, book, book, book, book, book],
@@ -59,7 +59,7 @@ define([
         },
 
         componentDidMount: function() {
-            $('.modal-trigger').leanModal();
+            $('.modal-trigger.addBookModal').leanModal();
             $('select').material_select();
         },
         slidetoMainTab: function() {
@@ -186,36 +186,73 @@ define([
             $('select').material_select('destroy');
             $('select').material_select();
         },
+        approveRecommnedation: function(e) {
+            var target = e.target;
+            if(target.tagName != "A") {
+               target = target.parentNode;
+            }
+            var id = target.getAttribute("data-id");
+            BookActions.approveRecommendation(id);
+        },
+        rejectRecommendation: function(e) {
+            var target = e.target;
+            if(target.tagName != "A") {
+                target = target.parentNode;
+            }
+            var id = target.getAttribute("data-id");
+            BookActions.rejectRecommendation(id);
+        },
         render: function() {
             var self = this;
             return (
 
-                <div id="booksTab" className="row">
-                    <div className="col s12 m3 bookList">
-                        <div className="input-field">
-                          <i className="material-icons prefix">search</i>
-                          <input id="search" type="text" className="validate"/>
-                          <label htmlFor="search">Search</label>
-                        </div>
-                        <ul>
-                            {
-                                _.map(this.state.books, function(book) {
-                                    return (
-                                        <li>
-                                            <Book book={book}/>
-                                        </li>
-                                    )
-                                })
-                            }
-                        </ul>
-                    </div>
-                    <div className="col s12 m9 BookDetails">
-                        <BookInfo book={this.state.books[0]}/>
-                    </div>
+                <div id="booksTab" className="container row">
+                    <ul className="collection with-header">
+                        <li className="collection-header"><h4>Need more stock</h4></li>
+                        {
+                            _.map(this.props.stores.books.getUserRecommended().existing, function(item) {
+                                var book = self.props.stores.books.getBookOrPull(item.item);
+                                if(!book) {
+                                    return null;
+                                }
+                                var imageURL = "http://placehold.it/100x1000";
+                                if(book.coverImageUrl && book.coverImageUrl.length > 0) {
+                                    imageURL = book.coverImageUrl;
+                                }
+                                return (
+                                    <li className="collection-item avatar">
+                                        <img src={imageURL} alt="" className="circle"/>
+                                        <span className="title">{book.title}</span>
+                                        <p>
+                                            {
+                                                _.pluck(book.authors, 'name').join("<br/>")
+                                            }
+                                        </p>
+                                        <a onClick={self.approveRecommnedation} data-id={item.id} className="secondary-content green-text"><i className="material-icons">check</i></a>
+                                        <a onClick={self.rejectRecommendation} data-id={item.id} style={{top: '45px'}}className="secondary-content red-text"><i className="material-icons">close</i></a>
+                                    </li>
+                                )
+                            })
+                        }
+                    </ul>
+                    <ul className="collection with-header">
+                        <li className="collection-header"><h4>Not in Library</h4></li>
+                        {
+                            _.map(this.props.stores.books.getUserRecommended().newBooks, function(item) {
+                                return (
+                                    <li className="collection-item">
+                                        {item.bookName} by {item.authorName}
+                                        <a onClick={self.approveRecommnedation} data-id={item.id} className="secondary-content green-text"><i data-id={item.id} className="material-icons">check</i></a>
+                                        <a onClick={self.rejectRecommendation} data-id={item.id} style={{right: '45px'}}className="secondary-content red-text"><i data-id={item.id} className="material-icons">close</i></a>
+                                    </li>
+                                )
+                            })
+                        }
+                    </ul>
                     <div className="fixed-action-btn">
-                       <a className="btn-floating btn-large red modal-trigger" href="#addBookModal">
-                          <i className="large material-icons">add</i>
-                       </a>
+                        <a className="btn-floating btn-large red modal-trigger addBookModal" href="#addBookModal">
+                            <i className="large material-icons">add</i>
+                        </a>
                     </div>
                     <div id="addBookModal" style={{width:'600px'}}className="modal">
                         <div className="modal-content">

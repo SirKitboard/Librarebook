@@ -67,7 +67,7 @@ define([
                             <li className="tab col s3"><a data-index="0" onClick={this.switchTab}>Reports</a></li>
                             <li className="tab col s3"><a data-index="1" onClick={this.switchTab}>Books</a></li>
                             <li className="tab col s3"><a data-index="2" onClick={this.switchTab}>Users</a></li>
-                            <li className="tab col s3"><a data-index="3" onClick={this.switchTab}>Publishers</a></li>
+                            <li className="tab col s3"><a data-index="3" onClick={this.switchTab}>Publisher</a></li>
                             <div id="adminTabsIndicator" className="indicator"/>
                           </ul>
                         </div>

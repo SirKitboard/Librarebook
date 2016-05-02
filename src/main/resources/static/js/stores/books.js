@@ -13,6 +13,9 @@ define([
         this.books = {};
         this.recents = {};
         this.recommended = {};
+        this.userRecommendedExisting = {};
+        this.userRecommendedNew = {};
+        this.currentlyPulling = {};
 
         this.registerDispatchListener(function(action) {
             var self = this;
@@ -69,6 +72,14 @@ define([
                     this.addRecommended(action.data);
                     this.event.emit("change");
                     break;
+                case Constants.ADD_USER_RECOMMENDED:
+                    this.addUserRecommended(action.data);
+                    this.event.emit("change");
+                    break;
+                case Constants.REMOVE_USER_RECOMMENDATION:
+                    this.removeUserRecommended(action.data);
+                    this.event.emit("change");
+                    break;
             }
 
         }.bind(this));
@@ -99,7 +110,10 @@ define([
         if (this.books[id]) {
             return this.books[id];
         } else {
-            this.action.getBook(id);
+            if(!this.currentlyPulling[id]) {
+                this.currentlyPulling[id] = true;
+                this.action.getBook(id);
+            }
             return null;
         }
     };
@@ -272,6 +286,30 @@ define([
     Store.prototype.getRecommended = function(id) {
         return this.recommended[id];
     };
+
+    Store.prototype.addUserRecommended = function(book) {
+        if(book.item == 0) {
+            this.userRecommendedNew[book.id] = book;
+        } else {
+            this.userRecommendedExisting[book.id] = book;
+        }
+    };
+
+    Store.prototype.removeUserRecommended = function(book) {
+        if(this.userRecommendedNew[book.id]) {
+            delete this.userRecommendedNew[book.id];
+        }
+        if(this.userRecommendedExisting[book.id]){
+            delete this.userRecommendedExisting[book.id];
+        }
+    };
+
+    Store.prototype.getUserRecommended = function() {
+        return {
+            existing: this.userRecommendedExisting,
+            newBooks: this.userRecommendedNew
+        }
+    }
 
     return Store;
 })

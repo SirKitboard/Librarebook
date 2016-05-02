@@ -18,7 +18,9 @@ define([
         ADD_PUBLISHER:13,
         RATE: 14,
         REMOVE_RATING: 15,
-        RECOMMEND: 16
+        RECOMMEND: 16,
+        ADD_USER_RECOMMENDED: 17,
+        REMOVE_USER_RECOMMENDATION: 18
     };
 
     return Constants

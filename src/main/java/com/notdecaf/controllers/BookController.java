@@ -350,5 +350,4 @@ public class BookController implements BaseController<Book> {
         }
         return ResponseEntity.badRequest().body(null);
     }
-
 }

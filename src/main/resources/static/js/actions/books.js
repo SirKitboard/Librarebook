@@ -308,6 +308,44 @@ define([
                     })
                 }
             });
+        },
+        getUserRecommended: function() {
+            $.ajax({
+                url: "/api/items/books/recommended",
+                method: "GET",
+                success: function(res) {
+                    _.each(res, function(item) {
+                        AppDispatcher.dispatch({
+                            actionType: Constants.ADD_USER_RECOMMENDED,
+                            data: item
+                        })
+                    })
+                }
+            })
+        },
+        approveRecommendation: function(id) {
+            $.ajax({
+                url: "/api/items/books/recommended/"+id+"/approve",
+                method: "PUT",
+                success: function(res) {
+                    AppDispatcher.dispatch({
+                        actionType: Constants.REMOVE_USER_RECOMMENDATION,
+                        data: res
+                    })
+                }
+            })
+        },
+        rejectRecommendation: function(id) {
+            $.ajax({
+                url: "/api/items/books/recommended/"+id+"/reject",
+                method: "PUT",
+                success: function(res) {
+                    AppDispatcher.dispatch({
+                        actionType: Constants.REMOVE_USER_RECOMMENDATION,
+                        data: res
+                    })
+                }
+            })
         }
     };
 });

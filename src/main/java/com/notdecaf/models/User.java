@@ -73,6 +73,18 @@ public class User extends IDModel implements Cloneable{
     private Set<UserCheckedOutItem> currentlyCheckedOutItems;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private Set<UserRecommendedBook> recommendedBooks;
+
+
+    public Set<UserRecommendedBook> getRecommendedBooks() {
+        return recommendedBooks;
+    }
+
+    public void setRecommendedBooks(Set<UserRecommendedBook> recommendedBooks) {
+        this.recommendedBooks = recommendedBooks;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<UserCheckoutHistory> checkoutHistory;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
@@ -129,6 +141,10 @@ public class User extends IDModel implements Cloneable{
 
     public void addCheckedOutItem(UserCheckedOutItem checkedOutItem) {
         this.currentlyCheckedOutItems.add(checkedOutItem);
+    }
+
+    public void addRecommendedBook(UserRecommendedBook recommendedBook) {
+        this.recommendedBooks.add(recommendedBook);
     }
 
     public void removeCheckedOutItem(UserCheckedOutItem checkedOutItem) {
