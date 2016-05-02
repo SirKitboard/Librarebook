@@ -210,7 +210,8 @@ define([
             var totalLicenses = $("#totalLicenses").val();
             var language = $("#language").val();
             var numPages = $("#numPages").val();
-            var status = (!$("#bannedCheckbox").val()) ? "Available" : "Banned";
+            var status = ($("#bannedCheckbox").val() == true ? "Banned" : "Available");
+            debugger;
 
             var data = {
                 title: title,
