@@ -2,9 +2,11 @@ define([
     'underscore',
     'react',
     'jsx!components/template/book',
+    'jsx!components/base/userprofile',
+    'jsx!components/widgets/bookCarousel',
     'react-dom',
     'actions/user'
-], function(_, React, Book, ReactDOM, UserActions) { //, BookInfoComponent, BookExtrasComponent, BookRecommendComponent) {
+], function(_, React, Book, UserProfileComponent, BookCarousel, ReactDOM, UserActions) { //, BookInfoComponent, BookExtrasComponent, BookRecommendComponent) {
     return React.createClass({
         getInitialState: function() {
             return {
@@ -69,6 +71,7 @@ define([
                 $('.modal-trigger.addUser').leanModal();
                 $('.modal-trigger.deleteUser').leanModal();
                 $('select').material_select();
+                $('.collapsible').collapsible({});
                 $('.datepicker').pickadate({
                     selectMonths: true, // Creates a dropdown to control month
                     selectYears: 60 // Creates a dropdown of 15 years to control year
@@ -80,6 +83,7 @@ define([
             $('.modal-trigger.addUser').leanModal();
             $('.modal-trigger.deleteUser').leanModal();
             $('select').material_select();
+            $('.collapsible').collapsible({});
             $('.datepicker').pickadate({
                 selectMonths: true, // Creates a dropdown to control month
                 selectYears: 60 // Creates a dropdown of 15 years to control year
@@ -212,30 +216,28 @@ define([
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="col offset-s2 s8 offset-m1 m3 offset-l1 l2">
-                                        <ul className="navigateTo">
-                                            <li><i className="material-icons prefix">person</i>Profile</li>
-                                            <li><i className="material-icons prefix">book</i>Wishlist</li>
-                                            <li><i className="material-icons prefix">rate_review</i>Reviews</li>
-                                        </ul>
-                                    </div>
-                                    <div className="col s12 m8 l9">
-                                        <div className="row graph-wrapper">
-                                            <div className="col s12">
-                                                <img className="graph" src="http://placehold.it/500x300"/>
-                                            </div>
-                                        </div>
-                                        <div className="row stats">
-                                            <div className="col s12 m6">
-                                                <p># of books borrowed</p>
-                                                <h4>{numBorrowed}</h4>
-                                            </div>
-                                            <div className="col s12 m6">
-                                                <p># of books rated</p>
-                                                <h4>{user.ratings.length}</h4>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <ul className="collapsible" data-collapsible="accordion">
+                                        <li>
+                                            <div className="collapsible-header"><i className="material-icons">lock</i>Books you are currently enjoying</div>
+                                            <div className="collapsible-body">{this.state.selectedUser.currentlyCheckedOutItems.length != 0 ? <BookCarousel setView={this.props.setView}books={this.props.stores.books.getCheckedOutbooks(this.state.selectedUser.currentlyCheckedOutItems)}/>: <h5 style={{margin:'20px'}}>No checked out items</h5>}</div>
+                                        </li>
+                                        <li>
+                                            <div className="collapsible-header"><i className="material-icons">history</i>Books you have borrowed in the past</div>
+                                            <div className="collapsible-body">{this.state.selectedUser.checkoutHistory.length != 0 ? <BookCarousel setView={this.props.setView}books={this.props.stores.books.getCheckoutHistory()} />: <h5 style={{margin:'20px'}}>No items</h5>}</div>
+                                        </li>
+                                        <li>
+                                            <div className="collapsible-header"><i className="material-icons">star_rate</i>Books you have rated</div>
+                                            <div className="collapsible-body">{this.state.selectedUser.ratings.length != 0 ? <BookCarousel setView={this.props.setView}books={this.props.stores.books.getRatedBooks()} />: <h5 style={{margin:'20px'}}>No items</h5>}</div>
+                                        </li>
+                                        <li>
+                                            <div className="collapsible-header"><i className="material-icons">favorite</i>Books you've favorited</div>
+                                            <div className="collapsible-body"><BookCarousel books={this.state.selectedUser.favorites}/></div>
+                                        </li>
+                                        <li>
+                                            <div className="collapsible-header"><i className="material-icons">bubble_chart</i>Books you've wished for</div>
+                                            <div className="collapsible-body"><BookCarousel setView={this.props.setView}books={this.state.selectedUser.wishlist}/></div>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -305,9 +307,9 @@ define([
                                 </div>
                             </div>
                             <div className="input-field">
-                                <select ref="roleSelect">
-                                    <option value="user" defaultValue={this.state.selectedUser.role == "user" ? "selected":""}>Admin</option>
-                                    <option value="admin" defaultValue={this.state.selectedUser.role == "admin" ? "selected":""}>User</option>
+                                <select ref="roleSelect" defaultValue={this.state.selectedUser.role}>
+                                    <option value="user" >User</option>
+                                    <option value="admin" >Admin</option>
                                 </select>
                                 <label>Roles</label>
                             </div>
