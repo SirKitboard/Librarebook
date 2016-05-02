@@ -336,7 +336,7 @@ define([
                     {navItems}
                     <nav style={style}>
                         <div className="white blue-grey-text text-darken-1 nav-wrapper">
-                            <a href="#" onClick={this.gotoHome} className="left blue-grey-text text-darken-1 brand-logo hide-on-med-and-down">Logo</a>
+                            <a href="#" onClick={this.gotoHome} className="left blue-grey-text text-darken-1 brand-logo hide-on-med-and-down">Librarebook</a>
                             <a href="#" data-activates="mobile-demo" className="blue-grey-text text-darken-1 button-collapse"><i className="material-icons">menu</i></a>
                             {this.state.loggedIn ? <a style={{padding:'0 5px'}} className="right blue-grey-text text-darken-1 shopping-cart-icon" onClick={this.toggleCart}><i className="material-icons">shopping_cart</i></a> : null}
                             <ul id="nav-mobile" className="right hide-on-med-and-down">

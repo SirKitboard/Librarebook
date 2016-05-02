@@ -13,6 +13,7 @@ define([
                 var array = window.currentUser.checkoutHistory.concat(window.currentUser.currentlyCheckedOutItems);
                 var random = Math.floor(Math.random() * array.length);
                 this.props.stores.books.getRecommendedOrPull(array[random].item);
+                random = array[random].item
             }
 
             var book = {
@@ -27,7 +28,7 @@ define([
                  'popular' : books,
                  'newRelease' : books,
                  loggedIn: loggedIn,
-                 random: array[random].item,
+                 random: random,
             }
         },
         componentDidMount: function() {
@@ -45,7 +46,7 @@ define([
                 var loginSection = <LoginSection id="login"/>;
                 var loginParalax = (
                     <div className="parallax-container">
-                        <div className="parallax"><img src="http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-332800.jpg"/></div>
+                        <div className="parallax"><img src="https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-123787.jpg"/></div>
                     </div>
                 )
             }
@@ -61,7 +62,7 @@ define([
                     {loginParalax}
                     {loginSection}
                     <div className="parallax-container">
-                        <div className="parallax"><img src="http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-321572.jpg"/></div>
+                        <div className="parallax"><img src="https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-156539.jpg"/></div>
                     </div>
                     {popularSection}
                     <div className="parallax-container">
@@ -69,7 +70,7 @@ define([
                     </div>
                     {newReleasesSection}
                     <div className="parallax-container">
-                        <div className="parallax"><img src="http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-321572.jpg"/></div>
+                        <div className="parallax"><img src="https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-357501.jpg"/></div>
                     </div>
                     {recommendedSection}
                     {recommendParalax}
