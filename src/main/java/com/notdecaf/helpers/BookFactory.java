@@ -29,26 +29,30 @@ public class BookFactory {
     }
 
     public static Book getBookFromCache(long id) {
-        int index = -1;
-        for(int i = 0; i<lruBookCache.size(); i++) {
-            if(lruBookCache.get(i).getId() == id) {
-                index = i;
-                break;
-            }
-        }
-        if(index > -1) {
-            Book book = lruBookCache.remove(index);
-            lruBookCache.add(0, book);
-            return book;
-        } else {
-            Book book = bookDao.findOne(id);
-            if(book != null) {
-                lruBookCache.add(0, book);
-                if(lruBookCache.size() > 15) {
-                    lruBookCache.remove(14);
+        try {
+            int index = -1;
+            for(int i = 0; i<lruBookCache.size(); i++) {
+                if(lruBookCache.get(i).getId() == id) {
+                    index = i;
+                    break;
                 }
             }
-            return book;
+            if(index > -1) {
+                Book book = lruBookCache.remove(index);
+                lruBookCache.add(0, book);
+                return book;
+            } else {
+                Book book = bookDao.findOne(id);
+                if(book != null) {
+                    lruBookCache.add(0, book);
+                    if(lruBookCache.size() > 15) {
+                        lruBookCache.remove(14);
+                    }
+                }
+                return book;
+            }
+        } catch (Exception e) {
+            return bookDao.findOne(id);
         }
     }
 
