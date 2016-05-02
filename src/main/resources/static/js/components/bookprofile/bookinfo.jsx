@@ -295,7 +295,6 @@ define([
                             {purchaseButton}
                             {downloadButton}
                             {sampleButton}
-                            {addToCart}
                             {editButton}
                         </ul>
                         :
