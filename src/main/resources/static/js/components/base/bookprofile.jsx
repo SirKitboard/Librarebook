@@ -150,13 +150,14 @@ define([
             var book = this.props.stores.books.getBookOrPull(bookID);
             var recommended = this.props.stores.books.getRecommendedOrPull(bookID);
             if(book) {
-                this.setState({
-                    book: book,
-                    selectedAuthors: book.authors,
-                    selectedAuthorIDs: _.pluck(book.authors, 'id'),
-                    selectedPublisher: book.publisher,
-                    loadingBook: false
-                });
+                book: book,
+                    this.setState({
+                        book: book,
+                        selectedAuthors: book.authors,
+                        selectedAuthorIDs: _.pluck(book.authors, 'id'),
+                        selectedPublisher: book.publisher,
+                        loadingBook: false
+                    });
             } else {
                 this.setState({
                     loadingBook: true
@@ -243,7 +244,7 @@ define([
                     <p>Loading</p>
                 )
             }
-            
+
             var ratings = this.state.book.ratings;
             if (ratings.length > 0 && this.state.loggedIn) {
                 var itemRating = _.find(ratings, function(rating) {return rating.user === window.currentUser.id;});
