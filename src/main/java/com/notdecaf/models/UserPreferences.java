@@ -21,6 +21,20 @@ public class UserPreferences {
     @Enumerated(EnumType.STRING)
     private EmailPreference emailPreference;
 
+    private boolean autorenew;
+
+    public void setUserID(long userID) {
+        this.userID = userID;
+    }
+
+    public boolean getAutorenew() {
+        return autorenew;
+    }
+
+    public void setAutorenew(boolean autorenew) {
+        this.autorenew = autorenew;
+    }
+
     @NotNull
     private int checkoutLength;
 
@@ -59,5 +73,6 @@ public class UserPreferences {
         this.userID = user.getId();
         this.status = UserStatus.Active;
         this.emailPreference = EmailPreference.HEAVY;
+        this.autorenew = true;
     }
 }

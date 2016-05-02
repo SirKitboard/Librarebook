@@ -8,4 +8,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface HoldItemDao extends CrudRepository<HoldItem, Long>{
     HoldItem findByUserIdAndItemId(long userId, long itemId);
+    HoldItem findByItemIdOrderByDateHeldAsc(long itemId);
 }

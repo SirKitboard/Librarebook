@@ -1,10 +1,7 @@
 package com.notdecaf.controllers;
 
 import com.notdecaf.daos.*;
-import com.notdecaf.helpers.BookFactory;
-import com.notdecaf.helpers.CheckoutManager;
-import com.notdecaf.helpers.ItemFactory;
-import com.notdecaf.helpers.SetHelper;
+import com.notdecaf.helpers.*;
 import com.notdecaf.models.*;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -297,6 +294,27 @@ public class ItemController {
             CheckoutManager.removeCheckedOutItem(prevCheckedOutItem);
             itemDao.save(item);
             checkedOutItemDao.delete(prevCheckedOutItem);
+
+            HoldItem hold = holdItemDao.findByItemIdOrderByDateHeldAsc(id);
+            if(hold!=null) {
+                User nextUser = userDao.findOne(hold.getUser());
+                if(nextUser != null) {
+                    if(nextUser.getPreferences().getAutorenew()) {
+                        UserCheckedOutItem userCheckedOutItem = new UserCheckedOutItem(user,item, 7);
+                        checkedOutItemDao.save(userCheckedOutItem);
+
+                        user.addCheckedOutItem(userCheckedOutItem);
+                        item.addCheckedOutItem(userCheckedOutItem);
+
+                        user.addCheckedOutItem(userCheckedOutItem);
+                        item.addCheckedOutItem(userCheckedOutItem);
+
+                        CheckoutManager.addCheckedOutItem(userCheckedOutItem);
+                    } else {
+                        HoldManager.notifyHoldAvailable(nextUser, item);
+                    }
+                }
+            }
 
             updateCache(item);
             return ResponseEntity.ok(null);
