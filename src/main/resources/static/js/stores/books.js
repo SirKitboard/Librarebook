@@ -143,7 +143,7 @@ define([
                return item.user == window.currentUser.id;
             });
             window.currentUser.currentlyCheckedOutItems = window.currentUser.currentlyCheckedOutItems.filter(function(checkout) {
-               return checkout.item = id;
+               return checkout.item == id;
             });
             this.books[id].availableLicenses++;
         }

@@ -1,12 +1,12 @@
 define([
     'underscore',
     'react',
-    'jsx!components/template/book',
+    'jsx!components/template/user',
     'jsx!components/base/userprofile',
     'jsx!components/widgets/bookCarousel',
     'react-dom',
     'actions/user'
-], function(_, React, Book, UserProfileComponent, BookCarousel, ReactDOM, UserActions) { //, BookInfoComponent, BookExtrasComponent, BookRecommendComponent) {
+], function(_, React, User, UserProfileComponent, BookCarousel, ReactDOM, UserActions) { //, BookInfoComponent, BookExtrasComponent, BookRecommendComponent) {
     return React.createClass({
         getInitialState: function() {
             return {
@@ -257,7 +257,7 @@ define([
                                 _.map(this.state.users, function(user) {
                                     return (
                                         <li>
-                                            <Book book={user} id={user.id} setUser={self.setUser}/>
+                                            <User user={user} id={user.id} setUser={self.setUser}/>
                                         </li>
                                     )
                                 })
