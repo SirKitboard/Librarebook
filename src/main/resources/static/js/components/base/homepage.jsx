@@ -12,8 +12,10 @@ define([
                 loggedIn = true
                 var array = window.currentUser.checkoutHistory.concat(window.currentUser.currentlyCheckedOutItems);
                 var random = Math.floor(Math.random() * array.length);
-                this.props.stores.books.getRecommendedOrPull(array[random].item);
-                random = array[random].item
+                if (array[random]) {
+                    this.props.stores.books.getRecommendedOrPull(array[random].item);
+                    random = array[random].item
+                }
             }
 
             var book = {

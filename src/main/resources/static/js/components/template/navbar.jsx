@@ -304,16 +304,19 @@ define([
                 </div>
             )
             if(this.state.loggedIn) {
+                if (window.currentUser.role == "admin") {
+                    var adminLink = (<li><a onClick={this.gotoAdminDashboard}>Admin Dashboard</a></li>);
+                }
                 var navItems = (<ul id="dropdown1" className="dropdown-content">
                     <li><a onClick={this.gotoProfile}>Profile</a></li>
-                    <li><a onClick={this.gotoAdminDashboard}>Admin Dashboard</a></li>
+                    {adminLink}
                     <li><a onClick={this.gotoFAQ}>FAQ</a></li>
                     <li><a onClick={this.logout}>Logout</a></li>
                 </ul>);
                 var mobileItems = (
                     <ul className="side-nav" id="mobile-demo">
                         <li><a onClick={this.gotoProfile}>Profile</a></li>
-                        <li><a onClick={this.gotoAdminDashboard}>Admin Dashboard</a></li>
+                        {adminLink}
                         <li><a onClick={this.gotoFAQ}>FAQ</a></li>
                         <li><a onClick={this.logout}>Logout</a></li>
                     </ul>
