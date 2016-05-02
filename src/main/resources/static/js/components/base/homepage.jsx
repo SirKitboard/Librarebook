@@ -6,10 +6,15 @@ define([
 ], function(_, React, Section, LoginSection) {
     return React.createClass({
         getInitialState : function() {
-            var loggedIn = false
-            if(window.location.hash == '#loggedIn') {
+            var loggedIn = false;
+            var random = null;
+            if(window.currentUser) {
                 loggedIn = true
+                var array = window.currentUser.checkoutHistory.concat(window.currentUser.currentlyCheckedOutItems);
+                var random = Math.floor(Math.random() * array.length);
+                this.props.stores.books.getRecommendedOrPull(array[random].item);
             }
+
             var book = {
                 title: null,
                 description: null,
@@ -21,7 +26,8 @@ define([
                  'login' : books,
                  'popular' : books,
                  'newRelease' : books,
-                 loggedIn: loggedIn
+                 loggedIn: loggedIn,
+                 random: array[random].item,
             }
         },
         componentDidMount: function() {
@@ -29,7 +35,7 @@ define([
         },
         render: function() {
             if(this.state.loggedIn) {
-                var recommendedSection = <Section books={this.state.popular} title='Recommended Books' id="Recommended"/>
+                var recommendedSection = <Section books={this.props.stores.books.getRecommended(this.state.random)} title='Recommended Books' id="Recommended"/>
                 var recommendParalax = (
                     <div className="parallax-container">
                         <div className="parallax"><img src="http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-332800.jpg"/></div>

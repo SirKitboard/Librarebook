@@ -124,7 +124,7 @@ define([
                         </li>
                          <li>
                              <div className="collapsible-header"><i className="material-icons">people</i>Recommended Books</div>
-                             <div className="collapsible-body">{this.props.stores.books.getRecommended(this.state.random) != 0 ? <BookCarousel books={this.props.stores.books.getRecommended(this.state.random)}/>: <h5 style={{margin:'20px'}}>No items</h5>}</div>
+                             <div className="collapsible-body">{this.props.stores.books.getRecommended(this.state.random).length != 0 ? <BookCarousel books={this.props.stores.books.getRecommended(this.state.random)}/>: <h5 style={{margin:'20px'}}>No items</h5>}</div>
                          </li>
                          <li>
                              <div className="collapsible-header"><i className="material-icons">add_shopping_cart</i>Books you requested more stock for</div>
