@@ -192,4 +192,14 @@ public class UserController implements BaseController<User> {
     public ResponseEntity updatePreferences(HttpServletRequest request, @PathVariable long id) {
         return null;
     }
+
+    @RequestMapping(value = "/api/users/{id}/new", method = RequestMethod.GET)
+    public ResponseEntity<User[]> getNewUsers(HttpServletRequest request, @PathVariable long id) {
+        User user = (User)request.getSession().getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        List<User> users = userDao.findByIdGreaterThan(id);
+        return ResponseEntity.ok(users.toArray(new User[0]));
+    }
 }

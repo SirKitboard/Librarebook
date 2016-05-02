@@ -20,7 +20,8 @@ define([
         REMOVE_RATING: 15,
         RECOMMEND: 16,
         ADD_USER_RECOMMENDED: 17,
-        REMOVE_USER_RECOMMENDATION: 18
+        REMOVE_USER_RECOMMENDATION: 18,
+        ADD_USERS: 19
     };
 
     return Constants

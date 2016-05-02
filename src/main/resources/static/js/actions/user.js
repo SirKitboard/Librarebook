@@ -2,7 +2,8 @@ define([
     "underscore",
     "react",
     "dateformat",
-    "dispatcher/AppDispatcher"
+    "dispatcher/AppDispatcher",
+    "constants/actiontypes"
 ], function(_, React, DateFormat, AppDispatcher, Constants) {
     return {
         init: function(params) {
@@ -67,6 +68,30 @@ define([
                     if(JSON.parse(xhr.responseText).id) {
                         window.alert('Account with this email already exists');
                     }
+                }
+            });
+        },
+        getAll: function() {
+            $.ajax({
+                url: '/api/users',
+                method: 'GET',
+                success: function(response) {
+                    AppDispatcher.dispatch({
+                        actionType: Constants.ADD_USERS,
+                        data: response
+                    })
+                }
+            });
+        },
+        getNew: function(id) {
+            $.ajax({
+                url: '/api/users/'+id+'/new',
+                method: 'GET',
+                success: function(response) {
+                    AppDispatcher.dispatch({
+                        actionType: Constants.ADD_USERS,
+                        data: response
+                    })
                 }
             });
         }

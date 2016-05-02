@@ -5,15 +5,48 @@ define([
 ], function(_, React, Book) { //, BookInfoComponent, BookExtrasComponent, BookRecommendComponent) {
     return React.createClass({
         getInitialState: function() {
-            var user = {
-                "title": "User name"
-            }
             return {
-                users : [user, user, user, user, user, user, user],
                 selectedBook: 0
             }
         },
+        onStoreUpdate: function() {
+            if(this.state.users.length == 0) {
+                var nextUsers = this.props.stores.users.getUsers();
+                console.log(this.props.stores.users);
+                if(nextUsers.length > 0){
+                    this.setState({
+                        users: nextUsers,
+                        loadingUsers: false
+                    })
+                }
+            } else{
+                this.setState({
+                    loadingUsers: false
+                });
+            }
+        },
+        componentWillMount: function() {
+            var users = this.props.stores.users.getUsers();
+            this.props.stores.users.addChangeListener(this.onStoreUpdate);
+            if (users.length === 0) {
+                this.setState({
+                    users: users,
+                    loadingUsers: true
+                })
+            } else {
+                this.setState({
+                    user: users,
+                    loadingUsers: false
+                })
+            }
+        },
+        componentWillUnmount: function () {
+            this.props.stores.books.removeChangeListener(this.onStoreUpdate)
+        },
         render: function() {
+            if (this.state.loadingUsers) {
+                return (<div>hi</div>);
+            }
             return (
                 <div id="usersTab" className="row">
                     <div className="col s12 m3 userList">

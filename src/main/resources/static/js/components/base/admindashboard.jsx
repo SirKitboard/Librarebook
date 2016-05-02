@@ -53,7 +53,7 @@ define([
                     tab = <BooksTab stores={this.props.stores}/>
                     break;
                 case 2:
-                    tab = <UsersTab/>
+                    tab = <UsersTab stores={this.props.stores}/>
                     break;
                 case 3:
                     tab = <PublishersTab/>
