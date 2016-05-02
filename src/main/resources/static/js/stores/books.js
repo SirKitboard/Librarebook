@@ -133,10 +133,16 @@ define([
     Store.prototype.renew = function(data) {
         if (this.books[data.bookId]) {
             var book = this.books[data.bookId];
+            var user = window.currentUser;
             var userId = window.currentUser.id;
             for (var i=0; i<book.checkedOutBy.length; i++) {
                 if (book.checkedOutBy[i].user == userId) {
-                    book.checkedOutBy[0].dueDate = data.newDate;
+                    book.checkedOutBy[i].dueDate = data.newDate;
+                }
+            }
+            for (var i=0; i<user.currentlyCheckedOutItems.length; i++) {
+                if (user.currentlyCheckedOutItems[i].item == data.bookId) {
+                    user.currentlyCheckedOutItems[i].dueDate = data.newDate;
                 }
             }
         }
@@ -145,10 +151,15 @@ define([
     Store.prototype.toggleAutoRenew = function(data) {
         if (this.books[data.bookId]) {
             var book = this.books[data.bookId];
-            var userId = window.currentUser.id;
+            var user = window.currentUser;
             for (var i=0; i<book.checkedOutBy.length; i++) {
-                if (book.checkedOutBy[i].user == userId) {
-                    book.checkedOutBy[0].willRenew = data.willRenew;
+                if (book.checkedOutBy[i].user == user.id) {
+                    book.checkedOutBy[i].willRenew = data.willRenew;
+                }
+            }
+            for (var i=0; i<user.currentlyCheckedOutItems.length; i++) {
+                if (user.currentlyCheckedOutItems.item == data.bookId) {
+                    user.currentlyCheckedOutItems[i].willRenew = data.willRenew;
                 }
             }
         }
@@ -219,17 +230,17 @@ define([
     }
     Store.prototype.rate = function(data) {
         if (this.books[data.bookId]) {
-            var book = this.books[data.bookId];
             var exists = false;
-            for (var i=0; i<book.ratings.length; i++) {
+            for (var i=0; i<this.book.ratings.length; i++) {
                 if (book.ratings[i].user === window.currentUser.id) {
-                    book.ratings[i] = data.ratingItem;
-                    this.books[data.bookId] = book;
+                    this.book.ratings[i] = data.ratingItem;
+                    window.currentUser.ratings[i] = data.ratingItem;
                     exists = true;
                 }
             }
             if (!exists) {
                 this.books[data.bookId].ratings.push(data.ratingItem);
+                window.currentUser.ratings.push(data.ratingItem);
             }
         }
     };
@@ -238,6 +249,9 @@ define([
         if (this.books[id]) {
             this.books[id].ratings = this.books[id].ratings.filter(function (rating) {
                 return rating.user !== window.currentUser.id;
+            });
+            window.currentUser.ratings = window.currentUser.ratings.filter(function (rating) {
+               return rating.item !== id;
             });
         }
     };

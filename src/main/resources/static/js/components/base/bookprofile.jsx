@@ -256,13 +256,13 @@ define([
             return (
                 <div className="padNav" id="profileContent">
                     <div className="row" id="bookProfileTop">
-                        <div className="col l4">
+                        <div className="col m12 l4">
                             <BookInfoComponent publisher={this.state.selectedPublisher} authors={this.state.selectedAuthors} book={this.state.book} loggedIn={this.state.loggedIn}/>
                         </div>
-                        <div className="col l6">
+                        <div className="col m12 l6">
                             <BookExtrasComponent book={this.state.book} loggedIn={this.state.loggedIn} recommended={this.state.recommended} id="bookExtras"/>
                         </div>
-                        <div className="col l2">
+                        <div className="col m5 l2">
                             <AdComponent orientation="vertical"/>
                         </div>
                     </div>
@@ -322,7 +322,7 @@ define([
                                     <div className="row">
                                         <div className="input-field col s12 m6 center-align">
                                             <select size="4" style={{overflowY: 'scroll'}} id="genreSelect" ref="genreSelect"  multiple>
-                                                <option value="" disabled>Genres</option>
+                                                <option defaultValue="" disabled>Genres</option>
                                                 {
                                                     _.map(this.props.stores.genres.getAll(), function(genre) {
                                                         // var id = "genre_" + genre.name;
@@ -332,7 +332,7 @@ define([
                                                                 checked = true;
                                                             }
                                                         })
-                                                        return <option checked={checked} value={genre.id}>{genre.name}</option>
+                                                        return <option checked={checked} defaultValue={genre.id}>{genre.name}</option>
                                                     })
                                                 }
                                             </select>
@@ -341,11 +341,11 @@ define([
                                     </div>
                                     <div className="row">
                                         <div className="input-field col s12 m6">
-                                            <input placeholder="" onClick={this.slideToAuthorTab} ref="author" id="author" type="text" className="active validate" length="20" value={_.pluck(self.state.selectedAuthors, "firstName").join(",")}/>
+                                            <input placeholder="" onClick={this.slideToAuthorTab} ref="author" id="author" type="text" className="active validate" length="20" defaultValue={_.pluck(self.state.selectedAuthors, "firstName").join(",")}/>
                                             <label className="active" htmlFor="author">Author</label>
                                         </div>
                                         <div className="input-field col s12 m6">
-                                            <input onClick={this.slideToPublisherTab} ref="publisher" id="publisher" type="text" className="active validate" length="20" value={self.state.selectedPublisher ? self.state.selectedPublisher.name : ""}/>
+                                            <input onClick={this.slideToPublisherTab} ref="publisher" id="publisher" type="text" className="active validate" length="20" defaultValue={self.state.selectedPublisher ? self.state.selectedPublisher.name : ""}/>
                                             <label className="active" placeholder="" htmlFor="publisher">Publisher</label>
                                         </div>
                                     </div>

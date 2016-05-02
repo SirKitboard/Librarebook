@@ -113,7 +113,6 @@ define([
                 var dueDate = new Date(checkedOutItem.dueDate);
                 var timeDiff = Math.abs(dueDate.getTime() - dateCheckedOut.getTime());
                 var daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
-                console.log(daysLeft);
 
                 var checkoutInfo = (<p>Checked out on {dateCheckedOut.toDateString()} at {dateCheckedOut.toTimeString()}</p>);
                 var returnInfo = (<p>Book will be returned {dueDate.toDateString()}</p>);
@@ -123,14 +122,16 @@ define([
                 if (!checkedOutItem.renewed) {
                     if (checkedOutItem.willRenew) {
                         var checked = "checked";
+                    } else {
+                        var checked = "";
                     }
                     if (daysLeft <= 3) {
                         var renewCheckbox =
                             (
-                                <li className="left" action="#">
-                                        <input type="checkbox" id="renewCheckbox" checked={checked} onClick={this.toggleRenew}/>
+                                <span style={{marginLeft: "15px;"}} action="#">
+                                        <input type="checkbox" id="renewCheckbox" defaultChecked={checked} onClick={this.toggleRenew}/>
                                         <label htmlFor="renewCheckbox">Renew Book</label>
-                                </li>
+                                </span>
                             );
                     }
                 }
@@ -162,8 +163,6 @@ define([
                     var reserved;
                     var waitlistButton;
                     if (user) {
-                        console.log(user.holdItems);
-                        console.log(this.props.book.holdsBy);
                         var reserved = _.find(user.holdItems, function(hold) {
                             return hold.item == book.id;
                         });
@@ -178,19 +177,7 @@ define([
                 }
             }
 
-            // var bookActionButtons =
-            //     (
-            //         <div className="fixed-action-btn" style={{bottom: '45px', right:'24px'}}>
-            //             {renewCheckbox}
-            //             {returnButton}
-            //             {instantCheckout}
-            //             {recommendButton}
-            //             {waitlistButton}
-            //             {purchaseButton}
-            //             {downloadButton}
-            //             {addToCart}
-            //         </div>
-            //     );
+            console.log(renewCheckbox);
 
             var likeStyle = {
                 color: 'red',
@@ -226,6 +213,7 @@ define([
                         {card}
                     </div>
                     <a className="dropdown-button btn" id="actionsDropdown" data-activates='actionsDropdownList'>Actions</a>
+                    {renewCheckbox}
                     <p>ISBN: {this.props.book.isbn}</p>
                     <hr />
                     <p>Description</p>
@@ -249,7 +237,6 @@ define([
                         {returnInfo}
                     </div>
                     <ul id='actionsDropdownList' className='dropdown-content'>
-                        {renewCheckbox}
                         {returnButton}
                         {instantCheckout}
                         {recommendButton}
