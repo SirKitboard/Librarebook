@@ -83,6 +83,7 @@ public class UserController implements BaseController<User> {
                     request.getParameter("gender"),
                     request.getParameter("password"),
                     address, request.getParameter("phone"));
+            user.setRole("user");
 
             addressDao.save(address);
             user = userDao.save(user);
@@ -138,6 +139,9 @@ public class UserController implements BaseController<User> {
             if (requestMap.containsKey("addressLine1")) {
                 address.setLine1(request.getParameter("addressLine1"));
                 addressChanged = true;
+            }
+            if (requestMap.containsKey("role")) {
+                user.setRole(request.getParameter("role"));
             }
             if (addressChanged) {
                 addressDao.save(address);

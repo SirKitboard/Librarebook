@@ -52,6 +52,22 @@ define([
         console.log(this.users);
         this.event.emit("change");
     };
-    
+
+    Store.prototype.getUser= function(id) {
+        for (var i=0; i<this.users.length; i++) {
+            if (this.users[i].id == id) {
+                return this.users[i];
+            }
+        }
+    };
+
+    Store.prototype.updateUser = function(updatedUser) {
+        for (var i=0; i<this.users.length; i++) {
+            if (this.users[i].id == updatedUser.id) {
+                this.users[i] = updatedUser;
+            }
+        }
+    };
+
     return Store;
 });

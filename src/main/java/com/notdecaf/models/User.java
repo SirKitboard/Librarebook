@@ -104,6 +104,9 @@ public class User extends IDModel implements Cloneable{
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<HoldItem> holdItems;
 
+    @NotNull
+    private String role = "user";
+
     public User(String firstName, String lastName, Date dob, String email, String gender, String password, Address address, String phoneNumber) throws PasswordStorage.CannotPerformOperationException {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -373,6 +376,14 @@ public class User extends IDModel implements Cloneable{
 
     public void handleUpdate(HashMap<String, String> params) {
         //TODO: Handle update
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public boolean equals(User user) {

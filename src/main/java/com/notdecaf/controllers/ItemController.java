@@ -475,7 +475,7 @@ public class ItemController {
 
     @RequestMapping(value = "/api/items/{id}/ban", method = RequestMethod.POST)
     public ResponseEntity ban(HttpServletRequest request, @PathVariable long id){
-        Admin admin = (Admin) request.getSession().getAttribute("user");
+        User admin = (User) request.getSession().getAttribute("user");
         if (admin == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
