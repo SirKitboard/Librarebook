@@ -11,4 +11,7 @@ public class PDF {
     public static String getSamplePDFPath(String relative) {
         return PATH+"/samples"+relative;
     }
+    public static String getDownloadPDFPath(String relative) {
+        return PATH+"/books"+relative;
+    }
 }

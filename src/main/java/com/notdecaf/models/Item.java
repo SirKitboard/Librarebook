@@ -97,6 +97,19 @@ public abstract class Item extends IDModel{
 
     private String samplePath;
 
+    private String downloadPath;
+
+    public String getDownloadPath() {
+        if(this.samplePath != null && this.samplePath.length() > 0) {
+            return PDF.getDownloadPDFPath(this.samplePath);
+        }
+        else return "";
+    }
+
+    public void setDownloadPath(String downloadPath) {
+        this.downloadPath = downloadPath;
+    }
+
     public String getSamplePath() {
         if(this.samplePath != null && this.samplePath.length() > 0) {
             return PDF.getSamplePDFPath(this.samplePath);

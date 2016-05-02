@@ -149,7 +149,10 @@ define([
                 var checkoutInfo = (<p>Checked out on {dateCheckedOut.toDateString()} at {dateCheckedOut.toTimeString()}</p>);
                 var returnInfo = (<p>Book will be returned {dueDate.toDateString()}</p>);
                 var returnButton = (<li><a onClick={this.return}>Return</a></li>);
-                var downloadButton = (<li><a>Download</a></li>);
+                if(this.props.book.samplePath.length > 0) {
+                    downloadButton = <li><a href={this.props.book.downloadPath} target="_blank">Read</a></li>
+                }
+
 
                 if (!checkedOutItem.renewed) {
                     if (checkedOutItem.willRenew) {
@@ -171,6 +174,7 @@ define([
 
 
             var available = book.availableLicenses;
+
             if (book.status == "Banned"){
                 var card =
                     (<div className="card red z-depth-1" id="bookAvailable">
